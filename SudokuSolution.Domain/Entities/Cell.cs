@@ -28,7 +28,10 @@ namespace SudokuSolution.Domain.Entities {
 
 		public bool this[int number] {
 			get => possible[number - 1];
-			set => possible[number - 1] = value;
+			set {
+				if (!final.HasValue)
+					possible[number - 1] = value;
+			}
 		}
 
 		internal void SetMaxValue(int newMaxValue) {

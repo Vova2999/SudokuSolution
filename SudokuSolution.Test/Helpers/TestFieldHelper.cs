@@ -4,6 +4,17 @@ using SudokuSolution.Domain.Entities;
 
 namespace SudokuSolution.Test.Helpers {
 	public static class TestFieldHelper {
+		public static Field GetSmallTestField() {
+			int[,] values = {
+				{ 2, 0, 0, 0 },
+				{ 0, 0, 3, 0 },
+				{ 0, 0, 0, 0 },
+				{ 0, 1, 0, 4 }
+			};
+
+			return CreateAndFillField(values);
+		}
+
 		public static Field GetTestField() {
 			int[,] values = {
 				{ 0, 8, 0, 9, 3, 0, 0, 0, 7 },
@@ -15,16 +26,6 @@ namespace SudokuSolution.Test.Helpers {
 				{ 0, 7, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 5, 8, 0, 4, 0, 0, 0 },
 				{ 1, 0, 0, 0, 2, 7, 0, 6, 0 }
-			};
-
-			return CreateAndFillField(values);
-		}
-		public static Field GetSmallTestField() {
-			int[,] values = {
-				{ 2, 0, 0, 0 },
-				{ 0, 0, 3, 0 },
-				{ 0, 0, 0, 0 },
-				{ 0, 1, 0, 4 }
 			};
 
 			return CreateAndFillField(values);

@@ -46,6 +46,19 @@ namespace SudokuSolution.Test.Domain {
 
 		[Test]
 		[TestCaseSource(nameof(MaxValues))]
+		public void ChangePossibleAfterSetFinalTest(int maxValue) {
+			var cell = new Cell();
+			cell.SetMaxValue(maxValue);
+
+			cell.Final = 1;
+			cell[1] = true;
+			cell[1].Should().BeFalse();
+			foreach (var value in Enumerable.Range(2, maxValue - 1))
+				cell[value].Should().BeFalse();
+		}
+
+		[Test]
+		[TestCaseSource(nameof(MaxValues))]
 		public void ChangeFinalTest(int maxValue) {
 			var cell = new Cell();
 			cell.SetMaxValue(maxValue);
@@ -56,6 +69,7 @@ namespace SudokuSolution.Test.Domain {
 			foreach (var value in Enumerable.Range(1, maxValue))
 				cell[value].Should().BeFalse();
 		}
+
 		[Test]
 		[TestCaseSource(nameof(MaxValues))]
 		public void ChangeFinalBrokenTest(int maxValue) {

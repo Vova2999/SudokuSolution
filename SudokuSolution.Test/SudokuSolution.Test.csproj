@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Domain\CellTests.cs" />
     <Compile Include="Domain\FieldTests.cs" />
+    <Compile Include="Extensions\CellExtensions.cs" />
     <Compile Include="Helpers\TestFieldHelper.cs" />
     <Compile Include="Logic\FieldActions\CleanPossibleByFinalTests.cs" />
     <Compile Include="Logic\FieldActions\SetFinalForColumnTests.cs" />
