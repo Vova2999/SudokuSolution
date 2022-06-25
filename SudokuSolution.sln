@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolution.Logic", "Sud
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolution.Common", "SudokuSolution.Common\SudokuSolution.Common.csproj", "{3708CCAC-4A43-4B14-98C9-86A4F5CCE3AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolution.Test", "SudokuSolution.Test\SudokuSolution.Test.csproj", "{BE650AC0-EEF5-4C2C-BF59-F6470AF3C389}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3708CCAC-4A43-4B14-98C9-86A4F5CCE3AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3708CCAC-4A43-4B14-98C9-86A4F5CCE3AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3708CCAC-4A43-4B14-98C9-86A4F5CCE3AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE650AC0-EEF5-4C2C-BF59-F6470AF3C389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE650AC0-EEF5-4C2C-BF59-F6470AF3C389}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE650AC0-EEF5-4C2C-BF59-F6470AF3C389}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE650AC0-EEF5-4C2C-BF59-F6470AF3C389}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
