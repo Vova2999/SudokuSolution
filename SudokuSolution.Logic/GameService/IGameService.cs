@@ -4,8 +4,8 @@ namespace SudokuSolution.Logic.GameService {
 	public interface IGameService {
 		Field[] Solve(Field game);
 
-		// 1. Заполнить PossibleValues пустых ячеек // FillPossibleValues
-		// 2. Пройтись по имеющимся FinalValue и убрать лишние PossibleValues // CleanPossibleValues
+		// 1. Заполнить Possible пустых ячеек // FillPossibleValues
+		// 2. Пройтись по имеющимся Final и убрать лишние Possible // CleanPossibleValues
 		// 3. В каждом квадрате выставить те ячейки, значения которых возможны только в одной ячейке // SetFinalValueBySquare
 		// 4. В каждой строке выставить те ячейки, значения которых возможны только в одной строке // SetFinalValueByRow
 		// 5. В каждом столбце выставить те ячейки, значения которых возможны только в одном столбце // SetFinalValueByColumn
