@@ -21,6 +21,8 @@ namespace SudokuSolution.Domain.Entities {
 					throw new InvalidOperationException("Final value is invalid");
 
 				final = value;
+				for (var index = 0; index < maxValue; index++)
+					possible[index] = false;
 			}
 		}
 
@@ -29,9 +31,9 @@ namespace SudokuSolution.Domain.Entities {
 			set => possible[number - 1] = value;
 		}
 
-		internal void SetMaxValue(int value) {
-			maxValue = value;
-			possible = Enumerable.Repeat(true, value).ToArray();
+		internal void SetMaxValue(int newMaxValue) {
+			maxValue = newMaxValue;
+			possible = Enumerable.Repeat(true, newMaxValue).ToArray();
 		}
 	}
 }
