@@ -4,8 +4,8 @@ using System.Linq;
 using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
 
-namespace SudokuSolution.Logic.FieldActions.SetFinalValueBySquare {
-	public class SetFinalValueBySquare : ISetFinalValueBySquare {
+namespace SudokuSolution.Logic.FieldActions.SetFinalForSquare {
+	public class SetFinalForSquare : ISetFinalForSquare {
 		public void Execute(Field field) {
 			GetSquareIndexes(field).ForEach(indexes => ExecuteOneSquare(field, indexes));
 		}

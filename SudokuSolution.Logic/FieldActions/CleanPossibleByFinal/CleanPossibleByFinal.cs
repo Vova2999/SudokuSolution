@@ -1,8 +1,8 @@
 ﻿using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
 
-namespace SudokuSolution.Logic.FieldActions.CleanPossibleValues {
-	public class CleanPossibleValues : ICleanPossibleValues {
+namespace SudokuSolution.Logic.FieldActions.CleanPossibleByFinal {
+	public class CleanPossibleByFinal : ICleanPossibleByFinal {
 		public void Execute(Field field) {
 			field.Cells.ForEach((row, column, cell) => {
 				if (!cell.HasFinal)

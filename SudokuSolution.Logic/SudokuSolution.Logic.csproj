@@ -37,15 +37,18 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FieldActions\CleanPossibleValues\CleanPossibleValues.cs" />
-    <Compile Include="FieldActions\CleanPossibleValues\ICleanPossibleValues.cs" />
-    <Compile Include="FieldActions\SetFinalValueByColumn\ISetFinalValueByColumn.cs" />
-    <Compile Include="FieldActions\SetFinalValueByColumn\SetFinalValueByColumn.cs" />
-    <Compile Include="FieldActions\SetFinalValueByRow\ISetFinalValueByRow.cs" />
-    <Compile Include="FieldActions\SetFinalValueByRow\SetFinalValueByRow.cs" />
-    <Compile Include="FieldActions\SetFinalValueBySquare\ISetFinalValueBySquare.cs" />
-    <Compile Include="FieldActions\SetFinalValueBySquare\SetFinalValueBySquare.cs" />
-    <Compile Include="FieldActions\SetRandomFinalValueAndSplitField\ISetRandomFinalValueAndSplitField.cs" />
+    <Compile Include="FieldActions\CleanPossibleByColumn\ICleanPossibleByColumn.cs" />
+    <Compile Include="FieldActions\CleanPossibleByFinal\CleanPossibleByFinal.cs" />
+    <Compile Include="FieldActions\CleanPossibleByFinal\ICleanPossibleByFinal.cs" />
+    <Compile Include="FieldActions\CleanPossibleByRow\ICleanPossibleByRow.cs" />
+    <Compile Include="FieldActions\SetFinalForColumn\ISetFinalForColumn.cs" />
+    <Compile Include="FieldActions\SetFinalForColumn\SetFinalForColumn.cs" />
+    <Compile Include="FieldActions\SetFinalForRow\ISetFinalForRow.cs" />
+    <Compile Include="FieldActions\SetFinalForRow\SetFinalForRow.cs" />
+    <Compile Include="FieldActions\SetFinalForSquare\ISetFinalForSquare.cs" />
+    <Compile Include="FieldActions\SetFinalForSquare\SetFinalForSquare.cs" />
+    <Compile Include="FieldActions\SetFinalForSinglePossible\ISetFinalForSinglePossible.cs" />
+    <Compile Include="FieldActions\SetRandomFinalAndSplitField\ISetRandomFinalAndSplitField.cs" />
     <Compile Include="GameService\IGameService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

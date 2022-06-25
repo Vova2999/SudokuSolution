@@ -91,6 +91,13 @@
   <ItemGroup>
     <Compile Include="Domain\CellTests.cs" />
     <Compile Include="Domain\FieldTests.cs" />
+    <Compile Include="Helpers\TestFieldHelper.cs" />
+    <Compile Include="Logic\FieldActions\CleanPossibleByFinalTests.cs" />
+    <Compile Include="Logic\FieldActions\SetFinalForColumnTests.cs" />
+    <Compile Include="Logic\FieldActions\SetFinalForRowTests.cs" />
+    <Compile Include="Logic\FieldActions\SetFinalForSquareTests.cs" />
+    <Compile Include="Logic\FieldActions\SetRandomFinalAndSplitFieldTests.cs" />
+    <Compile Include="Logic\GameServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +111,10 @@
     <ProjectReference Include="..\SudokuSolution.Domain\SudokuSolution.Domain.csproj">
       <Project>{A424FAA3-FBB2-456A-BC9E-93CA315704FC}</Project>
       <Name>SudokuSolution.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SudokuSolution.Logic\SudokuSolution.Logic.csproj">
+      <Project>{738F5F9D-27CC-498D-913E-B31C786FF209}</Project>
+      <Name>SudokuSolution.Logic</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

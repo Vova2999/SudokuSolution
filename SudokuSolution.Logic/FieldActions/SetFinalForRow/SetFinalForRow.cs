@@ -1,7 +1,7 @@
 ﻿using SudokuSolution.Domain.Entities;
 
-namespace SudokuSolution.Logic.FieldActions.SetFinalValueByRow {
-	public class SetFinalValueByRow : ISetFinalValueByRow {
+namespace SudokuSolution.Logic.FieldActions.SetFinalForRow {
+	public class SetFinalForRow : ISetFinalForRow {
 		public void Execute(Field field) {
 			for (var row = 0; row < field.MaxValue; row++)
 				ExecuteOneRow(field, row);
