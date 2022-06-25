@@ -39,7 +39,6 @@
   <ItemGroup>
     <Compile Include="Entities\Cell.cs" />
     <Compile Include="Entities\Field.cs" />
-    <Compile Include="Entities\Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
