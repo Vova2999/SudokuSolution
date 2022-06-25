@@ -2,10 +2,10 @@
 using System.Linq;
 
 namespace SudokuSolution.Domain.Entities {
-	public struct Cell {
+	public class Cell {
 		private int? final;
-		private int maxValue;
-		private bool[] possible;
+		private readonly int maxValue;
+		private readonly bool[] possible;
 
 		public bool HasFinal => final.HasValue;
 
@@ -34,7 +34,7 @@ namespace SudokuSolution.Domain.Entities {
 			}
 		}
 
-		internal void SetMaxValue(int newMaxValue) {
+		internal Cell(int newMaxValue) {
 			maxValue = newMaxValue;
 			possible = Enumerable.Repeat(true, newMaxValue).ToArray();
 		}

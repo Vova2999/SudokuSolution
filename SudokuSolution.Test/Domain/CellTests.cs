@@ -12,10 +12,9 @@ namespace SudokuSolution.Test.Domain {
 		[Test]
 		[TestCaseSource(nameof(MaxValues))]
 		public void StateAfterCreateTest(int maxValue) {
-			var cell = new Cell();
-			cell.SetMaxValue(maxValue);
-
+			var cell = new Cell(maxValue);
 			cell.HasFinal.Should().BeFalse();
+
 			foreach (var value in Enumerable.Range(1, maxValue))
 				cell[value].Should().BeTrue();
 		}
@@ -23,8 +22,8 @@ namespace SudokuSolution.Test.Domain {
 		[Test]
 		[TestCaseSource(nameof(MaxValues))]
 		public void ChangePossibleTest(int maxValue) {
-			var cell = new Cell();
-			cell.SetMaxValue(maxValue);
+			var cell = new Cell(maxValue);
+			cell.HasFinal.Should().BeFalse();
 
 			cell[1] = false;
 			cell[1].Should().BeFalse();
@@ -35,8 +34,8 @@ namespace SudokuSolution.Test.Domain {
 		[Test]
 		[TestCaseSource(nameof(MaxValues))]
 		public void ChangePossibleBrokenTest(int maxValue) {
-			var cell = new Cell();
-			cell.SetMaxValue(maxValue);
+			var cell = new Cell(maxValue);
+			cell.HasFinal.Should().BeFalse();
 
 			new Action(() => cell[-1] = false).Should().Throw<Exception>();
 			new Action(() => cell[0] = false).Should().Throw<Exception>();
@@ -47,8 +46,8 @@ namespace SudokuSolution.Test.Domain {
 		[Test]
 		[TestCaseSource(nameof(MaxValues))]
 		public void ChangePossibleAfterSetFinalTest(int maxValue) {
-			var cell = new Cell();
-			cell.SetMaxValue(maxValue);
+			var cell = new Cell(maxValue);
+			cell.HasFinal.Should().BeFalse();
 
 			cell.Final = 1;
 			cell[1] = true;
@@ -60,8 +59,8 @@ namespace SudokuSolution.Test.Domain {
 		[Test]
 		[TestCaseSource(nameof(MaxValues))]
 		public void ChangeFinalTest(int maxValue) {
-			var cell = new Cell();
-			cell.SetMaxValue(maxValue);
+			var cell = new Cell(maxValue);
+			cell.HasFinal.Should().BeFalse();
 
 			cell.Final = 1;
 			cell.HasFinal.Should().BeTrue();
@@ -73,8 +72,8 @@ namespace SudokuSolution.Test.Domain {
 		[Test]
 		[TestCaseSource(nameof(MaxValues))]
 		public void ChangeFinalBrokenTest(int maxValue) {
-			var cell = new Cell();
-			cell.SetMaxValue(maxValue);
+			var cell = new Cell(maxValue);
+			cell.HasFinal.Should().BeFalse();
 
 			new Action(() => cell.Final = -1).Should().Throw<Exception>();
 			new Action(() => cell.Final = 0).Should().Throw<Exception>();

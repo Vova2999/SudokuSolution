@@ -17,19 +17,21 @@ namespace SudokuSolution.Test.Logic.FieldActions {
 		public void ExecuteWithSmallFieldTest() {
 			var field = TestFieldHelper.GetSmallTestFieldWithPossible();
 			cleanPossibleByRow.Execute(field);
+			cleanPossibleByRow.Execute(field);
+			cleanPossibleByRow.Execute(field);
 
 			field.Cells[0, 0].ShouldBeFinal(2);
-			field.Cells[0, 1].ShouldBeNotFinal(field.MaxValue, 3, 4);
+			field.Cells[0, 1].ShouldBeNotFinal(field.MaxValue, 3);
 			field.Cells[0, 2].ShouldBeNotFinal(field.MaxValue, 1, 4);
 			field.Cells[0, 3].ShouldBeNotFinal(field.MaxValue, 1);
 			field.Cells[1, 0].ShouldBeNotFinal(field.MaxValue, 1, 4);
 			field.Cells[1, 1].ShouldBeNotFinal(field.MaxValue, 4);
 			field.Cells[1, 2].ShouldBeFinal(3);
-			field.Cells[1, 3].ShouldBeNotFinal(field.MaxValue, 1, 2);
-			field.Cells[2, 0].ShouldBeNotFinal(field.MaxValue, 3, 4);
-			field.Cells[2, 1].ShouldBeNotFinal(field.MaxValue, 2, 3, 4);
-			field.Cells[2, 2].ShouldBeNotFinal(field.MaxValue, 1, 2);
-			field.Cells[2, 3].ShouldBeNotFinal(field.MaxValue, 1, 2, 3);
+			field.Cells[1, 3].ShouldBeNotFinal(field.MaxValue, 2);
+			field.Cells[2, 0].ShouldBeNotFinal(field.MaxValue, 4);
+			field.Cells[2, 1].ShouldBeNotFinal(field.MaxValue, 2, 4);
+			field.Cells[2, 2].ShouldBeNotFinal(field.MaxValue, 1);
+			field.Cells[2, 3].ShouldBeNotFinal(field.MaxValue, 1, 3);
 			field.Cells[3, 0].ShouldBeNotFinal(field.MaxValue, 3);
 			field.Cells[3, 1].ShouldBeFinal(1);
 			field.Cells[3, 2].ShouldBeNotFinal(field.MaxValue, 2);
@@ -39,6 +41,8 @@ namespace SudokuSolution.Test.Logic.FieldActions {
 		[Test]
 		public void ExecuteWithFieldTest() {
 			var field = TestFieldHelper.GetTestFieldWithPossible();
+			cleanPossibleByRow.Execute(field);
+			cleanPossibleByRow.Execute(field);
 			cleanPossibleByRow.Execute(field);
 
 			field.Cells[0, 0].ShouldBeNotFinal(field.MaxValue, 2, 4, 5, 6);
@@ -100,7 +104,7 @@ namespace SudokuSolution.Test.Logic.FieldActions {
 			field.Cells[6, 2].ShouldBeNotFinal(field.MaxValue, 2, 3, 4, 6, 8, 9);
 			field.Cells[6, 3].ShouldBeNotFinal(field.MaxValue, 1, 3, 6);
 			field.Cells[6, 4].ShouldBeNotFinal(field.MaxValue, 5, 6, 9);
-			field.Cells[6, 5].ShouldBeNotFinal(field.MaxValue, 1, 3, 6, 9);
+			field.Cells[6, 5].ShouldBeNotFinal(field.MaxValue, 1, 6, 9);
 			field.Cells[6, 6].ShouldBeNotFinal(field.MaxValue, 2, 3, 4, 9);
 			field.Cells[6, 7].ShouldBeNotFinal(field.MaxValue, 2, 3, 8);
 			field.Cells[6, 8].ShouldBeNotFinal(field.MaxValue, 3, 4, 8, 9);

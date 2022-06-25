@@ -1,4 +1,5 @@
-﻿using SudokuSolution.Domain.Entities;
+﻿using SudokuSolution.Common.Extensions;
+using SudokuSolution.Domain.Entities;
 
 namespace SudokuSolution.Logic.FieldActions.SetFinalForColumn {
 	public class SetFinalForColumn : ISetFinalForColumn {
@@ -13,23 +14,33 @@ namespace SudokuSolution.Logic.FieldActions.SetFinalForColumn {
 		}
 
 		private static void ExecuteOneColumnOneValue(Field field, int column, int value) {
+			var skip = false;
 			var lastIndex = -1;
 
-			for (var row = 0; row < field.MaxValue; row++) {
-				if (field.Cells[row, column].HasFinal) {
-					if (field.Cells[row, column].Final == value)
+			field.Cells.ForColumn(column,
+				(row, cell) => {
+					if (skip)
 						return;
 
-					continue;
-				}
+					if (cell.HasFinal) {
+						if (cell.Final == value)
+							skip = true;
 
-				if (field.Cells[row, column][value]) {
-					if (lastIndex != -1)
 						return;
+					}
 
-					lastIndex = row;
-				}
-			}
+					if (cell[value]) {
+						if (lastIndex != -1) {
+							skip = true;
+							return;
+						}
+
+						lastIndex = row;
+					}
+				});
+
+			if (skip)
+				return;
 
 			if (lastIndex != -1)
 				field.Cells[lastIndex, column].Final = value;

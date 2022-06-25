@@ -2,8 +2,8 @@
 using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
 
-namespace SudokuSolution.Logic.FieldActions.CleanPossibleByRow {
-	public class CleanPossibleByRow : ICleanPossibleByRow {
+namespace SudokuSolution.Logic.FieldActions.CleanPossibleByColumn {
+	public class CleanPossibleByColumn : ICleanPossibleByColumn {
 		public void Execute(Field field) {
 			var squareSize = (int) Math.Sqrt(field.MaxValue);
 			for (var squareRow = 0; squareRow < squareSize; squareRow++)
@@ -18,7 +18,7 @@ namespace SudokuSolution.Logic.FieldActions.CleanPossibleByRow {
 
 		private static void ExecuteOneSquareOneValue(Field field, int squareSize, int squareRow, int squareColumn, int value) {
 			var skip = false;
-			var hasValueInRow = new bool[squareSize];
+			var hasValueInColumn = new bool[squareSize];
 
 			field.Cells.ForSquare(
 				squareSize,
@@ -36,28 +36,28 @@ namespace SudokuSolution.Logic.FieldActions.CleanPossibleByRow {
 					}
 
 					if (cell[value])
-						hasValueInRow[row % squareSize] = true;
+						hasValueInColumn[column % squareSize] = true;
 				});
 
 			if (skip)
 				return;
 
-			var singleRow = -1;
-			for (var row = 0; row < hasValueInRow.Length; row++) {
-				if (!hasValueInRow[row])
+			var singleColumn = -1;
+			for (var column = 0; column < hasValueInColumn.Length; column++) {
+				if (!hasValueInColumn[column])
 					continue;
 
-				if (singleRow != -1)
+				if (singleColumn != -1)
 					return;
 
-				singleRow = row;
+				singleColumn = column;
 			}
 
-			var squareColumnStart = squareSize * squareColumn;
-			var squareColumnEnd = squareSize * (squareColumn + 1);
-			field.Cells.ForRow(squareSize * squareRow + singleRow,
-				(column, c) => {
-					if (column < squareColumnStart || column >= squareColumnEnd)
+			var squareRowStart = squareSize * squareRow;
+			var squareRowEnd = squareSize * (squareRow + 1);
+			field.Cells.ForColumn(squareSize * squareColumn + singleColumn,
+				(row, c) => {
+					if (row < squareRowStart || row >= squareRowEnd)
 						c[value] = false;
 				});
 		}

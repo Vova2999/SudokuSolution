@@ -29,14 +29,14 @@ namespace SudokuSolution.Logic.FieldActions.SetFinalForSquare {
 					if (skip)
 						return;
 
-					if (field.Cells[row, column].HasFinal) {
-						if (field.Cells[row, column].Final == value)
+					if (cell.HasFinal) {
+						if (cell.Final == value)
 							skip = true;
 
 						return;
 					}
 
-					if (field.Cells[row, column][value]) {
+					if (cell[value]) {
 						if (lastRowIndex != -1) {
 							skip = true;
 							return;

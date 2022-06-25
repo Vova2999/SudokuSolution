@@ -129,7 +129,7 @@ namespace SudokuSolution.Test.Helpers {
 			field.Cells[6, 2].SetNotFinal(field.MaxValue, 2, 3, 4, 6, 8, 9);
 			field.Cells[6, 3].SetNotFinal(field.MaxValue, 1, 3, 6);
 			field.Cells[6, 4].SetNotFinal(field.MaxValue, 5, 6, 9);
-			field.Cells[6, 5].SetNotFinal(field.MaxValue, 1, 3, 6, 9);
+			field.Cells[6, 5].SetNotFinal(field.MaxValue, 1, 6, 9);
 			field.Cells[6, 6].SetNotFinal(field.MaxValue, 1, 2, 3, 4, 5, 9);
 			field.Cells[6, 7].SetNotFinal(field.MaxValue, 1, 2, 3, 5, 8);
 			field.Cells[6, 8].SetNotFinal(field.MaxValue, 1, 3, 4, 5, 8, 9);

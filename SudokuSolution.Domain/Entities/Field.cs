@@ -9,7 +9,7 @@
 
 			for (var row = 0; row < maxValue; row++)
 			for (var column = 0; column < maxValue; column++)
-				Cells[row, column].SetMaxValue(maxValue);
+				Cells[row, column] = new Cell(maxValue);
 		}
 	}
 }
