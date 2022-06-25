@@ -98,6 +98,7 @@
     <Compile Include="Logic\FieldActions\CleanPossibleByRowTests.cs" />
     <Compile Include="Logic\FieldActions\SetFinalForColumnTests.cs" />
     <Compile Include="Logic\FieldActions\SetFinalForRowTests.cs" />
+    <Compile Include="Logic\FieldActions\SetFinalForSinglePossibleTests.cs" />
     <Compile Include="Logic\FieldActions\SetFinalForSquareTests.cs" />
     <Compile Include="Logic\FieldActions\SetRandomFinalAndSplitFieldTests.cs" />
     <Compile Include="Logic\GameServiceTests.cs" />

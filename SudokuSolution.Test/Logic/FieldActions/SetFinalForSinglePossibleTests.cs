@@ -1,49 +1,48 @@
 ﻿using NUnit.Framework;
-using SudokuSolution.Logic.FieldActions.CleanPossibleByFinal;
+using SudokuSolution.Logic.FieldActions.SetFinalForSinglePossible;
 using SudokuSolution.Test.Extensions;
 using SudokuSolution.Test.Helpers;
 
 namespace SudokuSolution.Test.Logic.FieldActions {
-	[TestFixture]
-	public class CleanPossibleByFinalTests {
-		private ICleanPossibleByFinal cleanPossibleByFinal;
+	public class SetFinalForSinglePossibleTests {
+		private ISetFinalForSinglePossible setFinalForSinglePossible;
 
 		[OneTimeSetUp]
 		public void CreateService() {
-			cleanPossibleByFinal = new CleanPossibleByFinal();
+			setFinalForSinglePossible = new SetFinalForSinglePossible();
 		}
 
 		[Test]
 		public void ExecuteWithSmallFieldTest() {
-			var field = TestFieldHelper.GetSmallTestField();
-			cleanPossibleByFinal.Execute(field);
-			cleanPossibleByFinal.Execute(field);
-			cleanPossibleByFinal.Execute(field);
+			var field = TestFieldHelper.GetSmallTestFieldWithPossible();
+			setFinalForSinglePossible.Execute(field);
+			setFinalForSinglePossible.Execute(field);
+			setFinalForSinglePossible.Execute(field);
 
 			field.Cells[0, 0].ShouldBeFinal(2);
 			field.Cells[0, 1].ShouldBeNotFinal(field.MaxValue, 3, 4);
 			field.Cells[0, 2].ShouldBeNotFinal(field.MaxValue, 1, 4);
-			field.Cells[0, 3].ShouldBeNotFinal(field.MaxValue, 1);
+			field.Cells[0, 3].ShouldBeFinal(1);
 			field.Cells[1, 0].ShouldBeNotFinal(field.MaxValue, 1, 4);
-			field.Cells[1, 1].ShouldBeNotFinal(field.MaxValue, 4);
+			field.Cells[1, 1].ShouldBeFinal(4);
 			field.Cells[1, 2].ShouldBeFinal(3);
 			field.Cells[1, 3].ShouldBeNotFinal(field.MaxValue, 1, 2);
 			field.Cells[2, 0].ShouldBeNotFinal(field.MaxValue, 3, 4);
 			field.Cells[2, 1].ShouldBeNotFinal(field.MaxValue, 2, 3, 4);
 			field.Cells[2, 2].ShouldBeNotFinal(field.MaxValue, 1, 2);
 			field.Cells[2, 3].ShouldBeNotFinal(field.MaxValue, 1, 2, 3);
-			field.Cells[3, 0].ShouldBeNotFinal(field.MaxValue, 3);
+			field.Cells[3, 0].ShouldBeFinal(3);
 			field.Cells[3, 1].ShouldBeFinal(1);
-			field.Cells[3, 2].ShouldBeNotFinal(field.MaxValue, 2);
+			field.Cells[3, 2].ShouldBeFinal(2);
 			field.Cells[3, 3].ShouldBeFinal(4);
 		}
 
 		[Test]
 		public void ExecuteWithFieldTest() {
-			var field = TestFieldHelper.GetTestField();
-			cleanPossibleByFinal.Execute(field);
-			cleanPossibleByFinal.Execute(field);
-			cleanPossibleByFinal.Execute(field);
+			var field = TestFieldHelper.GetTestFieldWithPossible();
+			setFinalForSinglePossible.Execute(field);
+			setFinalForSinglePossible.Execute(field);
+			setFinalForSinglePossible.Execute(field);
 
 			field.Cells[0, 0].ShouldBeNotFinal(field.MaxValue, 2, 4, 5, 6);
 			field.Cells[0, 1].ShouldBeFinal(8);
@@ -104,7 +103,7 @@ namespace SudokuSolution.Test.Logic.FieldActions {
 			field.Cells[6, 2].ShouldBeNotFinal(field.MaxValue, 2, 3, 4, 6, 8, 9);
 			field.Cells[6, 3].ShouldBeNotFinal(field.MaxValue, 1, 3, 6);
 			field.Cells[6, 4].ShouldBeNotFinal(field.MaxValue, 5, 6, 9);
-			field.Cells[6, 5].ShouldBeNotFinal(field.MaxValue, 1, 3, 6, 9);
+			field.Cells[6, 5].ShouldBeNotFinal(field.MaxValue, 1, 6, 9);
 			field.Cells[6, 6].ShouldBeNotFinal(field.MaxValue, 1, 2, 3, 4, 5, 9);
 			field.Cells[6, 7].ShouldBeNotFinal(field.MaxValue, 1, 2, 3, 5, 8);
 			field.Cells[6, 8].ShouldBeNotFinal(field.MaxValue, 1, 3, 4, 5, 8, 9);
@@ -120,7 +119,7 @@ namespace SudokuSolution.Test.Logic.FieldActions {
 			field.Cells[8, 0].ShouldBeFinal(1);
 			field.Cells[8, 1].ShouldBeNotFinal(field.MaxValue, 3, 9);
 			field.Cells[8, 2].ShouldBeNotFinal(field.MaxValue, 3, 4, 8, 9);
-			field.Cells[8, 3].ShouldBeNotFinal(field.MaxValue, 3);
+			field.Cells[8, 3].ShouldBeFinal(3);
 			field.Cells[8, 4].ShouldBeFinal(2);
 			field.Cells[8, 5].ShouldBeFinal(7);
 			field.Cells[8, 6].ShouldBeNotFinal(field.MaxValue, 3, 4, 5, 9);
