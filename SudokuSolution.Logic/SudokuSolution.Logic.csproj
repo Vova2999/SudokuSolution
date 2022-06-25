@@ -40,6 +40,7 @@
     <Compile Include="FieldActions\CleanPossibleByColumn\ICleanPossibleByColumn.cs" />
     <Compile Include="FieldActions\CleanPossibleByFinal\CleanPossibleByFinal.cs" />
     <Compile Include="FieldActions\CleanPossibleByFinal\ICleanPossibleByFinal.cs" />
+    <Compile Include="FieldActions\CleanPossibleByRow\CleanPossibleByRow.cs" />
     <Compile Include="FieldActions\CleanPossibleByRow\ICleanPossibleByRow.cs" />
     <Compile Include="FieldActions\SetFinalForColumn\ISetFinalForColumn.cs" />
     <Compile Include="FieldActions\SetFinalForColumn\SetFinalForColumn.cs" />

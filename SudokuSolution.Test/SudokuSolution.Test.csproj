@@ -94,6 +94,7 @@
     <Compile Include="Extensions\CellExtensions.cs" />
     <Compile Include="Helpers\TestFieldHelper.cs" />
     <Compile Include="Logic\FieldActions\CleanPossibleByFinalTests.cs" />
+    <Compile Include="Logic\FieldActions\CleanPossibleByRowTests.cs" />
     <Compile Include="Logic\FieldActions\SetFinalForColumnTests.cs" />
     <Compile Include="Logic\FieldActions\SetFinalForRowTests.cs" />
     <Compile Include="Logic\FieldActions\SetFinalForSquareTests.cs" />
