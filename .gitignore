@@ -13,6 +13,8 @@
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleasePublic/
 [Xx]64/
 [Xx]86/
 [Bb]uild/
