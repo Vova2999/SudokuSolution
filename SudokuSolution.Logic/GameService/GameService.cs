@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
 using SudokuSolution.Logic.FieldActions.CleanPossibleByColumn;
 using SudokuSolution.Logic.FieldActions.CleanPossibleByFinal;
@@ -8,9 +11,11 @@ using SudokuSolution.Logic.FieldActions.SetFinalForRow;
 using SudokuSolution.Logic.FieldActions.SetFinalForSinglePossible;
 using SudokuSolution.Logic.FieldActions.SetFinalForSquare;
 using SudokuSolution.Logic.FieldActions.SetRandomFinalAndSplitField;
+using SudokuSolution.Logic.FieldService;
 
 namespace SudokuSolution.Logic.GameService {
 	public class GameService : IGameService {
+		private readonly IFieldService fieldService;
 		private readonly ICleanPossibleByFinal cleanPossibleByFinal;
 		private readonly ICleanPossibleByRow cleanPossibleByRow;
 		private readonly ICleanPossibleByColumn cleanPossibleByColumn;
@@ -20,7 +25,8 @@ namespace SudokuSolution.Logic.GameService {
 		private readonly ISetFinalForSquare setFinalForSquare;
 		private readonly ISetRandomFinalAndSplitField setRandomFinalAndSplitField;
 
-		public GameService(ICleanPossibleByFinal cleanPossibleByFinal,
+		public GameService(IFieldService fieldService,
+						   ICleanPossibleByFinal cleanPossibleByFinal,
 						   ICleanPossibleByRow cleanPossibleByRow,
 						   ICleanPossibleByColumn cleanPossibleByColumn,
 						   ISetFinalForSinglePossible setFinalForSinglePossible,
@@ -28,6 +34,7 @@ namespace SudokuSolution.Logic.GameService {
 						   ISetFinalForColumn setFinalForColumn,
 						   ISetFinalForSquare setFinalForSquare,
 						   ISetRandomFinalAndSplitField setRandomFinalAndSplitField) {
+			this.fieldService = fieldService;
 			this.cleanPossibleByFinal = cleanPossibleByFinal;
 			this.cleanPossibleByRow = cleanPossibleByRow;
 			this.cleanPossibleByColumn = cleanPossibleByColumn;
@@ -38,23 +45,19 @@ namespace SudokuSolution.Logic.GameService {
 			this.setRandomFinalAndSplitField = setRandomFinalAndSplitField;
 		}
 
-		// Заполнить Possible пустых ячеек //
-		// Пройтись по имеющимся Final и убрать лишние Possible // CleanPossibleByFinal
-		// CleanPossibleByRow
-		// CleanPossibleByColumn
-		// Выставить те ячейки, в которых только один Possible // SetFinalValueForSinglePossible
-		// В каждом квадрате выставить те ячейки, значения которых возможны только в одной ячейке // SetFinalForSquare
-		// В каждой строке выставить те ячейки, значения которых возможны только в одной строке // SetFinalForRow
-		// В каждом столбце выставить те ячейки, значения которых возможны только в одном столбце // SetFinalForColumn
-		// Повторять 2-5 пункты, пока они меняют доску
-		// Клонировать доску и зарандомить любую нерешенную ячейку путем поиска в глубину (решений может быть несколько) // SetRandomFinalValueAndSplitField
-		// Повторять 2-7 пункты, пока не будут найдены все решения
+		public IEnumerable<Field> Solve(Field field) {
+			var withoutRandomResult = TrySolveWithoutRandom(field);
+			if (withoutRandomResult.HasValue)
+				return withoutRandomResult.Value ? field.AsEnumerable() : Enumerable.Empty<Field>();
 
-		public Field[] Solve(Field field) {
+			return setRandomFinalAndSplitField.Execute(field).SelectMany(Solve);
+		}
+
+		private bool? TrySolveWithoutRandom(Field field) {
 			Field previewField;
 
 			do {
-				previewField = field.Clone() as Field;
+				previewField = (Field) field.Clone();
 				cleanPossibleByFinal.Execute(field);
 				cleanPossibleByRow.Execute(field);
 				cleanPossibleByColumn.Execute(field);
@@ -63,10 +66,14 @@ namespace SudokuSolution.Logic.GameService {
 				setFinalForRow.Execute(field);
 				setFinalForColumn.Execute(field);
 
-				//if ()
+				if (fieldService.IsFailed(field))
+					return false;
+
+				if (fieldService.IsSolved(field))
+					return true;
 			} while (!field.Equals(previewField));
 
-			throw new Exception();
+			return null;
 		}
 	}
 }

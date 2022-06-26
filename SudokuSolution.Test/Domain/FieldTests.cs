@@ -23,12 +23,12 @@ namespace SudokuSolution.Test.Domain {
 		[TestCaseSource(nameof(MaxValues))]
 		public void CloneTest(int maxValue) {
 			var cell1 = new Cell(maxValue) { Final = 1 };
-			var cell2 = cell1.Clone() as Cell;
+			var cell2 = (Cell) cell1.Clone();
 
 			cell1.Equals(cell2).Should().BeTrue();
 
 			var cell3 = new Cell(maxValue) { [1] = false };
-			var cell4 = cell3.Clone() as Cell;
+			var cell4 = (Cell) cell3.Clone();
 
 			cell3.Equals(cell4).Should().BeTrue();
 

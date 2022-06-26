@@ -24,7 +24,7 @@ namespace SudokuSolution.Domain.Entities {
 		}
 
 		public object Clone() {
-			return new Field(MaxValue, (row, column) => Cells[row, column].Clone() as Cell);
+			return new Field(MaxValue, (row, column) => (Cell) Cells[row, column].Clone());
 		}
 
 		public override bool Equals(object obj) {

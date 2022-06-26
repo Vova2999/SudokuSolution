@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using SudokuSolution.Logic.FieldActions.SetRandomFinalAndSplitField;
 using SudokuSolution.Test.Extensions;
@@ -17,7 +18,7 @@ namespace SudokuSolution.Test.Logic.FieldActions {
 		[Test]
 		public void ExecuteWithSmallFieldTest() {
 			var field = TestFieldHelper.GetSmallTestFieldWithPossible();
-			var newFields = setRandomFinalAndSplitField.Execute(field);
+			var newFields = setRandomFinalAndSplitField.Execute(field).ToArray();
 
 			newFields.Length.Should().Be(2);
 
@@ -46,7 +47,7 @@ namespace SudokuSolution.Test.Logic.FieldActions {
 		[Test]
 		public void ExecuteWithFieldTest() {
 			var field = TestFieldHelper.GetTestFieldWithPossible();
-			var newFields = setRandomFinalAndSplitField.Execute(field);
+			var newFields = setRandomFinalAndSplitField.Execute(field).ToArray();
 
 			newFields.Length.Should().Be(4);
 

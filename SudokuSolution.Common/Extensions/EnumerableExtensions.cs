@@ -26,6 +26,10 @@ namespace SudokuSolution.Common.Extensions {
 				action(index++, value);
 		}
 
+		public static IEnumerable<TValue> AsEnumerable<TValue>(this TValue item) {
+			yield return item;
+		}
+
 		public static void ForRow<TValue>(this TValue[,] values, int row, Action<TValue> action) {
 			for (var column = 0; column < values.GetLength(1); column++)
 				action(values[row, column]);
