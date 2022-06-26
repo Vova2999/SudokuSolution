@@ -7,6 +7,9 @@ namespace SudokuSolution.Console {
 		public static void Main(string[] args) {
 			var container = new StandardKernel(new Module());
 			container.Get<IConsoleGameProvider>().Start(args.FirstOrDefault());
+
+			System.Console.WriteLine("Нажмите любую клавишу для завершения работы");
+			System.Console.ReadKey();
 		}
 	}
 }
