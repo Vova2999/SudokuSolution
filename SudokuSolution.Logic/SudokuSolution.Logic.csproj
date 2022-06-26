@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -52,6 +54,7 @@
     <Compile Include="FieldActions\SetFinalForSquare\SetFinalForSquare.cs" />
     <Compile Include="FieldActions\SetFinalForSinglePossible\ISetFinalForSinglePossible.cs" />
     <Compile Include="FieldActions\SetRandomFinalAndSplitField\ISetRandomFinalAndSplitField.cs" />
+    <Compile Include="FieldActions\SetRandomFinalAndSplitField\SetRandomFinalAndSplitField.cs" />
     <Compile Include="GameService\IGameService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

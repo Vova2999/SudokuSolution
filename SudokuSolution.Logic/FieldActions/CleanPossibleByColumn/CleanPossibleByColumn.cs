@@ -24,7 +24,7 @@ namespace SudokuSolution.Logic.FieldActions.CleanPossibleByColumn {
 				squareSize,
 				squareRow,
 				squareColumn,
-				(row, column, cell) => {
+				(_, column, cell) => {
 					if (skip)
 						return;
 

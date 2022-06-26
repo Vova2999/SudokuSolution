@@ -2,7 +2,7 @@
 using System.Linq;
 
 namespace SudokuSolution.Domain.Entities {
-	public class Cell {
+	public class Cell : ICloneable {
 		private int? final;
 		private readonly int maxValue;
 		private readonly bool[] possible;
@@ -34,9 +34,41 @@ namespace SudokuSolution.Domain.Entities {
 			}
 		}
 
-		internal Cell(int newMaxValue) {
-			maxValue = newMaxValue;
-			possible = Enumerable.Repeat(true, newMaxValue).ToArray();
+		internal Cell(int maxValue) {
+			this.maxValue = maxValue;
+			possible = Enumerable.Repeat(true, maxValue).ToArray();
+		}
+
+		public object Clone() {
+			var cell = new Cell(maxValue);
+
+			if (final.HasValue)
+				cell.Final = final.Value;
+
+			for (var index = 0; index < maxValue; index++)
+				cell.possible[index] = possible[index];
+
+			return cell;
+		}
+
+		public override bool Equals(object obj) {
+			return obj is Cell cell && Equals(cell);
+		}
+
+		public bool Equals(Cell cell) {
+			if (final != cell.final || maxValue != cell.maxValue)
+				return false;
+
+			for (var index = 0; index < maxValue; index++) {
+				if (possible[index] != cell.possible[index])
+					return false;
+			}
+
+			return true;
+		}
+
+		public override int GetHashCode() {
+			return 0;
 		}
 	}
 }
