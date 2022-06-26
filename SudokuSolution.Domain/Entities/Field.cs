@@ -6,15 +6,6 @@ namespace SudokuSolution.Domain.Entities {
 		public Cell[,] Cells { get; }
 
 		private Field(int maxValue, Func<int, int, Cell> createCell) {
-			MaxValue = maxValue;
-			Cells = new Cell[maxValue, maxValue];
-
-			for (var row = 0; row < maxValue; row++)
-			for (var column = 0; column < maxValue; column++)
-				Cells[row, column] = createCell(row, column);
-		}
-
-		public Field(int maxValue) : this(maxValue, (_, _) => new Cell(maxValue)) {
 			if (maxValue <= 0)
 				throw new InvalidOperationException("Invalid max value");
 
@@ -23,8 +14,10 @@ namespace SudokuSolution.Domain.Entities {
 
 			for (var row = 0; row < maxValue; row++)
 			for (var column = 0; column < maxValue; column++)
-				Cells[row, column] = new Cell(maxValue);
+				Cells[row, column] = createCell(row, column);
 		}
+
+		public Field(int maxValue) : this(maxValue, (_, _) => new Cell(maxValue)) { }
 
 		public object Clone() {
 			return new Field(MaxValue, (row, column) => (Cell) Cells[row, column].Clone());
