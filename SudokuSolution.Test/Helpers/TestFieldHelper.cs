@@ -43,6 +43,22 @@ namespace SudokuSolution.Test.Helpers {
 			return CreateAndFillField(values);
 		}
 
+		public static Field GetHardTestField() {
+			int[,] values = {
+				{ 0, 0, 0, 0, 3, 0, 0, 0, 2 },
+				{ 0, 0, 4, 0, 0, 0, 0, 0, 9 },
+				{ 0, 0, 0, 0, 5, 1, 0, 4, 0 },
+				{ 0, 4, 0, 3, 2, 0, 0, 9, 0 },
+				{ 0, 0, 2, 1, 0, 8, 3, 0, 0 },
+				{ 0, 5, 0, 0, 4, 6, 0, 1, 0 },
+				{ 0, 3, 0, 5, 6, 0, 0, 0, 0 },
+				{ 5, 0, 0, 0, 0, 0, 4, 0, 0 },
+				{ 2, 0, 0, 0, 9, 0, 0, 0, 0 }
+			};
+
+			return CreateAndFillField(values);
+		}
+
 		private static Field CreateAndFillField(int[,] values) {
 			var maxValue = values.GetLength(0);
 			if (maxValue != values.GetLength(1))

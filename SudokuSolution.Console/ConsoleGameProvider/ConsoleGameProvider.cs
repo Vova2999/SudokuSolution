@@ -30,7 +30,8 @@ namespace SudokuSolution.Console.ConsoleGameProvider {
 
 			var field = new Field(lines.Length);
 			Enumerable.Range(0, field.MaxValue)
-				.ForEach(row => lines[row].Split(' ', '\t', '-')
+				.ForEach(row => lines[row].Split(' ', ',', '\t', '-')
+					.Where(valueString => valueString.IsSignificant())
 					.Select((valueString, column) => new { Value = int.TryParse(valueString, out var value) ? value : 0, Column = column })
 					.Where(group => group.Value != 0)
 					.ForEach(group => field.Cells[row, group.Column].Final = group.Value));
@@ -64,7 +65,7 @@ namespace SudokuSolution.Console.ConsoleGameProvider {
 			var stringBuilder = new StringBuilder();
 
 			Enumerable.Range(0, field.MaxValue)
-				.Select(row => Enumerable.Range(0, field.MaxValue).Select(column => field.Cells[row, column]).Select(cell => cell.HasFinal ? cell.Final : 0).ToArray())
+				.Select(row => field.Cells.SelectRow(row).Select(cell => cell.HasFinal ? cell.Final : 0).ToArray())
 				.ForEach(x => stringBuilder.AppendLine(string.Join(" ", x)));
 
 			return stringBuilder.ToString();

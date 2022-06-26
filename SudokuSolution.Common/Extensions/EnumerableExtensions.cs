@@ -32,6 +32,24 @@ namespace SudokuSolution.Common.Extensions {
 			yield return item;
 		}
 
+		public static IEnumerable<TValue> SelectRow<TValue>(this TValue[,] values, int row) {
+			for (var column = 0; column < values.GetLength(1); column++)
+				yield return values[row, column];
+		}
+
+		public static IEnumerable<TValue> SelectColumn<TValue>(this TValue[,] values, int column) {
+			for (var row = 0; row < values.GetLength(0); row++)
+				yield return values[row, column];
+		}
+
+		public static IEnumerable<TValue> SelectSquare<TValue>(this TValue[,] values, int squareSize, int squareRow, int squareColumn) {
+			var rowStart = squareSize * squareRow;
+			var columnStart = squareSize * squareColumn;
+			for (var row = 0; row < squareSize; row++)
+			for (var column = 0; column < squareSize; column++)
+				yield return values[rowStart + row, columnStart + column];
+		}
+
 		public static void ForRow<TValue>(this TValue[,] values, int row, Action<TValue> action) {
 			for (var column = 0; column < values.GetLength(1); column++)
 				action(values[row, column]);
