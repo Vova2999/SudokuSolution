@@ -56,6 +56,9 @@ namespace SudokuSolution.Domain.Entities {
 		}
 
 		public bool Equals(Cell cell) {
+			if (ReferenceEquals(this, cell))
+				return true;
+
 			if (final != cell.final || maxValue != cell.maxValue)
 				return false;
 

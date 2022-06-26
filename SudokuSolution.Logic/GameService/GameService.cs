@@ -45,6 +45,10 @@ namespace SudokuSolution.Logic.GameService {
 		}
 
 		public IEnumerable<Field> Solve(Field field) {
+			return SolveWithChangeField((Field) field.Clone());
+		}
+
+		private IEnumerable<Field> SolveWithChangeField(Field field) {
 			var withoutRandomResult = TrySolveWithoutRandom(field);
 			if (withoutRandomResult.HasValue)
 				return withoutRandomResult.Value ? field.AsEnumerable() : Enumerable.Empty<Field>();

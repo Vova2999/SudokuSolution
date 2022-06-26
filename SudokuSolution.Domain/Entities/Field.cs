@@ -15,6 +15,9 @@ namespace SudokuSolution.Domain.Entities {
 		}
 
 		public Field(int maxValue) : this(maxValue, (_, _) => new Cell(maxValue)) {
+			if (maxValue <= 0)
+				throw new InvalidOperationException("Invalid max value");
+
 			MaxValue = maxValue;
 			Cells = new Cell[maxValue, maxValue];
 
@@ -32,6 +35,9 @@ namespace SudokuSolution.Domain.Entities {
 		}
 
 		public bool Equals(Field field) {
+			if (ReferenceEquals(this, field))
+				return true;
+
 			if (MaxValue != field.MaxValue)
 				return false;
 

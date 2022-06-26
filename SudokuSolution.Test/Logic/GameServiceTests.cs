@@ -208,5 +208,14 @@ namespace SudokuSolution.Test.Logic {
 			solvedFields[2].Cells[3, 2].ShouldBeFinal(2);
 			solvedFields[2].Cells[3, 3].ShouldBeFinal(4);
 		}
+
+		[Test]
+		[TestCaseSource(nameof(SmallFields))]
+		public void SolveShouldBeNotChangingStartField(Field field) {
+			var startField = (Field) field.Clone();
+			gameService.Solve(field);
+
+			field.Equals(startField).Should().BeTrue();
+		}
 	}
 }
