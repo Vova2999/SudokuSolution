@@ -103,6 +103,7 @@
     <Compile Include="Logic\FieldActions\SetFinalForSinglePossibleTests.cs" />
     <Compile Include="Logic\FieldActions\SetFinalForSquareTests.cs" />
     <Compile Include="Logic\FieldActions\SetRandomFinalAndSplitFieldTests.cs" />
+    <Compile Include="Logic\FieldServiceTest.cs" />
     <Compile Include="Logic\GameServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -46,6 +46,28 @@ namespace SudokuSolution.Test.Helpers {
 			return field;
 		}
 
+		public static Field GetSolvedSmallTestField() {
+			var field = new Field(4);
+			field.Cells[0, 0].SetFinal(2);
+			field.Cells[0, 1].SetFinal(3);
+			field.Cells[0, 2].SetFinal(4);
+			field.Cells[0, 3].SetFinal(1);
+			field.Cells[1, 0].SetFinal(1);
+			field.Cells[1, 1].SetFinal(4);
+			field.Cells[1, 2].SetFinal(3);
+			field.Cells[1, 3].SetFinal(2);
+			field.Cells[2, 0].SetFinal(4);
+			field.Cells[2, 1].SetFinal(2);
+			field.Cells[2, 2].SetFinal(1);
+			field.Cells[2, 3].SetFinal(3);
+			field.Cells[3, 0].SetFinal(3);
+			field.Cells[3, 1].SetFinal(1);
+			field.Cells[3, 2].SetFinal(2);
+			field.Cells[3, 3].SetFinal(4);
+
+			return field;
+		}
+
 		public static Field GetSmallTestFieldWithPossible() {
 			var field = new Field(4);
 			field.Cells[0, 0].SetFinal(2);
