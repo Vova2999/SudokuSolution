@@ -16,6 +16,17 @@ namespace SudokuSolution.Test.Helpers {
 			return CreateAndFillField(values);
 		}
 
+		public static Field GetNotCompleteSmallTestField() {
+			int[,] values = {
+				{ 0, 0, 0, 0 },
+				{ 0, 0, 3, 0 },
+				{ 0, 0, 0, 0 },
+				{ 0, 1, 0, 4 }
+			};
+
+			return CreateAndFillField(values);
+		}
+
 		public static Field GetTestField() {
 			int[,] values = {
 				{ 0, 8, 0, 9, 3, 0, 0, 0, 7 },

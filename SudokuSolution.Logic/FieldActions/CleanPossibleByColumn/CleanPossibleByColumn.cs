@@ -53,6 +53,9 @@ namespace SudokuSolution.Logic.FieldActions.CleanPossibleByColumn {
 				singleColumn = column;
 			}
 
+			if (singleColumn == -1)
+				return;
+
 			var squareRowStart = squareSize * squareRow;
 			var squareRowEnd = squareSize * (squareRow + 1);
 			field.Cells.ForColumn(squareSize * squareColumn + singleColumn,

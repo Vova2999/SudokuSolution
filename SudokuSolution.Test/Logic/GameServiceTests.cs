@@ -151,5 +151,62 @@ namespace SudokuSolution.Test.Logic {
 			solvedField.Cells[8, 7].ShouldBeFinal(6);
 			solvedField.Cells[8, 8].ShouldBeFinal(4);
 		}
+
+		[Test]
+		public void SolveNotCompleteSmallFieldTest() {
+			var solvedFields = gameService.Solve(TestFieldHelper.GetNotCompleteSmallTestField()).ToArray();
+			solvedFields.Length.Should().Be(3);
+
+			solvedFields[0].Cells[0, 0].ShouldBeFinal(1);
+			solvedFields[0].Cells[0, 1].ShouldBeFinal(3);
+			solvedFields[0].Cells[0, 2].ShouldBeFinal(4);
+			solvedFields[0].Cells[0, 3].ShouldBeFinal(2);
+			solvedFields[0].Cells[1, 0].ShouldBeFinal(2);
+			solvedFields[0].Cells[1, 1].ShouldBeFinal(4);
+			solvedFields[0].Cells[1, 2].ShouldBeFinal(3);
+			solvedFields[0].Cells[1, 3].ShouldBeFinal(1);
+			solvedFields[0].Cells[2, 0].ShouldBeFinal(4);
+			solvedFields[0].Cells[2, 1].ShouldBeFinal(2);
+			solvedFields[0].Cells[2, 2].ShouldBeFinal(1);
+			solvedFields[0].Cells[2, 3].ShouldBeFinal(3);
+			solvedFields[0].Cells[3, 0].ShouldBeFinal(3);
+			solvedFields[0].Cells[3, 1].ShouldBeFinal(1);
+			solvedFields[0].Cells[3, 2].ShouldBeFinal(2);
+			solvedFields[0].Cells[3, 3].ShouldBeFinal(4);
+
+			solvedFields[1].Cells[0, 0].ShouldBeFinal(1);
+			solvedFields[1].Cells[0, 1].ShouldBeFinal(3);
+			solvedFields[1].Cells[0, 2].ShouldBeFinal(4);
+			solvedFields[1].Cells[0, 3].ShouldBeFinal(2);
+			solvedFields[1].Cells[1, 0].ShouldBeFinal(4);
+			solvedFields[1].Cells[1, 1].ShouldBeFinal(2);
+			solvedFields[1].Cells[1, 2].ShouldBeFinal(3);
+			solvedFields[1].Cells[1, 3].ShouldBeFinal(1);
+			solvedFields[1].Cells[2, 0].ShouldBeFinal(2);
+			solvedFields[1].Cells[2, 1].ShouldBeFinal(4);
+			solvedFields[1].Cells[2, 2].ShouldBeFinal(1);
+			solvedFields[1].Cells[2, 3].ShouldBeFinal(3);
+			solvedFields[1].Cells[3, 0].ShouldBeFinal(3);
+			solvedFields[1].Cells[3, 1].ShouldBeFinal(1);
+			solvedFields[1].Cells[3, 2].ShouldBeFinal(2);
+			solvedFields[1].Cells[3, 3].ShouldBeFinal(4);
+
+			solvedFields[2].Cells[0, 0].ShouldBeFinal(2);
+			solvedFields[2].Cells[0, 1].ShouldBeFinal(3);
+			solvedFields[2].Cells[0, 2].ShouldBeFinal(4);
+			solvedFields[2].Cells[0, 3].ShouldBeFinal(1);
+			solvedFields[2].Cells[1, 0].ShouldBeFinal(1);
+			solvedFields[2].Cells[1, 1].ShouldBeFinal(4);
+			solvedFields[2].Cells[1, 2].ShouldBeFinal(3);
+			solvedFields[2].Cells[1, 3].ShouldBeFinal(2);
+			solvedFields[2].Cells[2, 0].ShouldBeFinal(4);
+			solvedFields[2].Cells[2, 1].ShouldBeFinal(2);
+			solvedFields[2].Cells[2, 2].ShouldBeFinal(1);
+			solvedFields[2].Cells[2, 3].ShouldBeFinal(3);
+			solvedFields[2].Cells[3, 0].ShouldBeFinal(3);
+			solvedFields[2].Cells[3, 1].ShouldBeFinal(1);
+			solvedFields[2].Cells[3, 2].ShouldBeFinal(2);
+			solvedFields[2].Cells[3, 3].ShouldBeFinal(4);
+		}
 	}
 }
