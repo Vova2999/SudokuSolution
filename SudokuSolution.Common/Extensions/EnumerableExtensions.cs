@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace SudokuSolution.Common.Extensions {
+	[PublicAPI]
 	public static class EnumerableExtensions {
 		public static void ForEach<TValue>(this TValue[,] values, Action<TValue> action) {
 			for (var row = 0; row < values.GetLength(0); row++)

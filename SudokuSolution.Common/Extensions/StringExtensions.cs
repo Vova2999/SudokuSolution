@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 
 namespace SudokuSolution.Common.Extensions {
+	[PublicAPI]
 	public static class StringExtensions {
 		[ContractAnnotation("null => true")]
 		public static bool IsNullOrEmpty(this string str) {

@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using SudokuSolution.Domain.Entities;
+using SudokuSolution.Test.Helpers;
 
 namespace SudokuSolution.Test.Domain {
 	[TestFixture]
@@ -20,62 +21,41 @@ namespace SudokuSolution.Test.Domain {
 		}
 
 		[Test]
-		[TestCaseSource(nameof(MaxValues))]
-		public void CloneTest(int maxValue) {
-			var cell1 = new Cell(maxValue) { Final = 1 };
-			var cell2 = (Cell) cell1.Clone();
+		public void CloneTest() {
+			var field1 = TestFieldHelper.GetSmallTestFieldWithPossible();
+			var field2 = (Field) field1.Clone();
 
-			cell1.Equals(cell2).Should().BeTrue();
+			field1.Equals(field1).Should().BeTrue();
+			field1.Equals(field2).Should().BeTrue();
 
-			var cell3 = new Cell(maxValue) { [1] = false };
-			var cell4 = (Cell) cell3.Clone();
+			field1.Cells[0, 1].Final = 3;
 
-			cell3.Equals(cell4).Should().BeTrue();
-
-			cell3[1] = true;
-
-			cell3.Equals(cell4).Should().BeFalse();
+			field1.Equals(field2).Should().BeFalse();
 		}
 
 		[Test]
-		[TestCaseSource(nameof(MaxValues))]
-		public void EqualsTest(int maxValue) {
-			var cell1 = new Cell(maxValue);
-			var cell2 = new Cell(maxValue);
+		public void EqualsTest() {
+			var field1 = TestFieldHelper.GetSmallTestFieldWithPossible();
+			var field2 = TestFieldHelper.GetSmallTestFieldWithPossible();
 
-			cell1.Final = 1;
-			cell2[1] = false;
-			cell2.Final = 1;
+			field1.Equals(field1).Should().BeTrue();
+			field1.Equals(field2).Should().BeTrue();
 
-			cell1.Equals(cell2).Should().BeTrue();
+			field1.Cells[0, 1].Final = 3;
 
-			var cell3 = new Cell(maxValue);
-			var cell4 = new Cell(maxValue);
+			field1.Equals(field2).Should().BeFalse();
 
-			cell3[1] = false;
-			cell4[1] = false;
+			field2.Cells[0, 1].Final = 3;
 
-			cell3.Equals(cell4).Should().BeTrue();
-		}
+			field1.Equals(field2).Should().BeTrue();
 
-		[Test]
-		[TestCaseSource(nameof(MaxValues))]
-		public void NotEqualsTest(int maxValue) {
-			var cell1 = new Cell(maxValue);
-			var cell2 = new Cell(maxValue);
-			var cell3 = new Cell(maxValue);
-			var cell4 = new Cell(maxValue);
+			field1.Cells[0, 2][1] = false;
 
-			cell1.Final = 1;
-			cell2[1] = false;
-			cell2.Final = 2;
-			cell3[1] = false;
-			cell4[2] = false;
+			field1.Equals(field2).Should().BeFalse();
 
-			cell1.Equals(cell2).Should().BeFalse();
-			cell1.Equals(cell3).Should().BeFalse();
-			cell2.Equals(cell3).Should().BeFalse();
-			cell3.Equals(cell4).Should().BeFalse();
+			field2.Cells[0, 2][1] = false;
+
+			field1.Equals(field2).Should().BeTrue();
 		}
 	}
 }

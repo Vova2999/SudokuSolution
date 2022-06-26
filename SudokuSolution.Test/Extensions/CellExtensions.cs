@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using FluentAssertions;
+using JetBrains.Annotations;
 using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
 
 namespace SudokuSolution.Test.Extensions {
+	[PublicAPI]
 	public static class CellExtensions {
 		public static void SetFinal(this Cell cell, int value) {
 			cell.Final = value;
