@@ -4,6 +4,7 @@ using SudokuSolution.Test.Extensions;
 using SudokuSolution.Test.Helpers;
 
 namespace SudokuSolution.Test.Logic.FieldActions {
+	[TestFixture]
 	public class SetFinalForSquareTests {
 		private ISetFinalForSquare setFinalForSquare;
 
