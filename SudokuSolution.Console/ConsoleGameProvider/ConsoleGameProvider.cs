@@ -1,11 +1,13 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Text;
+using JetBrains.Annotations;
 using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
 using SudokuSolution.Logic.GameService;
 
 namespace SudokuSolution.Console.ConsoleGameProvider {
+	[UsedImplicitly]
 	public class ConsoleGameProvider : IConsoleGameProvider {
 		private const int MaxSolved = 100;
 
@@ -35,8 +37,6 @@ namespace SudokuSolution.Console.ConsoleGameProvider {
 					.Select((valueString, column) => new { Value = int.TryParse(valueString, out var value) ? value : 0, Column = column })
 					.Where(group => group.Value != 0)
 					.ForEach(group => field.Cells[row, group.Column].Final = group.Value));
-
-			System.Console.WriteLine("Решение запущено");
 
 			var solvedFields = gameService.Solve(field).Take(MaxSolved).ToArray();
 
