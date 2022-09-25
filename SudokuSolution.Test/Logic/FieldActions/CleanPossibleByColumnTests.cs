@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using SudokuSolution.Logic.FieldActions.CleanPossibleByColumn;
+using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByColumn;
 using SudokuSolution.Test.Extensions;
 using SudokuSolution.Test.Helpers;
 

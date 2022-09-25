@@ -1,9 +1,16 @@
 ﻿using System;
 using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
+using SudokuSolution.Logic.FieldActions.CleanPossible;
 
-namespace SudokuSolution.Logic.FieldActions.SetFinalForSquare {
+namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSquare {
 	public class SetFinalForSquare : ISetFinalForSquare {
+		private readonly ICleanPossibleFacade cleanPossibleFacade;
+
+		public SetFinalForSquare(ICleanPossibleFacade cleanPossibleFacade) {
+			this.cleanPossibleFacade = cleanPossibleFacade;
+		}
+
 		public void Execute(Field field) {
 			var squareSize = (int) Math.Sqrt(field.MaxValue);
 			for (var squareRow = 0; squareRow < squareSize; squareRow++)
@@ -11,12 +18,12 @@ namespace SudokuSolution.Logic.FieldActions.SetFinalForSquare {
 				ExecuteOneSquare(field, squareSize, squareRow, squareColumn);
 		}
 
-		private static void ExecuteOneSquare(Field field, int squareSize, int squareRow, int squareColumn) {
+		private void ExecuteOneSquare(Field field, int squareSize, int squareRow, int squareColumn) {
 			for (var value = 1; value <= field.MaxValue; value++)
 				ExecuteOneSquareOneValue(field, squareSize, squareRow, squareColumn, value);
 		}
 
-		private static void ExecuteOneSquareOneValue(Field field, int squareSize, int squareRow, int squareColumn, int value) {
+		private void ExecuteOneSquareOneValue(Field field, int squareSize, int squareRow, int squareColumn, int value) {
 			var skip = false;
 			var lastRowIndex = -1;
 			var lastColumnIndex = -1;
@@ -47,11 +54,11 @@ namespace SudokuSolution.Logic.FieldActions.SetFinalForSquare {
 					}
 				});
 
-			if (skip)
+			if (skip || lastRowIndex == -1)
 				return;
 
-			if (lastRowIndex != -1)
-				field.Cells[lastRowIndex, lastColumnIndex].Final = value;
+			field.Cells[lastRowIndex, lastColumnIndex].Final = value;
+			cleanPossibleFacade.Execute(field, lastRowIndex, lastColumnIndex);
 		}
 	}
 }

@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using Grace.DependencyInjection;
 using SudokuSolution.Console.ConsoleGameProvider;
-using SudokuSolution.Logic.FieldActions.CleanPossibleByColumn;
-using SudokuSolution.Logic.FieldActions.CleanPossibleByFinal;
-using SudokuSolution.Logic.FieldActions.CleanPossibleByRow;
-using SudokuSolution.Logic.FieldActions.SetFinalForColumn;
-using SudokuSolution.Logic.FieldActions.SetFinalForRow;
-using SudokuSolution.Logic.FieldActions.SetFinalForSinglePossible;
-using SudokuSolution.Logic.FieldActions.SetFinalForSquare;
+using SudokuSolution.Logic.FieldActions.CleanPossible;
+using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByColumn;
+using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByFinal;
+using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByRow;
+using SudokuSolution.Logic.FieldActions.SetFinal;
+using SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForColumn;
+using SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForRow;
+using SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSinglePossible;
+using SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSquare;
 using SudokuSolution.Logic.FieldActions.SetRandomFinalAndSplitField;
 using SudokuSolution.Logic.FieldService;
 using SudokuSolution.Logic.GameService;
@@ -29,13 +31,18 @@ namespace SudokuSolution.Console {
 			RegisterSingleton<IConsoleGameProvider, ConsoleGameProvider.ConsoleGameProvider>(registration);
 			RegisterSingleton<IGameService, GameService>(registration);
 			RegisterSingleton<IFieldService, FieldService>(registration);
+
+			RegisterSingleton<ICleanPossibleFacade, ICleanPossibleFacade>(registration);
 			RegisterSingleton<ICleanPossibleByFinal, CleanPossibleByFinal>(registration);
 			RegisterSingleton<ICleanPossibleByRow, CleanPossibleByRow>(registration);
 			RegisterSingleton<ICleanPossibleByColumn, CleanPossibleByColumn>(registration);
+
+			RegisterSingleton<ISetFinalFacade, SetFinalFacade>(registration);
 			RegisterSingleton<ISetFinalForSinglePossible, SetFinalForSinglePossible>(registration);
 			RegisterSingleton<ISetFinalForRow, SetFinalForRow>(registration);
 			RegisterSingleton<ISetFinalForColumn, SetFinalForColumn>(registration);
 			RegisterSingleton<ISetFinalForSquare, SetFinalForSquare>(registration);
+
 			RegisterSingleton<ISetRandomFinalAndSplitField, SetRandomFinalAndSplitField>(registration);
 		}
 

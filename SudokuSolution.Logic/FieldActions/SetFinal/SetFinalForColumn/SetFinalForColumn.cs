@@ -1,19 +1,26 @@
 ﻿using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
+using SudokuSolution.Logic.FieldActions.CleanPossible;
 
-namespace SudokuSolution.Logic.FieldActions.SetFinalForColumn {
+namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForColumn {
 	public class SetFinalForColumn : ISetFinalForColumn {
+		private readonly ICleanPossibleFacade cleanPossibleFacade;
+
+		public SetFinalForColumn(ICleanPossibleFacade cleanPossibleFacade) {
+			this.cleanPossibleFacade = cleanPossibleFacade;
+		}
+
 		public void Execute(Field field) {
 			for (var column = 0; column < field.MaxValue; column++)
 				ExecuteOneColumn(field, column);
 		}
 
-		private static void ExecuteOneColumn(Field field, int column) {
+		private void ExecuteOneColumn(Field field, int column) {
 			for (var value = 1; value <= field.MaxValue; value++)
 				ExecuteOneColumnOneValue(field, column, value);
 		}
 
-		private static void ExecuteOneColumnOneValue(Field field, int column, int value) {
+		private void ExecuteOneColumnOneValue(Field field, int column, int value) {
 			var skip = false;
 			var lastIndex = -1;
 
@@ -39,11 +46,11 @@ namespace SudokuSolution.Logic.FieldActions.SetFinalForColumn {
 					}
 				});
 
-			if (skip)
+			if (skip || lastIndex == -1)
 				return;
 
-			if (lastIndex != -1)
-				field.Cells[lastIndex, column].Final = value;
+			field.Cells[lastIndex, column].Final = value;
+			cleanPossibleFacade.Execute(field, lastIndex, column);
 		}
 	}
 }

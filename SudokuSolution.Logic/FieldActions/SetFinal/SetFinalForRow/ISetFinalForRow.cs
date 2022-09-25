@@ -1,6 +1,6 @@
 ﻿using SudokuSolution.Domain.Entities;
 
-namespace SudokuSolution.Logic.FieldActions.SetFinalForRow {
+namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForRow {
 	public interface ISetFinalForRow {
 		void Execute(Field field);
 	}

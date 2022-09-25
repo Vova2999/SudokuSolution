@@ -2,13 +2,22 @@
 using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
 
-namespace SudokuSolution.Logic.FieldActions.CleanPossibleByRow {
-	public class CleanPossibleByRow : ICleanPossibleByRow {
+namespace SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByColumn {
+	public class CleanPossibleByColumn : ICleanPossibleByColumn {
 		public void Execute(Field field) {
 			var squareSize = (int) Math.Sqrt(field.MaxValue);
 			for (var squareRow = 0; squareRow < squareSize; squareRow++)
 			for (var squareColumn = 0; squareColumn < squareSize; squareColumn++)
 				ExecuteOneSquare(field, squareSize, squareRow, squareColumn);
+		}
+
+		public void Execute(Field field, int row, int column) {
+			if (!field.Cells[row, column].HasFinal)
+				throw new InvalidOperationException("Selected cell is not final");
+
+			var cellFinal = field.Cells[row, column].Final;
+			var squareSize = (int) Math.Sqrt(field.MaxValue);
+			ExecuteOneSquareOneValue(field, squareSize, row / squareSize, column / squareSize, cellFinal);
 		}
 
 		private static void ExecuteOneSquare(Field field, int squareSize, int squareRow, int squareColumn) {
@@ -18,13 +27,13 @@ namespace SudokuSolution.Logic.FieldActions.CleanPossibleByRow {
 
 		private static void ExecuteOneSquareOneValue(Field field, int squareSize, int squareRow, int squareColumn, int value) {
 			var skip = false;
-			var hasValueInRow = new bool[squareSize];
+			var hasValueInColumn = new bool[squareSize];
 
 			field.Cells.ForSquare(
 				squareSize,
 				squareRow,
 				squareColumn,
-				(row, _, cell) => {
+				(_, column, cell) => {
 					if (skip)
 						return;
 
@@ -36,31 +45,31 @@ namespace SudokuSolution.Logic.FieldActions.CleanPossibleByRow {
 					}
 
 					if (cell[value])
-						hasValueInRow[row % squareSize] = true;
+						hasValueInColumn[column % squareSize] = true;
 				});
 
 			if (skip)
 				return;
 
-			var singleRow = -1;
-			for (var row = 0; row < hasValueInRow.Length; row++) {
-				if (!hasValueInRow[row])
+			var singleColumn = -1;
+			for (var column = 0; column < hasValueInColumn.Length; column++) {
+				if (!hasValueInColumn[column])
 					continue;
 
-				if (singleRow != -1)
+				if (singleColumn != -1)
 					return;
 
-				singleRow = row;
+				singleColumn = column;
 			}
 
-			if (singleRow == -1)
+			if (singleColumn == -1)
 				return;
 
-			var squareColumnStart = squareSize * squareColumn;
-			var squareColumnEnd = squareSize * (squareColumn + 1);
-			field.Cells.ForRow(squareSize * squareRow + singleRow,
-				(column, c) => {
-					if (column < squareColumnStart || column >= squareColumnEnd)
+			var squareRowStart = squareSize * squareRow;
+			var squareRowEnd = squareSize * (squareRow + 1);
+			field.Cells.ForColumn(squareSize * squareColumn + singleColumn,
+				(row, c) => {
+					if (row < squareRowStart || row >= squareRowEnd)
 						c[value] = false;
 				});
 		}
