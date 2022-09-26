@@ -2,6 +2,6 @@
 
 namespace SudokuSolution.Logic.FieldActions.SetFinal {
 	public interface ISetFinalFacade {
-		void Execute(Field field);
+		FieldActionsResult Execute(Field field);
 	}
 }

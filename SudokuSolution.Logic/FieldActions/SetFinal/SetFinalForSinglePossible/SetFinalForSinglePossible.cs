@@ -10,7 +10,8 @@ namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSinglePossible {
 			this.cleanPossibleFacade = cleanPossibleFacade;
 		}
 
-		public void Execute(Field field) {
+		public FieldActionsResult Execute(Field field) {
+			var result = FieldActionsResult.Nothing;
 			field.Cells.ForEach((row, column, cell) => {
 				if (cell.HasFinal)
 					return;
@@ -31,7 +32,11 @@ namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSinglePossible {
 
 				cell.Final = lastValue;
 				cleanPossibleFacade.Execute(field, row, column);
+
+				result = FieldActionsResult.Changed;
 			});
+
+			return result;
 		}
 	}
 }

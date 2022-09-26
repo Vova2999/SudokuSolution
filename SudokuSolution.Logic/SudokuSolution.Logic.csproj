@@ -39,6 +39,7 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\FieldActionsResultExtensions.cs" />
     <Compile Include="FieldActions\CleanPossible\CleanPossibleFacade.cs" />
     <Compile Include="FieldActions\CleanPossible\CleanPossibleByColumn\CleanPossibleByColumn.cs" />
     <Compile Include="FieldActions\CleanPossible\CleanPossibleByColumn\ICleanPossibleByColumn.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="FieldActions\CleanPossible\CleanPossibleByRow\CleanPossibleByRow.cs" />
     <Compile Include="FieldActions\CleanPossible\CleanPossibleByRow\ICleanPossibleByRow.cs" />
     <Compile Include="FieldActions\CleanPossible\ICleanPossibleFacade.cs" />
+    <Compile Include="FieldActions\FieldActionsResult.cs" />
     <Compile Include="FieldActions\SetFinal\ISetFinalFacade.cs" />
     <Compile Include="FieldActions\SetFinal\SetFinalFacade.cs" />
     <Compile Include="FieldActions\SetFinal\SetFinalForColumn\ISetFinalForColumn.cs" />

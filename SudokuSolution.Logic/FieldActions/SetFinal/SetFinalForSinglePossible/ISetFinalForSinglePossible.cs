@@ -2,6 +2,6 @@
 
 namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSinglePossible {
 	public interface ISetFinalForSinglePossible {
-		void Execute(Field field);
+		FieldActionsResult Execute(Field field);
 	}
 }

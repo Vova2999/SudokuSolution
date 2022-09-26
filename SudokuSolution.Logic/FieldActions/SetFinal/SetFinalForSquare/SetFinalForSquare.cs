@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
+using SudokuSolution.Logic.Extensions;
 using SudokuSolution.Logic.FieldActions.CleanPossible;
 
 namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSquare {
@@ -11,19 +13,21 @@ namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSquare {
 			this.cleanPossibleFacade = cleanPossibleFacade;
 		}
 
-		public void Execute(Field field) {
+		public FieldActionsResult Execute(Field field) {
 			var squareSize = (int) Math.Sqrt(field.MaxValue);
-			for (var squareRow = 0; squareRow < squareSize; squareRow++)
-			for (var squareColumn = 0; squareColumn < squareSize; squareColumn++)
-				ExecuteOneSquare(field, squareSize, squareRow, squareColumn);
+			return Enumerable.Range(0, squareSize)
+				.SelectMany(squareRow => Enumerable.Range(0, squareSize)
+					.Select(squareColumn => ExecuteOneSquare(field, squareSize, squareRow, squareColumn)))
+				.GetChangedResultIfAnyIsChanged();
 		}
 
-		private void ExecuteOneSquare(Field field, int squareSize, int squareRow, int squareColumn) {
-			for (var value = 1; value <= field.MaxValue; value++)
-				ExecuteOneSquareOneValue(field, squareSize, squareRow, squareColumn, value);
+		private FieldActionsResult ExecuteOneSquare(Field field, int squareSize, int squareRow, int squareColumn) {
+			return Enumerable.Range(1, field.MaxValue)
+				.Select(value => ExecuteOneSquareOneValue(field, squareSize, squareRow, squareColumn, value))
+				.GetChangedResultIfAnyIsChanged();
 		}
 
-		private void ExecuteOneSquareOneValue(Field field, int squareSize, int squareRow, int squareColumn, int value) {
+		private FieldActionsResult ExecuteOneSquareOneValue(Field field, int squareSize, int squareRow, int squareColumn, int value) {
 			var skip = false;
 			var lastRowIndex = -1;
 			var lastColumnIndex = -1;
@@ -55,10 +59,11 @@ namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSquare {
 				});
 
 			if (skip || lastRowIndex == -1)
-				return;
+				return FieldActionsResult.Nothing;
 
 			field.Cells[lastRowIndex, lastColumnIndex].Final = value;
 			cleanPossibleFacade.Execute(field, lastRowIndex, lastColumnIndex);
+			return FieldActionsResult.Changed;
 		}
 	}
 }

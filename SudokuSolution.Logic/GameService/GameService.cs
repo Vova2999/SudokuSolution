@@ -2,6 +2,7 @@
 using System.Linq;
 using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
+using SudokuSolution.Logic.FieldActions;
 using SudokuSolution.Logic.FieldActions.CleanPossible;
 using SudokuSolution.Logic.FieldActions.SetFinal;
 using SudokuSolution.Logic.FieldActions.SetRandomFinalAndSplitField;
@@ -40,9 +41,7 @@ namespace SudokuSolution.Logic.GameService {
 			cleanPossibleFacade.Execute(field);
 
 			while (true) {
-				var previewField = (Field) field.Clone();
-
-				setFinalFacade.Execute(field);
+				var setFinalResult = setFinalFacade.Execute(field);
 
 				if (fieldService.IsFailed(field))
 					return false;
@@ -50,12 +49,12 @@ namespace SudokuSolution.Logic.GameService {
 				if (fieldService.IsSolved(field))
 					return true;
 
-				if (!field.Equals(previewField))
+				if (setFinalResult == FieldActionsResult.Changed)
 					continue;
 
-				cleanPossibleFacade.Execute(field);
+				var cleanPossibleResult = cleanPossibleFacade.Execute(field);
 
-				if (field.Equals(previewField))
+				if (cleanPossibleResult == FieldActionsResult.Nothing)
 					return null;
 			}
 		}

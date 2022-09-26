@@ -1,5 +1,7 @@
-﻿using SudokuSolution.Common.Extensions;
+﻿using System.Linq;
+using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
+using SudokuSolution.Logic.Extensions;
 using SudokuSolution.Logic.FieldActions.CleanPossible;
 
 namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForColumn {
@@ -10,17 +12,19 @@ namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForColumn {
 			this.cleanPossibleFacade = cleanPossibleFacade;
 		}
 
-		public void Execute(Field field) {
-			for (var column = 0; column < field.MaxValue; column++)
-				ExecuteOneColumn(field, column);
+		public FieldActionsResult Execute(Field field) {
+			return Enumerable.Range(0, field.MaxValue)
+				.Select(column => ExecuteOneColumn(field, column))
+				.GetChangedResultIfAnyIsChanged();
 		}
 
-		private void ExecuteOneColumn(Field field, int column) {
-			for (var value = 1; value <= field.MaxValue; value++)
-				ExecuteOneColumnOneValue(field, column, value);
+		private FieldActionsResult ExecuteOneColumn(Field field, int column) {
+			return Enumerable.Range(1, field.MaxValue)
+				.Select(value => ExecuteOneColumnOneValue(field, column, value))
+				.GetChangedResultIfAnyIsChanged();
 		}
 
-		private void ExecuteOneColumnOneValue(Field field, int column, int value) {
+		private FieldActionsResult ExecuteOneColumnOneValue(Field field, int column, int value) {
 			var skip = false;
 			var lastIndex = -1;
 
@@ -47,10 +51,11 @@ namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForColumn {
 				});
 
 			if (skip || lastIndex == -1)
-				return;
+				return FieldActionsResult.Nothing;
 
 			field.Cells[lastIndex, column].Final = value;
 			cleanPossibleFacade.Execute(field, lastIndex, column);
+			return FieldActionsResult.Changed;
 		}
 	}
 }

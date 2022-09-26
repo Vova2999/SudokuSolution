@@ -2,6 +2,6 @@
 
 namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForRow {
 	public interface ISetFinalForRow {
-		void Execute(Field field);
+		FieldActionsResult Execute(Field field);
 	}
 }

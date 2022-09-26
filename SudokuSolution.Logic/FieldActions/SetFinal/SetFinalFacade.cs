@@ -1,4 +1,6 @@
-﻿using SudokuSolution.Domain.Entities;
+﻿using System.Linq;
+using SudokuSolution.Domain.Entities;
+using SudokuSolution.Logic.Extensions;
 using SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForColumn;
 using SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForRow;
 using SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSinglePossible;
@@ -21,11 +23,13 @@ namespace SudokuSolution.Logic.FieldActions.SetFinal {
 			this.setFinalForSinglePossible = setFinalForSinglePossible;
 		}
 
-		public void Execute(Field field) {
-			setFinalForSinglePossible.Execute(field);
-			setFinalForSquare.Execute(field);
-			setFinalForRow.Execute(field);
-			setFinalForColumn.Execute(field);
+		public FieldActionsResult Execute(Field field) {
+			return new[] {
+				setFinalForSinglePossible.Execute(field),
+				setFinalForSquare.Execute(field),
+				setFinalForRow.Execute(field),
+				setFinalForColumn.Execute(field)
+			}.GetChangedResultIfAnyIsChanged();
 		}
 	}
 }

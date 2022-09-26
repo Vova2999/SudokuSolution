@@ -1,31 +1,35 @@
 ﻿using System;
+using System.Linq;
 using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
+using SudokuSolution.Logic.Extensions;
 
 namespace SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByColumn {
 	public class CleanPossibleByColumn : ICleanPossibleByColumn {
-		public void Execute(Field field) {
+		public FieldActionsResult Execute(Field field) {
 			var squareSize = (int) Math.Sqrt(field.MaxValue);
-			for (var squareRow = 0; squareRow < squareSize; squareRow++)
-			for (var squareColumn = 0; squareColumn < squareSize; squareColumn++)
-				ExecuteOneSquare(field, squareSize, squareRow, squareColumn);
+			return Enumerable.Range(0, squareSize)
+				.SelectMany(squareRow => Enumerable.Range(0, squareSize)
+					.Select(squareColumn => ExecuteOneSquare(field, squareSize, squareRow, squareColumn)))
+				.GetChangedResultIfAnyIsChanged();
 		}
 
-		public void Execute(Field field, int row, int column) {
+		public FieldActionsResult Execute(Field field, int row, int column) {
 			if (!field.Cells[row, column].HasFinal)
 				throw new InvalidOperationException("Selected cell is not final");
 
-			var cellFinal = field.Cells[row, column].Final;
+			var value = field.Cells[row, column].Final;
 			var squareSize = (int) Math.Sqrt(field.MaxValue);
-			ExecuteOneSquareOneValue(field, squareSize, row / squareSize, column / squareSize, cellFinal);
+			return ExecuteOneSquareOneValue(field, squareSize, row / squareSize, column / squareSize, value);
 		}
 
-		private static void ExecuteOneSquare(Field field, int squareSize, int squareRow, int squareColumn) {
-			for (var value = 1; value <= field.MaxValue; value++)
-				ExecuteOneSquareOneValue(field, squareSize, squareRow, squareColumn, value);
+		private static FieldActionsResult ExecuteOneSquare(Field field, int squareSize, int squareRow, int squareColumn) {
+			return Enumerable.Range(1, field.MaxValue)
+				.Select(value => ExecuteOneSquareOneValue(field, squareSize, squareRow, squareColumn, value))
+				.GetChangedResultIfAnyIsChanged();
 		}
 
-		private static void ExecuteOneSquareOneValue(Field field, int squareSize, int squareRow, int squareColumn, int value) {
+		private static FieldActionsResult ExecuteOneSquareOneValue(Field field, int squareSize, int squareRow, int squareColumn, int value) {
 			var skip = false;
 			var hasValueInColumn = new bool[squareSize];
 
@@ -49,7 +53,7 @@ namespace SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByColumn 
 				});
 
 			if (skip)
-				return;
+				return FieldActionsResult.Nothing;
 
 			var singleColumn = -1;
 			for (var column = 0; column < hasValueInColumn.Length; column++) {
@@ -57,21 +61,30 @@ namespace SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByColumn 
 					continue;
 
 				if (singleColumn != -1)
-					return;
+					return FieldActionsResult.Nothing;
 
 				singleColumn = column;
 			}
 
 			if (singleColumn == -1)
-				return;
+				return FieldActionsResult.Nothing;
 
+			var result = FieldActionsResult.Nothing;
 			var squareRowStart = squareSize * squareRow;
 			var squareRowEnd = squareSize * (squareRow + 1);
 			field.Cells.ForColumn(squareSize * squareColumn + singleColumn,
 				(row, c) => {
-					if (row < squareRowStart || row >= squareRowEnd)
-						c[value] = false;
+					if (row >= squareRowStart && row < squareRowEnd)
+						return;
+
+					if (!c[value])
+						return;
+
+					c[value] = false;
+					result = FieldActionsResult.Changed;
 				});
+
+			return result;
 		}
 	}
 }

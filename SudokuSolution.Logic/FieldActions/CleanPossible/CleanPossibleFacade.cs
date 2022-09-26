@@ -1,4 +1,6 @@
-﻿using SudokuSolution.Domain.Entities;
+﻿using System.Linq;
+using SudokuSolution.Domain.Entities;
+using SudokuSolution.Logic.Extensions;
 using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByColumn;
 using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByFinal;
 using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByRow;
@@ -17,16 +19,20 @@ namespace SudokuSolution.Logic.FieldActions.CleanPossible {
 			this.cleanPossibleByColumn = cleanPossibleByColumn;
 		}
 
-		public void Execute(Field field) {
-			cleanPossibleByFinal.Execute(field);
-			cleanPossibleByRow.Execute(field);
-			cleanPossibleByColumn.Execute(field);
+		public FieldActionsResult Execute(Field field) {
+			return new[] {
+				cleanPossibleByFinal.Execute(field),
+				cleanPossibleByRow.Execute(field),
+				cleanPossibleByColumn.Execute(field)
+			}.GetChangedResultIfAnyIsChanged();
 		}
 
-		public void Execute(Field field, int row, int column) {
-			cleanPossibleByFinal.Execute(field, row, column);
-			cleanPossibleByRow.Execute(field, row, column);
-			cleanPossibleByColumn.Execute(field, row, column);
+		public FieldActionsResult Execute(Field field, int row, int column) {
+			return new[] {
+				cleanPossibleByFinal.Execute(field, row, column),
+				cleanPossibleByRow.Execute(field, row, column),
+				cleanPossibleByColumn.Execute(field, row, column)
+			}.GetChangedResultIfAnyIsChanged();
 		}
 	}
 }
