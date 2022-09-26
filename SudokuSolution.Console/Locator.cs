@@ -32,7 +32,7 @@ namespace SudokuSolution.Console {
 			RegisterSingleton<IGameService, GameService>(registration);
 			RegisterSingleton<IFieldService, FieldService>(registration);
 
-			RegisterSingleton<ICleanPossibleFacade, ICleanPossibleFacade>(registration);
+			RegisterSingleton<ICleanPossibleFacade, CleanPossibleFacade>(registration);
 			RegisterSingleton<ICleanPossibleByFinal, CleanPossibleByFinal>(registration);
 			RegisterSingleton<ICleanPossibleByRow, CleanPossibleByRow>(registration);
 			RegisterSingleton<ICleanPossibleByColumn, CleanPossibleByColumn>(registration);
