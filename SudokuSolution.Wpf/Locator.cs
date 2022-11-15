@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Grace.DependencyInjection;
-using SudokuSolution.Console.ConsoleGame;
 using SudokuSolution.Logic.FieldActions.CleanPossible;
 using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByColumn;
 using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByFinal;
@@ -15,7 +14,7 @@ using SudokuSolution.Logic.FieldActions.SetRandomFinalAndSplitField;
 using SudokuSolution.Logic.FieldService;
 using SudokuSolution.Logic.GameService;
 
-namespace SudokuSolution.Console {
+namespace SudokuSolution.Wpf {
 	public class Locator : ILocatorService {
 		private readonly DependencyInjectionContainer container;
 		private static readonly Lazy<Locator> Lazy = new(() => new Locator());
@@ -28,7 +27,6 @@ namespace SudokuSolution.Console {
 		}
 
 		private static void RegisterDependencies(IExportRegistrationBlock registration) {
-			RegisterSingleton<IConsoleGameProvider, ConsoleGameProvider>(registration);
 			RegisterSingleton<IGameService, GameService>(registration);
 			RegisterSingleton<IFieldService, FieldService>(registration);
 

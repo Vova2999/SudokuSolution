@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using SudokuSolution.Console.ConsoleGameProvider;
+using SudokuSolution.Console.ConsoleGame;
 
 namespace SudokuSolution.Console {
 	public static class Program {

@@ -6,7 +6,7 @@ using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
 using SudokuSolution.Logic.GameService;
 
-namespace SudokuSolution.Console.ConsoleGameProvider {
+namespace SudokuSolution.Console.ConsoleGame {
 	[UsedImplicitly]
 	public class ConsoleGameProvider : IConsoleGameProvider {
 		private const int MaxSolved = 100;
