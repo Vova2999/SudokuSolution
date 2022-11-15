@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using SudokuSolution.Domain.Entities;
+﻿using SudokuSolution.Domain.Entities;
 using SudokuSolution.Logic.Extensions;
 using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByColumn;
 using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByFinal;

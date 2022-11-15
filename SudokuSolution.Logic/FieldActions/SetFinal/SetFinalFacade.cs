@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using SudokuSolution.Domain.Entities;
+﻿using SudokuSolution.Domain.Entities;
 using SudokuSolution.Logic.Extensions;
 using SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForColumn;
 using SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForRow;
