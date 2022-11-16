@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using SudokuSolution.Wpf.Views.Main.Logic;
 
 namespace SudokuSolution.Wpf {
 	public partial class App {

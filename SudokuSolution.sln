@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolution.Console", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolution.Wpf", "SudokuSolution.Wpf\SudokuSolution.Wpf.csproj", "{C8E26766-C24F-4761-8A3C-5AEF98D1735B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolution.Wpf.Common", "SudokuSolution.Wpf.Common\SudokuSolution.Wpf.Common.csproj", "{439DABAB-7D46-4684-B2A5-DFF9E65459B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{C8E26766-C24F-4761-8A3C-5AEF98D1735B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8E26766-C24F-4761-8A3C-5AEF98D1735B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8E26766-C24F-4761-8A3C-5AEF98D1735B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{439DABAB-7D46-4684-B2A5-DFF9E65459B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{439DABAB-7D46-4684-B2A5-DFF9E65459B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{439DABAB-7D46-4684-B2A5-DFF9E65459B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{439DABAB-7D46-4684-B2A5-DFF9E65459B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

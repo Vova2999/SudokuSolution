@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GalaSoft.MvvmLight.Messaging;
 using Grace.DependencyInjection;
 using SudokuSolution.Logic.FieldActions.CleanPossible;
 using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByColumn;
@@ -13,6 +14,9 @@ using SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSquare;
 using SudokuSolution.Logic.FieldActions.SetRandomFinalAndSplitField;
 using SudokuSolution.Logic.FieldService;
 using SudokuSolution.Logic.GameService;
+using SudokuSolution.Wpf.Common.Dispatcher;
+using SudokuSolution.Wpf.Common.View;
+using SudokuSolution.Wpf.Views.Main.Logic;
 
 namespace SudokuSolution.Wpf {
 	public class Locator : ILocatorService {
@@ -27,6 +31,11 @@ namespace SudokuSolution.Wpf {
 		}
 
 		private static void RegisterDependencies(IExportRegistrationBlock registration) {
+			RegisterLogic(registration);
+			RegisterServices(registration);
+		}
+
+		private static void RegisterLogic(IExportRegistrationBlock registration) {
 			RegisterSingleton<IGameService, GameService>(registration);
 			RegisterSingleton<IFieldService, FieldService>(registration);
 
@@ -42,6 +51,15 @@ namespace SudokuSolution.Wpf {
 			RegisterSingleton<ISetFinalForSquare, SetFinalForSquare>(registration);
 
 			RegisterSingleton<ISetRandomFinalAndSplitField, SetRandomFinalAndSplitField>(registration);
+		}
+
+		private static void RegisterServices(IExportRegistrationBlock registration) {
+			RegisterSingleton<IMainWindowProvider, MainWindowProvider>(registration);
+
+			RegisterSingleton<IViewService, ViewService>(registration);
+			RegisterSingleton<IDispatcherHelper, DispatcherHelperAdapter>(registration);
+
+			RegisterSingleton<IMessenger, Messenger>(registration);
 		}
 
 		private static void RegisterSingleton<TFrom, TTo>(IExportRegistrationBlock registrationBlock) where TTo : TFrom {
