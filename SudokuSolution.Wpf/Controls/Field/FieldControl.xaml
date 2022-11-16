@@ -40,6 +40,7 @@
 						Width="{StaticResource CellSize}"
 						Height="{StaticResource CellSize}"
 						Content="{Binding Value, Mode=OneWay}"
+						FontWeight="{Binding IsBoldFont, Converter={converters:BoolToBoldFontWeightConverter}, Mode=OneWay}"
 						Command="{Binding DataContext.SelectCellCommand, ElementName=ThisControl, Mode=OneWay}"
 						CommandParameter="{Binding}">
 					<Button.Background>

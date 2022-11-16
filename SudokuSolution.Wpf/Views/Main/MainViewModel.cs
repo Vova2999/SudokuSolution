@@ -49,13 +49,15 @@ namespace SudokuSolution.Wpf.Views.Main {
 		}
 
 		private void OnCalculate() {
-			var solvedFields = gameService.Solve(CreateField()).Take(SettingsViewModel.MaxSolved);
-			solvedViewModelFactory.Create(solvedFields, false).OpenDialogInUi();
+			var startField = CreateField();
+			var solvedFields = gameService.Solve(startField).Take(SettingsViewModel.MaxSolved);
+			solvedViewModelFactory.Create(startField, solvedFields, false).OpenDialogInUi();
 		}
 
 		private void OnCalculateAll() {
-			var solvedFields = gameService.Solve(CreateField()).Take(SettingsViewModel.MaxSolved);
-			solvedViewModelFactory.Create(solvedFields, true).OpenDialogInUi();
+			var startField = CreateField();
+			var solvedFields = gameService.Solve(startField).Take(SettingsViewModel.MaxSolved);
+			solvedViewModelFactory.Create(startField, solvedFields, true).OpenDialogInUi();
 		}
 
 		private Field CreateField() {

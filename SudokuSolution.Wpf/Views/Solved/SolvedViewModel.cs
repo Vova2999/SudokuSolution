@@ -21,6 +21,7 @@ namespace SudokuSolution.Wpf.Views.Solved {
 
 		private readonly IMessageBoxService messageBoxService;
 
+		private readonly Field startField;
 		private readonly IEnumerator<Field> solvedFields;
 		private readonly bool solveAllFields;
 
@@ -44,9 +45,11 @@ namespace SudokuSolution.Wpf.Views.Solved {
 
 		public SolvedViewModel(IMessageBoxService messageBoxService,
 							   FieldViewModel fieldViewModel,
+							   Field startField,
 							   IEnumerable<Field> solvedFields,
 							   bool solveAllFields) {
 			this.messageBoxService = messageBoxService;
+			this.startField = startField;
 			this.solvedFields = solvedFields.GetEnumerator();
 			this.solveAllFields = solveAllFields;
 			FieldViewModel = fieldViewModel;
@@ -86,7 +89,10 @@ namespace SudokuSolution.Wpf.Views.Solved {
 			if (FieldViewModel.Size != field.MaxValue)
 				FieldViewModel.RefreshField(field.MaxValue);
 
-			FieldViewModel.Cells.ForEach((row, cells) => cells.ForEach((column, cell) => cell.Value = field.Cells[row, column].Final));
+			FieldViewModel.Cells.ForEach((row, cells) => cells.ForEach((column, cell) => {
+				cell.Value = field.Cells[row, column].Final;
+				cell.IsBoldFont = startField.Cells[row, column].HasFinal;
+			}));
 		}
 
 		private void OnPrevSolved() {
@@ -117,7 +123,7 @@ namespace SudokuSolution.Wpf.Views.Solved {
 		}
 
 		public interface IFactory {
-			SolvedViewModel Create(IEnumerable<Field> solvedFields, bool solveAllFields);
+			SolvedViewModel Create(Field startField, IEnumerable<Field> solvedFields, bool solveAllFields);
 		}
 	}
 }

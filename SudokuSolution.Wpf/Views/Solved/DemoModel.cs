@@ -7,6 +7,7 @@ namespace SudokuSolution.Wpf.Views.Solved {
 		public DemoModel() : base(
 			Locator.Current.Locate<IMessageBoxService>(),
 			new Controls.Field.DemoModel(),
+			new Field(1),
 			new List<Field>(),
 			false) {
 			CurrentSolved = 5;
