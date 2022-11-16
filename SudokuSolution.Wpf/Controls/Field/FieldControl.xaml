@@ -93,7 +93,7 @@
 							   Opacity="{Binding Source={StaticResource DarkLineOpacityPercent}, Converter={converters:PercentToDoubleConverter}}" />
 					<ItemsControl ItemsSource="{Binding Mode=OneWay}"
 								  ItemTemplate="{StaticResource FieldInternalDataTemplate}"
-								  AlternationCount="{Binding DataContext.Size, ElementName=ThisControl, Converter={converters:SquarePowerConverter}, Mode=OneWay}">
+								  AlternationCount="{Binding DataContext.Size, ElementName=ThisControl, Mode=OneWay}">
 						<ItemsControl.ItemsPanel>
 							<ItemsPanelTemplate>
 								<StackPanel Orientation="Horizontal" />
@@ -120,7 +120,7 @@
 				   Opacity="{Binding Source={StaticResource DarkLineOpacityPercent}, Converter={converters:PercentToDoubleConverter}}" />
 		<ItemsControl ItemsSource="{Binding Cells, Mode=OneWay}"
 					  ItemTemplate="{StaticResource FieldDataTemplate}"
-					  AlternationCount="{Binding DataContext.Size, ElementName=ThisControl, Converter={converters:SquarePowerConverter}, Mode=OneWay}">
+					  AlternationCount="{Binding DataContext.Size, ElementName=ThisControl, Mode=OneWay}">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
 					<StackPanel Orientation="Vertical" />

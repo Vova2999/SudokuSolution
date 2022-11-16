@@ -6,8 +6,8 @@ namespace SudokuSolution.Wpf.Controls.Field {
 		public DemoModel() : base(Locator.Current.Locate<IMessenger>()) {
 			Size = Constants.StartedSize;
 
-			Cells = Enumerable.Range(1, Size * Size)
-				.Select(_ => Enumerable.Range(1, Size * Size)
+			Cells = Enumerable.Range(1, Size)
+				.Select(_ => Enumerable.Range(1, Size)
 					.Select(x => new CellModel { Value = x })
 					.ToArray())
 				.ToArray();

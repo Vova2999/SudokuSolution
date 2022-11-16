@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -11,13 +12,22 @@ namespace SudokuSolution.Wpf.Controls.Field {
 		public override object Header => string.Empty;
 
 		private int size;
+		private bool lockSelectedMenu;
 		private CellModel selectedCell;
 		private IReadOnlyList<IReadOnlyList<int>> values;
 		private IReadOnlyList<IReadOnlyList<CellModel>> cells;
 
+		private ICommand selectCellCommand;
+		private ICommand setCellValueCommand;
+
 		public int Size {
 			get => size;
 			set => Set(ref size, value);
+		}
+
+		public bool LockSelectedMenu {
+			get => lockSelectedMenu;
+			set => Set(ref lockSelectedMenu, value);
 		}
 
 		public CellModel SelectedCell {
@@ -34,9 +44,6 @@ namespace SudokuSolution.Wpf.Controls.Field {
 			get => cells;
 			set => Set(ref cells, value);
 		}
-
-		private ICommand selectCellCommand;
-		private ICommand setCellValueCommand;
 
 		public ICommand SelectCellCommand => selectCellCommand ??= new RelayCommand<CellModel>(OnSelectCell);
 		public ICommand SetCellValueCommand => setCellValueCommand ??= new RelayCommand<int>(OnSetCellValue);
@@ -55,23 +62,27 @@ namespace SudokuSolution.Wpf.Controls.Field {
 			RefreshField(message.NewSize);
 		}
 
-		private void RefreshField(int newSize) {
+		public void RefreshField(int newSize) {
 			Size = newSize;
 
-			Values = Enumerable.Range(0, Size)
-				.Select(i => Enumerable.Range(0, Size)
-					.Select(j => i * Size + j + 1)
+			var sqrtOfSize = (int) Math.Sqrt(Size);
+			Values = Enumerable.Range(0, sqrtOfSize)
+				.Select(i => Enumerable.Range(0, sqrtOfSize)
+					.Select(j => i * sqrtOfSize + j + 1)
 					.ToArray())
 				.ToArray();
 
-			Cells = Enumerable.Range(1, Size * Size)
-				.Select(_ => Enumerable.Range(1, Size * Size)
+			Cells = Enumerable.Range(1, Size)
+				.Select(_ => Enumerable.Range(1, Size)
 					.Select(_ => new CellModel { Value = null })
 					.ToArray())
 				.ToArray();
 		}
 
 		private void OnSelectCell(CellModel cell) {
+			if (LockSelectedMenu)
+				return;
+
 			SelectedCell = cell;
 			cell.IsMenuOpened = true;
 		}

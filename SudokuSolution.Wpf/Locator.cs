@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GalaSoft.MvvmLight.Messaging;
 using Grace.DependencyInjection;
+using Grace.Factory;
 using SudokuSolution.Logic.FieldActions.CleanPossible;
 using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByColumn;
 using SudokuSolution.Logic.FieldActions.CleanPossible.CleanPossibleByFinal;
@@ -15,6 +16,7 @@ using SudokuSolution.Logic.FieldActions.SetRandomFinalAndSplitField;
 using SudokuSolution.Logic.FieldService;
 using SudokuSolution.Logic.GameService;
 using SudokuSolution.Wpf.Common.Dispatcher;
+using SudokuSolution.Wpf.Common.MessageBox;
 using SudokuSolution.Wpf.Common.View;
 using SudokuSolution.Wpf.Views.Main.Logic;
 
@@ -31,6 +33,8 @@ namespace SudokuSolution.Wpf {
 		}
 
 		private static void RegisterDependencies(IExportRegistrationBlock registration) {
+			registration.ExportInterfaceFactories(type => type.Name == "IFactory");
+
 			RegisterLogic(registration);
 			RegisterServices(registration);
 		}
@@ -58,6 +62,7 @@ namespace SudokuSolution.Wpf {
 
 			RegisterSingleton<IViewService, ViewService>(registration);
 			RegisterSingleton<IDispatcherHelper, DispatcherHelperAdapter>(registration);
+			RegisterSingleton<IMessageBoxService, MessageBoxService>(registration);
 
 			RegisterSingleton<IMessenger, Messenger>(registration);
 		}

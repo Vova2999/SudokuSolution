@@ -11,5 +11,5 @@ namespace SudokuSolution.Common.Extensions {
 				// ignored
 			}
 		}
-    }
+	}
 }
