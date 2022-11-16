@@ -6,7 +6,7 @@ using SudokuSolution.Wpf.Common.View;
 namespace SudokuSolution.Wpf.Extensions {
 	public static class ViewModelExtensions {
 		/// <summary>
-		/// Открытие диалога. Использовать только внутри IDispatcherHelper
+		///     Открытие диалога. Использовать только внутри IDispatcherHelper
 		/// </summary>
 		/// <param name="viewModel"></param>
 		/// <returns></returns>
@@ -18,7 +18,7 @@ namespace SudokuSolution.Wpf.Extensions {
 		}
 
 		/// <summary>
-		/// Открытие диалога. Использовать при отсутствии необходимости результата
+		///     Открытие диалога. Использовать при отсутствии необходимости результата
 		/// </summary>
 		/// <param name="viewModel"></param>
 		public static void OpenDialogInUi(this IViewModel viewModel) {
@@ -27,7 +27,7 @@ namespace SudokuSolution.Wpf.Extensions {
 		}
 
 		/// <summary>
-		/// Открытие диалога. Использовать при необходимости результата
+		///     Открытие диалога. Использовать при необходимости результата
 		/// </summary>
 		/// <param name="viewModel"></param>
 		/// <returns></returns>
@@ -42,5 +42,5 @@ namespace SudokuSolution.Wpf.Extensions {
 
 			return tcs.Task;
 		}
-    }
+	}
 }

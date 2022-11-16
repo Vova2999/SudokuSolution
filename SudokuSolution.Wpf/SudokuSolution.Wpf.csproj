@@ -83,6 +83,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\Field\FieldControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Main\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -91,8 +99,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\Field\DemoModel.cs" />
+    <Compile Include="Controls\Field\FieldControl.xaml.cs">
+      <DependentUpon>FieldControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Field\FieldViewModel.cs" />
+    <Compile Include="Converters\FieldCellBackgroundMultiConverter.cs" />
+    <Compile Include="Converters\FieldLineOpacityMultiConverter.cs" />
     <Compile Include="Extensions\ViewModelExtensions.cs" />
     <Compile Include="Locator.cs" />
+    <Compile Include="Controls\Field\CellModel.cs" />
+    <Compile Include="Views\Main\DemoModel.cs" />
     <Compile Include="Views\Main\Logic\IMainWindowProvider.cs" />
     <Compile Include="Views\Main\Logic\MainWindowProvider.cs" />
     <Compile Include="Views\Main\MainViewModel.cs" />

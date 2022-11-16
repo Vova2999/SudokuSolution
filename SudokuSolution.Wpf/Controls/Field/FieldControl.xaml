@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="SudokuSolution.Wpf.Controls.Field.FieldControl"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:local="clr-namespace:SudokuSolution.Wpf.Controls.Field"
+			 xmlns:system="clr-namespace:System;assembly=mscorlib"
+			 xmlns:converters="clr-namespace:SudokuSolution.Wpf.Common.Converters;assembly=SudokuSolution.Wpf.Common"
+			 xmlns:thisConverters="clr-namespace:SudokuSolution.Wpf.Converters"
+			 mc:Ignorable="d"
+			 x:Name="ThisControl"
+			 d:DataContext="{DynamicResource DemoModel}">
+
+	<UserControl.Resources>
+		<local:DemoModel x:Key="DemoModel" />
+
+		<Brush x:Key="Background">LightGray</Brush>
+		<Brush x:Key="DarkCellBackground">LightSkyBlue</Brush>
+		<Brush x:Key="LightCellBackground">White</Brush>
+		<system:Int32 x:Key="DarkLineOpacityPercent">80</system:Int32>
+		<system:Int32 x:Key="LightLineOpacityPercent">20</system:Int32>
+	</UserControl.Resources>
+
+	<StackPanel Orientation="Vertical" Background="{StaticResource Background}">
+		<Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black"
+				   Opacity="{Binding Source={StaticResource DarkLineOpacityPercent}, Converter={converters:PercentToDoubleConverter}}" />
+		<ItemsControl ItemsSource="{Binding Cells, Mode=OneWay}"
+					  AlternationCount="{Binding DataContext.Size, ElementName=ThisControl, Converter={converters:SquarePowerConverter}, Mode=OneWay}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<StackPanel Orientation="Vertical" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Vertical">
+						<StackPanel Orientation="Horizontal">
+							<Rectangle VerticalAlignment="Stretch" Width="1" Fill="Black"
+									   Opacity="{Binding Source={StaticResource DarkLineOpacityPercent}, Converter={converters:PercentToDoubleConverter}}" />
+							<ItemsControl x:Name="ColumnItems" ItemsSource="{Binding Mode=OneWay}"
+										  AlternationCount="{Binding DataContext.Size, ElementName=ThisControl, Converter={converters:SquarePowerConverter}, Mode=OneWay}">
+								<ItemsControl.ItemsPanel>
+									<ItemsPanelTemplate>
+										<StackPanel Orientation="Horizontal" />
+									</ItemsPanelTemplate>
+								</ItemsControl.ItemsPanel>
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<StackPanel Orientation="Horizontal">
+											<Button Content="{Binding Value, Mode=OneWay}" Width="30" Height="30" Margin="1">
+												<Button.Background>
+													<MultiBinding Converter="{thisConverters:FieldCellBackgroundMultiConverter}">
+														<Binding Path="DataContext.Size" ElementName="ThisControl" Mode="OneWay" />
+														<Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}, AncestorLevel=2}" Mode="OneWay" />
+														<Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}, AncestorLevel=1}" Mode="OneWay" />
+														<Binding Source="{StaticResource DarkCellBackground}" />
+														<Binding Source="{StaticResource LightCellBackground}" />
+													</MultiBinding>
+												</Button.Background>
+											</Button>
+											<Rectangle VerticalAlignment="Stretch" Width="1" Fill="Black">
+												<Rectangle.Opacity>
+													<MultiBinding Converter="{thisConverters:FieldLineOpacityMultiConverter}">
+														<Binding Path="DataContext.Size" ElementName="ThisControl" Mode="OneWay" />
+														<Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}" Mode="OneWay" />
+														<Binding Source="{StaticResource DarkLineOpacityPercent}" Converter="{converters:PercentToDoubleConverter}" />
+														<Binding Source="{StaticResource LightLineOpacityPercent}" Converter="{converters:PercentToDoubleConverter}" />
+													</MultiBinding>
+												</Rectangle.Opacity>
+											</Rectangle>
+										</StackPanel>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</StackPanel>
+						<Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black">
+							<Rectangle.Opacity>
+								<MultiBinding Converter="{thisConverters:FieldLineOpacityMultiConverter}">
+									<Binding Path="DataContext.Size" ElementName="ThisControl" Mode="OneWay" />
+									<Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}" Mode="OneWay" />
+									<Binding Source="{StaticResource DarkLineOpacityPercent}" Converter="{converters:PercentToDoubleConverter}" />
+									<Binding Source="{StaticResource LightLineOpacityPercent}" Converter="{converters:PercentToDoubleConverter}" />
+								</MultiBinding>
+							</Rectangle.Opacity>
+						</Rectangle>
+					</StackPanel>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</StackPanel>
+</UserControl>

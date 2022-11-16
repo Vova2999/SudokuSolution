@@ -7,6 +7,8 @@ namespace SudokuSolution.Wpf {
 
 		public App(IMainWindowProvider mainWindowProvider) {
 			this.mainWindowProvider = mainWindowProvider;
+
+			InitializeComponent();
 		}
 
 		protected override void OnStartup(StartupEventArgs e) {

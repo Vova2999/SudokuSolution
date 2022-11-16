@@ -61,6 +61,7 @@
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +70,10 @@
     <Compile Include="Base\ViewModel.cs" />
     <Compile Include="Commands\AsyncRelayCommandT.cs" />
     <Compile Include="Commands\AsyncRelayCommand.cs" />
+    <Compile Include="Converters\Base\MarkupConverterBase.cs" />
+    <Compile Include="Converters\Base\MarkupMultiValueConverterBase.cs" />
+    <Compile Include="Converters\PercentToDoubleConverter.cs" />
+    <Compile Include="Converters\SquarePowerConverter.cs" />
     <Compile Include="Dispatcher\DispatcherHelperAdapter.cs" />
     <Compile Include="Dispatcher\IDispatcherHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

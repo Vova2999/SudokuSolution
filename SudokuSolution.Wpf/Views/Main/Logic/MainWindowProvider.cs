@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using GalaSoft.MvvmLight;
 using SudokuSolution.Wpf.Common.Dispatcher;
 using SudokuSolution.Wpf.Common.View;
@@ -33,7 +34,7 @@ namespace SudokuSolution.Wpf.Views.Main.Logic {
 			return window;
 		}
 
-		private void OnWindowClosing(object sender, System.ComponentModel.CancelEventArgs e) {
+		private void OnWindowClosing(object sender, CancelEventArgs e) {
 			mainWindow.Closing -= OnWindowClosing;
 			(mainWindow.DataContext as ICleanup)?.Cleanup();
 			mainWindow = null;

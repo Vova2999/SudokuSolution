@@ -26,7 +26,7 @@ namespace SudokuSolution.Wpf.Common.Commands {
 		}
 
 		public bool CanExecute(object parameter) {
-			return canExecute == null || Interlocked.Read(ref isExecuting) == 0 && canExecute();
+			return canExecute == null || (Interlocked.Read(ref isExecuting) == 0 && canExecute());
 		}
 
 		public void Execute(object parameter) {
