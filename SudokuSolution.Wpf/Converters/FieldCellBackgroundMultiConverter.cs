@@ -8,7 +8,7 @@ namespace SudokuSolution.Wpf.Converters {
 		protected override object Convert(object[] values, Type targetType, object parameter, CultureInfo culture) {
 			return values[0] is not int size || values[1] is not int row || values[2] is not int column || values[3] is not Brush darkCellBackground || values[4] is not Brush lightCellBackground
 				? throw new ArgumentException($"Invalid values of {nameof(FieldLineOpacityMultiConverter)}")
-				: (row / size == 1) ^ (column / size == 1)
+				: (row / size % 2 != 0) ^ (column / size % 2 != 0)
 					? darkCellBackground
 					: lightCellBackground;
 		}

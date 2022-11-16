@@ -72,6 +72,7 @@
     <Compile Include="Commands\AsyncRelayCommand.cs" />
     <Compile Include="Converters\Base\MarkupConverterBase.cs" />
     <Compile Include="Converters\Base\MarkupMultiValueConverterBase.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\PercentToDoubleConverter.cs" />
     <Compile Include="Converters\SquarePowerConverter.cs" />
     <Compile Include="Dispatcher\DispatcherHelperAdapter.cs" />

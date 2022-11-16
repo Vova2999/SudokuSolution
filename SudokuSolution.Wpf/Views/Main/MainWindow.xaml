@@ -5,6 +5,8 @@
 					  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 					  xmlns:local="clr-namespace:SudokuSolution.Wpf.Views.Main"
 					  xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+					  xmlns:converters="clr-namespace:SudokuSolution.Wpf.Common.Converters;assembly=SudokuSolution.Wpf.Common"
+					  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
 					  mc:Ignorable="d"
 					  WindowStyle="None"
 					  ResizeMode="CanMinimize"
@@ -26,6 +28,41 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
-		<ContentPresenter Grid.Row="0" Margin="20" Content="{Binding FieldViewModel.TypedView}" />
+		<ContentPresenter Grid.Row="0" Margin="20,32" Content="{Binding FieldViewModel.TypedView}" />
+
+		<Button Grid.Row="0"
+				Margin="10"
+				Style="{StaticResource TopLeftAlignedButton}"
+				Command="{Binding OpenSettingsCommand, Mode=OneWay}"
+				Visibility="{Binding IsSettingsOpened, Converter={converters:BoolToVisibilityConverter TrueValue=Collapsed, FalseValue=Visible}, Mode=OneWay}">
+			<iconPacks:PackIconFontAwesome
+				Kind="AngleDoubleRightSolid"
+				Width="12"
+				Height="12"
+				VerticalAlignment="Center" />
+		</Button>
+
+		<controls:SplitView Grid.Row="0"
+							OpenPaneLength="170"
+							DisplayMode="Overlay"
+							HorizontalAlignment="Left"
+							PaneBackground="{StaticResource SettingsBackground}"
+							IsPaneOpen="{Binding IsSettingsOpened, Mode=TwoWay}">
+			<controls:SplitView.Pane>
+				<StackPanel>
+					<Button Margin="10"
+							Style="{StaticResource TopLeftAlignedButton}"
+							Command="{Binding CloseSettingsCommand, Mode=OneWay}">
+						<iconPacks:PackIconFontAwesome
+							Kind="AngleDoubleLeftSolid"
+							Width="12"
+							Height="12"
+							VerticalAlignment="Center" />
+					</Button>
+
+					<ContentPresenter Margin="16,0" Content="{Binding SettingsViewModel.TypedView}" />
+				</StackPanel>
+			</controls:SplitView.Pane>
+		</controls:SplitView>
 	</Grid>
 </controls:MetroWindow>

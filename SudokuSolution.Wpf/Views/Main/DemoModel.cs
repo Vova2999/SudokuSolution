@@ -1,6 +1,9 @@
 ﻿namespace SudokuSolution.Wpf.Views.Main {
 	public class DemoModel : MainViewModel {
-		public DemoModel() : base(new Controls.Field.DemoModel()) {
+		public DemoModel() : base(
+			new Controls.Field.DemoModel(),
+			new Controls.Settings.DemoModel()) {
+			IsSettingsOpened = false;
 		}
 	}
 }

@@ -4,7 +4,6 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:local="clr-namespace:SudokuSolution.Wpf.Controls.Field"
-			 xmlns:system="clr-namespace:System;assembly=mscorlib"
 			 xmlns:converters="clr-namespace:SudokuSolution.Wpf.Common.Converters;assembly=SudokuSolution.Wpf.Common"
 			 xmlns:thisConverters="clr-namespace:SudokuSolution.Wpf.Converters"
 			 mc:Ignorable="d"
@@ -13,15 +12,9 @@
 
 	<UserControl.Resources>
 		<local:DemoModel x:Key="DemoModel" />
-
-		<Brush x:Key="Background">LightGray</Brush>
-		<Brush x:Key="DarkCellBackground">LightSkyBlue</Brush>
-		<Brush x:Key="LightCellBackground">White</Brush>
-		<system:Int32 x:Key="DarkLineOpacityPercent">80</system:Int32>
-		<system:Int32 x:Key="LightLineOpacityPercent">20</system:Int32>
 	</UserControl.Resources>
 
-	<StackPanel Orientation="Vertical" Background="{StaticResource Background}">
+	<StackPanel Orientation="Vertical" Background="{StaticResource FieldBackground}">
 		<Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black"
 				   Opacity="{Binding Source={StaticResource DarkLineOpacityPercent}, Converter={converters:PercentToDoubleConverter}}" />
 		<ItemsControl ItemsSource="{Binding Cells, Mode=OneWay}"
@@ -47,7 +40,7 @@
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
 										<StackPanel Orientation="Horizontal">
-											<Button Content="{Binding Value, Mode=OneWay}" Width="30" Height="30" Margin="1">
+											<Button Content="{Binding Value, Mode=OneWay}" Width="{StaticResource CellSize}" Height="{StaticResource CellSize}" Margin="1">
 												<Button.Background>
 													<MultiBinding Converter="{thisConverters:FieldCellBackgroundMultiConverter}">
 														<Binding Path="DataContext.Size" ElementName="ThisControl" Mode="OneWay" />
