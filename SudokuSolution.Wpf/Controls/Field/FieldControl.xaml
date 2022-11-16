@@ -4,6 +4,7 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:local="clr-namespace:SudokuSolution.Wpf.Controls.Field"
+			 xmlns:system="clr-namespace:System;assembly=mscorlib"
 			 xmlns:converters="clr-namespace:SudokuSolution.Wpf.Common.Converters;assembly=SudokuSolution.Wpf.Common"
 			 xmlns:thisConverters="clr-namespace:SudokuSolution.Wpf.Converters"
 			 mc:Ignorable="d"
@@ -12,73 +13,118 @@
 
 	<UserControl.Resources>
 		<local:DemoModel x:Key="DemoModel" />
+
+		<DataTemplate x:Key="SelectValueInternalDataTemplate" DataType="{x:Type system:Int32}">
+			<Button Width="{StaticResource CellSelectSize}"
+					Height="{StaticResource CellSelectSize}"
+					Background="{StaticResource LightCellBackground}"
+					Content="{Binding Mode=OneWay}"
+					Command="{Binding DataContext.SetCellValueCommand, ElementName=ThisControl, Mode=OneWay}"
+					CommandParameter="{Binding}" />
+		</DataTemplate>
+
+		<DataTemplate x:Key="SelectValueDataTemplate">
+			<ItemsControl ItemsSource="{Binding Mode=OneWay}"
+						  ItemTemplate="{StaticResource SelectValueInternalDataTemplate}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Orientation="Horizontal" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+			</ItemsControl>
+		</DataTemplate>
+
+		<DataTemplate x:Key="FieldInternalDataTemplate" DataType="{x:Type local:CellModel}">
+			<StackPanel Orientation="Horizontal">
+				<Button Margin="1"
+						Width="{StaticResource CellSize}"
+						Height="{StaticResource CellSize}"
+						Content="{Binding Value, Mode=OneWay}"
+						Command="{Binding DataContext.SelectCellCommand, ElementName=ThisControl, Mode=OneWay}"
+						CommandParameter="{Binding}">
+					<Button.Background>
+						<MultiBinding Converter="{thisConverters:FieldCellBackgroundMultiConverter}">
+							<Binding Path="DataContext.Size" ElementName="ThisControl" Mode="OneWay" />
+							<Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}, AncestorLevel=2}" Mode="OneWay" />
+							<Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}, AncestorLevel=1}" Mode="OneWay" />
+							<Binding Source="{StaticResource DarkCellBackground}" />
+							<Binding Source="{StaticResource LightCellBackground}" />
+						</MultiBinding>
+					</Button.Background>
+				</Button>
+				<Popup StaysOpen="False"
+					   VerticalOffset="5"
+					   HorizontalOffset="5"
+					   PopupAnimation="Slide"
+					   IsOpen="{Binding IsMenuOpened, Mode=TwoWay}">
+					<StackPanel Background="{StaticResource FieldBackground}">
+						<ItemsControl ItemsSource="{Binding DataContext.Values, ElementName=ThisControl, Mode=OneWay}"
+									  ItemTemplate="{StaticResource SelectValueDataTemplate}">
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<StackPanel Orientation="Vertical" />
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+						</ItemsControl>
+						<Button Margin="1"
+								Height="{StaticResource CellSelectSize}"
+								Command="{Binding DataContext.SetCellValueCommand, ElementName=ThisControl, Mode=OneWay}"
+								CommandParameter="0" />
+					</StackPanel>
+				</Popup>
+				<Rectangle VerticalAlignment="Stretch" Width="1" Fill="Black">
+					<Rectangle.Opacity>
+						<MultiBinding Converter="{thisConverters:FieldLineOpacityMultiConverter}">
+							<Binding Path="DataContext.Size" ElementName="ThisControl" Mode="OneWay" />
+							<Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}" Mode="OneWay" />
+							<Binding Source="{StaticResource DarkLineOpacityPercent}" Converter="{converters:PercentToDoubleConverter}" />
+							<Binding Source="{StaticResource LightLineOpacityPercent}" Converter="{converters:PercentToDoubleConverter}" />
+						</MultiBinding>
+					</Rectangle.Opacity>
+				</Rectangle>
+			</StackPanel>
+		</DataTemplate>
+
+		<DataTemplate x:Key="FieldDataTemplate">
+			<StackPanel Orientation="Vertical">
+				<StackPanel Orientation="Horizontal">
+					<Rectangle VerticalAlignment="Stretch" Width="1" Fill="Black"
+							   Opacity="{Binding Source={StaticResource DarkLineOpacityPercent}, Converter={converters:PercentToDoubleConverter}}" />
+					<ItemsControl ItemsSource="{Binding Mode=OneWay}"
+								  ItemTemplate="{StaticResource FieldInternalDataTemplate}"
+								  AlternationCount="{Binding DataContext.Size, ElementName=ThisControl, Converter={converters:SquarePowerConverter}, Mode=OneWay}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<StackPanel Orientation="Horizontal" />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+					</ItemsControl>
+				</StackPanel>
+				<Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black">
+					<Rectangle.Opacity>
+						<MultiBinding Converter="{thisConverters:FieldLineOpacityMultiConverter}">
+							<Binding Path="DataContext.Size" ElementName="ThisControl" Mode="OneWay" />
+							<Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}" Mode="OneWay" />
+							<Binding Source="{StaticResource DarkLineOpacityPercent}" Converter="{converters:PercentToDoubleConverter}" />
+							<Binding Source="{StaticResource LightLineOpacityPercent}" Converter="{converters:PercentToDoubleConverter}" />
+						</MultiBinding>
+					</Rectangle.Opacity>
+				</Rectangle>
+			</StackPanel>
+		</DataTemplate>
 	</UserControl.Resources>
 
 	<StackPanel Orientation="Vertical" Background="{StaticResource FieldBackground}">
 		<Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black"
 				   Opacity="{Binding Source={StaticResource DarkLineOpacityPercent}, Converter={converters:PercentToDoubleConverter}}" />
 		<ItemsControl ItemsSource="{Binding Cells, Mode=OneWay}"
+					  ItemTemplate="{StaticResource FieldDataTemplate}"
 					  AlternationCount="{Binding DataContext.Size, ElementName=ThisControl, Converter={converters:SquarePowerConverter}, Mode=OneWay}">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
 					<StackPanel Orientation="Vertical" />
 				</ItemsPanelTemplate>
 			</ItemsControl.ItemsPanel>
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<StackPanel Orientation="Vertical">
-						<StackPanel Orientation="Horizontal">
-							<Rectangle VerticalAlignment="Stretch" Width="1" Fill="Black"
-									   Opacity="{Binding Source={StaticResource DarkLineOpacityPercent}, Converter={converters:PercentToDoubleConverter}}" />
-							<ItemsControl x:Name="ColumnItems" ItemsSource="{Binding Mode=OneWay}"
-										  AlternationCount="{Binding DataContext.Size, ElementName=ThisControl, Converter={converters:SquarePowerConverter}, Mode=OneWay}">
-								<ItemsControl.ItemsPanel>
-									<ItemsPanelTemplate>
-										<StackPanel Orientation="Horizontal" />
-									</ItemsPanelTemplate>
-								</ItemsControl.ItemsPanel>
-								<ItemsControl.ItemTemplate>
-									<DataTemplate>
-										<StackPanel Orientation="Horizontal">
-											<Button Content="{Binding Value, Mode=OneWay}" Width="{StaticResource CellSize}" Height="{StaticResource CellSize}" Margin="1">
-												<Button.Background>
-													<MultiBinding Converter="{thisConverters:FieldCellBackgroundMultiConverter}">
-														<Binding Path="DataContext.Size" ElementName="ThisControl" Mode="OneWay" />
-														<Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}, AncestorLevel=2}" Mode="OneWay" />
-														<Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}, AncestorLevel=1}" Mode="OneWay" />
-														<Binding Source="{StaticResource DarkCellBackground}" />
-														<Binding Source="{StaticResource LightCellBackground}" />
-													</MultiBinding>
-												</Button.Background>
-											</Button>
-											<Rectangle VerticalAlignment="Stretch" Width="1" Fill="Black">
-												<Rectangle.Opacity>
-													<MultiBinding Converter="{thisConverters:FieldLineOpacityMultiConverter}">
-														<Binding Path="DataContext.Size" ElementName="ThisControl" Mode="OneWay" />
-														<Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}" Mode="OneWay" />
-														<Binding Source="{StaticResource DarkLineOpacityPercent}" Converter="{converters:PercentToDoubleConverter}" />
-														<Binding Source="{StaticResource LightLineOpacityPercent}" Converter="{converters:PercentToDoubleConverter}" />
-													</MultiBinding>
-												</Rectangle.Opacity>
-											</Rectangle>
-										</StackPanel>
-									</DataTemplate>
-								</ItemsControl.ItemTemplate>
-							</ItemsControl>
-						</StackPanel>
-						<Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black">
-							<Rectangle.Opacity>
-								<MultiBinding Converter="{thisConverters:FieldLineOpacityMultiConverter}">
-									<Binding Path="DataContext.Size" ElementName="ThisControl" Mode="OneWay" />
-									<Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}" Mode="OneWay" />
-									<Binding Source="{StaticResource DarkLineOpacityPercent}" Converter="{converters:PercentToDoubleConverter}" />
-									<Binding Source="{StaticResource LightLineOpacityPercent}" Converter="{converters:PercentToDoubleConverter}" />
-								</MultiBinding>
-							</Rectangle.Opacity>
-						</Rectangle>
-					</StackPanel>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
 		</ItemsControl>
 	</StackPanel>
 </UserControl>

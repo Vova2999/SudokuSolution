@@ -11,11 +11,14 @@
 	</ResourceDictionary.MergedDictionaries>
 
 	<system:Double x:Key="CellSize">30</system:Double>
+	<system:Double x:Key="CellSelectSize">25</system:Double>
 	<system:Int32 x:Key="DarkLineOpacityPercent">80</system:Int32>
 	<system:Int32 x:Key="LightLineOpacityPercent">20</system:Int32>
 	<SolidColorBrush x:Key="FieldBackground" Color="{StaticResource MahApps.Colors.ThemeBackground}" />
 	<SolidColorBrush x:Key="DarkCellBackground" Color="LightSkyBlue" />
 	<SolidColorBrush x:Key="LightCellBackground" Color="{StaticResource MahApps.Colors.ThemeBackground}" />
+
+	<SolidColorBrush x:Key="SelectValueBackground" Color="LightGray" />
 
 	<SolidColorBrush x:Key="SettingsBackground" Color="{StaticResource MahApps.Colors.ThemeBackground}" />
 
