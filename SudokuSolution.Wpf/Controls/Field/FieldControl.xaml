@@ -57,20 +57,21 @@
 					   HorizontalOffset="5"
 					   PopupAnimation="Slide"
 					   IsOpen="{Binding IsMenuOpened, Mode=TwoWay}">
-					<StackPanel Background="{StaticResource FieldBackground}">
-						<ItemsControl ItemsSource="{Binding DataContext.Values, ElementName=ThisControl, Mode=OneWay}"
-									  ItemTemplate="{StaticResource SelectValueDataTemplate}">
-							<ItemsControl.ItemsPanel>
-								<ItemsPanelTemplate>
-									<StackPanel Orientation="Vertical" />
-								</ItemsPanelTemplate>
-							</ItemsControl.ItemsPanel>
-						</ItemsControl>
-						<Button Margin="1"
-								Height="{StaticResource CellSelectSize}"
-								Command="{Binding DataContext.SetCellValueCommand, ElementName=ThisControl, Mode=OneWay}"
-								CommandParameter="0" />
-					</StackPanel>
+					<Border BorderBrush="LightGray" BorderThickness="1" Background="{StaticResource FieldBackground}">
+						<StackPanel>
+							<ItemsControl ItemsSource="{Binding DataContext.Values, ElementName=ThisControl, Mode=OneWay}"
+										  ItemTemplate="{StaticResource SelectValueDataTemplate}">
+								<ItemsControl.ItemsPanel>
+									<ItemsPanelTemplate>
+										<StackPanel Orientation="Vertical" />
+									</ItemsPanelTemplate>
+								</ItemsControl.ItemsPanel>
+							</ItemsControl>
+							<Button Height="{StaticResource CellSelectSize}"
+									Command="{Binding DataContext.SetCellValueCommand, ElementName=ThisControl, Mode=OneWay}"
+									CommandParameter="0" />
+						</StackPanel>
+					</Border>
 				</Popup>
 				<Rectangle VerticalAlignment="Stretch" Width="1" Fill="Black">
 					<Rectangle.Opacity>
@@ -114,7 +115,7 @@
 		</DataTemplate>
 	</UserControl.Resources>
 
-	<StackPanel Orientation="Vertical" Background="{StaticResource FieldBackground}">
+	<StackPanel  Orientation="Vertical" Background="{StaticResource FieldBackground}">
 		<Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black"
 				   Opacity="{Binding Source={StaticResource DarkLineOpacityPercent}, Converter={converters:PercentToDoubleConverter}}" />
 		<ItemsControl ItemsSource="{Binding Cells, Mode=OneWay}"
