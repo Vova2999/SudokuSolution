@@ -34,7 +34,7 @@ namespace SudokuSolution.Wpf.Views.Main {
 		public SettingsViewModel SettingsViewModel { get; private set; }
 
 		public ICommand CalculateCommand => calculateCommand ??= new RelayCommand(OnCalculate);
-		public ICommand CalculateAllCommand => calculateAllCommand ??= new RelayCommand(OnCalculate);
+		public ICommand CalculateAllCommand => calculateAllCommand ??= new RelayCommand(OnCalculateAll);
 		public ICommand OpenSettingsCommand => openSettingsCommand ??= new RelayCommand(OnOpenSettings);
 		public ICommand CloseSettingsCommand => closeSettingsCommand ??= new RelayCommand(OnCloseSettings);
 
@@ -49,15 +49,23 @@ namespace SudokuSolution.Wpf.Views.Main {
 		}
 
 		private void OnCalculate() {
+			var solvedFields = gameService.Solve(CreateField()).Take(SettingsViewModel.MaxSolved);
+			solvedViewModelFactory.Create(solvedFields, false).OpenDialogInUi();
+		}
+
+		private void OnCalculateAll() {
+			var solvedFields = gameService.Solve(CreateField()).Take(SettingsViewModel.MaxSolved);
+			solvedViewModelFactory.Create(solvedFields, true).OpenDialogInUi();
+		}
+
+		private Field CreateField() {
 			var field = new Field(SettingsViewModel.Size);
 			FieldViewModel.Cells.ForEach((row, cells) =>
 				cells.ForEach((column, cell) => {
 					if (cell.Value.HasValue)
 						field.Cells[row, column].Final = cell.Value.Value;
 				}));
-
-			var solvedFields = gameService.Solve(field).Take(Constants.MaxSolved);
-			solvedViewModelFactory.Create(solvedFields, false).OpenDialogInUi();
+			return field;
 		}
 
 		private void OnOpenSettings() {

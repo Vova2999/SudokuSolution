@@ -82,7 +82,10 @@ namespace SudokuSolution.Wpf.Views.Solved {
 
 		private void LoadCurrentField() {
 			var field = fields[CurrentSolved - 1];
-			FieldViewModel.RefreshField(field.MaxValue);
+
+			if (FieldViewModel.Size != field.MaxValue)
+				FieldViewModel.RefreshField(field.MaxValue);
+
 			FieldViewModel.Cells.ForEach((row, cells) => cells.ForEach((column, cell) => cell.Value = field.Cells[row, column].Final));
 		}
 

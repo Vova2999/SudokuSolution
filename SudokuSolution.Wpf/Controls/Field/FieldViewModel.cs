@@ -91,5 +91,10 @@ namespace SudokuSolution.Wpf.Controls.Field {
 			SelectedCell.Value = value == 0 ? null : value;
 			SelectedCell.IsMenuOpened = false;
 		}
+
+		public override void Cleanup() {
+			messenger.Unregister(this);
+			base.Cleanup();
+		}
 	}
 }

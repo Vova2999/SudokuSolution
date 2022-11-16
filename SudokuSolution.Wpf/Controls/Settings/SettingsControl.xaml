@@ -2,7 +2,9 @@
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:command="http://www.galasoft.ch/mvvmlight"
 			 xmlns:local="clr-namespace:SudokuSolution.Wpf.Controls.Settings"
 			 mc:Ignorable="d"
 			 x:Name="ThisControl"
@@ -15,6 +17,9 @@
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
+			<RowDefinition Height="10" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" />
@@ -23,5 +28,19 @@
 
 		<TextBlock Grid.Row="0" Grid.Column="0" Margin="10,0" Text="Размер поля" VerticalAlignment="Center" HorizontalAlignment="Center" />
 		<ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding AllowedSizes, Mode=OneWay}" SelectedValue="{Binding Size, Mode=TwoWay}" />
+
+		<TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="Количество решений" VerticalAlignment="Center" HorizontalAlignment="Center" />
+		<TextBox Grid.Row="3"
+				 Grid.Column="0"
+				 Grid.ColumnSpan="2"
+				 VerticalAlignment="Center"
+				 HorizontalContentAlignment="Center"
+				 Text="{Binding MaxSolvedString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="MouseMove">
+					<command:EventToCommand Command="{Binding HandleMouseMoveCommand, Mode=OneWay}" PassEventArgsToCommand="True" />
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+		</TextBox>
 	</Grid>
 </UserControl>
