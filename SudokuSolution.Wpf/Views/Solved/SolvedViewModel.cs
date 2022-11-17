@@ -18,6 +18,7 @@ namespace SudokuSolution.Wpf.Views.Solved {
 		private ICommand loadedCommand;
 		private ICommand prevSolvedCommand;
 		private ICommand nextSolvedCommand;
+		private ICommand contentRenderedCommand;
 
 		private readonly IMessageBoxService messageBoxService;
 
@@ -42,6 +43,7 @@ namespace SudokuSolution.Wpf.Views.Solved {
 		public ICommand LoadedCommand => loadedCommand ??= new RelayCommand(OnLoaded);
 		public ICommand PrevSolvedCommand => prevSolvedCommand ??= new RelayCommand(OnPrevSolved, CanPrevSolved);
 		public ICommand NextSolvedCommand => nextSolvedCommand ??= new RelayCommand(OnNextSolved, CanNextSolved);
+		public ICommand ContentRenderedCommand => contentRenderedCommand ??= new RelayCommand(OnContentRendered);
 
 		public SolvedViewModel(IMessageBoxService messageBoxService,
 							   FieldViewModel fieldViewModel,
@@ -73,14 +75,11 @@ namespace SudokuSolution.Wpf.Views.Solved {
 					TotalSolvedCount = 0;
 			}
 
-			if (TotalSolvedCount == 0) {
-				messageBoxService.Show("Решений нет!", "", MessageBoxButton.OK, MessageBoxImage.Warning);
-				TypedView.Close();
-			}
-			else {
-				CurrentSolved = 1;
-				LoadCurrentField();
-			}
+			if (TotalSolvedCount == 0)
+				return;
+
+			CurrentSolved = 1;
+			LoadCurrentField();
 		}
 
 		private void LoadCurrentField() {
@@ -120,6 +119,20 @@ namespace SudokuSolution.Wpf.Views.Solved {
 
 		private bool CanNextSolved() {
 			return !TotalSolvedCount.HasValue || CurrentSolved < TotalSolvedCount;
+		}
+
+		private void OnContentRendered() {
+			if (TotalSolvedCount != 0)
+				return;
+
+			messageBoxService.Show("Решений нет!", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+			TypedView.Close();
+		}
+
+		public override void Cleanup() {
+			FieldViewModel?.Cleanup();
+			FieldViewModel = null;
+			base.Cleanup();
 		}
 
 		public interface IFactory {

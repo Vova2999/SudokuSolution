@@ -5,7 +5,7 @@ using SudokuSolution.Wpf.Common.MessageBox;
 namespace SudokuSolution.Wpf.Views.Solved {
 	public class DemoModel : SolvedViewModel {
 		public DemoModel() : base(
-			Locator.Current.Locate<IMessageBoxService>(),
+			DemoLocator.Locate<IMessageBoxService>(),
 			new Controls.Field.DemoModel(),
 			new Field(1),
 			new List<Field>(),

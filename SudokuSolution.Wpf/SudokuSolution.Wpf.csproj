@@ -178,6 +178,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DemoLocator.cs" />
     <Compile Include="Views\Solved\DemoModel.cs" />
     <Compile Include="Views\Solved\SolvedViewModel.cs" />
     <Compile Include="Views\Solved\SolvedWindow.xaml.cs">

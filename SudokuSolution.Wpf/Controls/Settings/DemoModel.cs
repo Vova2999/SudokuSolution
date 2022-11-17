@@ -2,7 +2,7 @@
 
 namespace SudokuSolution.Wpf.Controls.Settings {
 	public class DemoModel : SettingsViewModel {
-		public DemoModel() : base(Locator.Current.Locate<IMessenger>()) {
+		public DemoModel() : base(DemoLocator.Locate<IMessenger>()) {
 			Size = Constants.StartedSize;
 		}
 	}

@@ -4,10 +4,10 @@ using SudokuSolution.Wpf.Views.Solved;
 namespace SudokuSolution.Wpf.Views.Main {
 	public class DemoModel : MainViewModel {
 		public DemoModel() : base(
-			Locator.Current.Locate<IGameService>(),
+			DemoLocator.Locate<IGameService>(),
 			new Controls.Field.DemoModel(),
 			new Controls.Settings.DemoModel(),
-			Locator.Current.Locate<SolvedViewModel.IFactory>()) {
+			DemoLocator.Locate<SolvedViewModel.IFactory>()) {
 			IsSettingsOpened = false;
 		}
 	}

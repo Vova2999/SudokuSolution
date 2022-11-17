@@ -26,6 +26,7 @@ namespace SudokuSolution.Wpf {
 		private static readonly Lazy<Locator> Lazy = new(() => new Locator());
 
 		public static Locator Current => Lazy.Value;
+		public static string FactoryName => "IFactory";
 
 		private Locator() {
 			container = new DependencyInjectionContainer();
@@ -33,7 +34,7 @@ namespace SudokuSolution.Wpf {
 		}
 
 		private static void RegisterDependencies(IExportRegistrationBlock registration) {
-			registration.ExportInterfaceFactories(type => type.Name == "IFactory");
+			registration.ExportInterfaceFactories(type => type.Name == FactoryName);
 
 			RegisterLogic(registration);
 			RegisterServices(registration);

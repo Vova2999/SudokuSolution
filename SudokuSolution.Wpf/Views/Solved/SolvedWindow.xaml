@@ -32,6 +32,9 @@
 		<i:EventTrigger EventName="Loaded">
 			<command:EventToCommand Command="{Binding LoadedCommand, Mode=OneWay}" />
 		</i:EventTrigger>
+		<i:EventTrigger EventName="ContentRendered">
+			<command:EventToCommand Command="{Binding ContentRenderedCommand, Mode=OneWay}" />
+		</i:EventTrigger>
 	</i:Interaction.Triggers>
 
 	<Grid>
