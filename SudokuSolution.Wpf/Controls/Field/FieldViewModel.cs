@@ -5,6 +5,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using SudokuSolution.Wpf.Common.Base;
+using SudokuSolution.Wpf.Helpers;
 using SudokuSolution.Wpf.Messages;
 
 namespace SudokuSolution.Wpf.Controls.Field {
@@ -17,6 +18,7 @@ namespace SudokuSolution.Wpf.Controls.Field {
 		private IReadOnlyList<IReadOnlyList<int>> values;
 		private IReadOnlyList<IReadOnlyList<CellModel>> cells;
 
+		private ICommand keyDownCommand;
 		private ICommand selectCellCommand;
 		private ICommand setCellValueCommand;
 
@@ -45,6 +47,7 @@ namespace SudokuSolution.Wpf.Controls.Field {
 			set => Set(ref cells, value);
 		}
 
+		public ICommand KeyDownCommand => keyDownCommand ??= new RelayCommand<KeyEventArgs>(OnKeyDown);
 		public ICommand SelectCellCommand => selectCellCommand ??= new RelayCommand<CellModel>(OnSelectCell);
 		public ICommand SetCellValueCommand => setCellValueCommand ??= new RelayCommand<int>(OnSetCellValue);
 
@@ -54,8 +57,6 @@ namespace SudokuSolution.Wpf.Controls.Field {
 			this.messenger = messenger;
 
 			messenger.Register<SizeChangedMessage>(this, OnSizeChanged);
-
-			RefreshField(Constants.StartedSize);
 		}
 
 		private void OnSizeChanged(SizeChangedMessage message) {
@@ -79,6 +80,15 @@ namespace SudokuSolution.Wpf.Controls.Field {
 				.ToArray();
 		}
 
+		private void OnKeyDown(KeyEventArgs args) {
+			if (SelectedCell == null || !KeyHelper.DigitKeys.TryGetValue(args.Key, out var value) || value > Size)
+				return;
+
+			SelectedCell.Value = value == 0 ? null : value;
+			SelectedCell.IsMenuOpened = false;
+			SelectedCell = null;
+		}
+
 		private void OnSelectCell(CellModel cell) {
 			if (LockSelectedMenu)
 				return;
@@ -88,8 +98,12 @@ namespace SudokuSolution.Wpf.Controls.Field {
 		}
 
 		private void OnSetCellValue(int value) {
+			if (SelectedCell == null)
+				return;
+
 			SelectedCell.Value = value == 0 ? null : value;
 			SelectedCell.IsMenuOpened = false;
+			SelectedCell = null;
 		}
 
 		public override void Cleanup() {
