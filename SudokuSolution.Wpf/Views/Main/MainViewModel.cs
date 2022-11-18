@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using SudokuSolution.Common.Extensions;
 using SudokuSolution.Domain.Entities;
-using SudokuSolution.Logic.GameService;
 using SudokuSolution.Wpf.Common.Base;
 using SudokuSolution.Wpf.Controls.Field;
 using SudokuSolution.Wpf.Controls.Settings;
@@ -22,8 +20,6 @@ namespace SudokuSolution.Wpf.Views.Main {
 		private ICommand closeSettingsCommand;
 		private ICommand handleMouseMoveCommand;
 
-		private readonly IGameService gameService;
-
 		private readonly SolvedViewModel.IFactory solvedViewModelFactory;
 
 		public bool IsSettingsOpened {
@@ -40,11 +36,9 @@ namespace SudokuSolution.Wpf.Views.Main {
 		public ICommand CloseSettingsCommand => closeSettingsCommand ??= new RelayCommand(OnCloseSettings);
 		public ICommand HandleMouseMoveCommand => handleMouseMoveCommand ??= new RelayCommand<MouseEventArgs>(OnHandleMouseMove);
 
-		public MainViewModel(IGameService gameService,
-							 FieldViewModel fieldViewModel,
+		public MainViewModel(FieldViewModel fieldViewModel,
 							 SettingsViewModel settingsViewModel,
 							 SolvedViewModel.IFactory solvedViewModelFactory) {
-			this.gameService = gameService;
 			this.solvedViewModelFactory = solvedViewModelFactory;
 			FieldViewModel = fieldViewModel;
 			SettingsViewModel = settingsViewModel;
@@ -52,14 +46,12 @@ namespace SudokuSolution.Wpf.Views.Main {
 
 		private void OnCalculate() {
 			var startField = CreateField();
-			var solvedFields = gameService.Solve(startField).Take(SettingsViewModel.MaxSolved);
-			solvedViewModelFactory.Create(startField, solvedFields, false).OpenDialogInUi();
+			solvedViewModelFactory.Create(startField, SettingsViewModel.MaxSolved, false).OpenDialogInUi();
 		}
 
 		private void OnCalculateAll() {
 			var startField = CreateField();
-			var solvedFields = gameService.Solve(startField).Take(SettingsViewModel.MaxSolved);
-			solvedViewModelFactory.Create(startField, solvedFields, true).OpenDialogInUi();
+			solvedViewModelFactory.Create(startField, SettingsViewModel.MaxSolved, true).OpenDialogInUi();
 		}
 
 		private Field CreateField() {

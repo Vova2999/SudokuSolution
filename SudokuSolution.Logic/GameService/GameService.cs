@@ -29,6 +29,10 @@ namespace SudokuSolution.Logic.GameService {
 			return SolveWithChangeField((Field) field.Clone());
 		}
 
+		public FieldEnumeratorAsync StartSolve(Field field) {
+			return new FieldEnumeratorAsync(this, field);
+		}
+
 		private IEnumerable<Field> SolveWithChangeField(Field field) {
 			var withoutRandomResult = TrySolveWithoutRandom(field);
 			if (withoutRandomResult.HasValue)

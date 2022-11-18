@@ -9,6 +9,8 @@
 					  xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
 					  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
 					  xmlns:behaviors="clr-namespace:SudokuSolution.Wpf.Common.Behaviors;assembly=SudokuSolution.Wpf.Common"
+					  xmlns:converters="clr-namespace:SudokuSolution.Wpf.Common.Converters;assembly=SudokuSolution.Wpf.Common"
+					  xmlns:wpfControls="clr-namespace:SudokuSolution.Wpf.Common.Controls;assembly=SudokuSolution.Wpf.Common"
 					  mc:Ignorable="d"
 					  WindowStyle="None"
 					  ResizeMode="CanMinimize"
@@ -98,6 +100,15 @@
 						VerticalAlignment="Center" />
 				</StackPanel>
 			</Button>
+		</Grid>
+
+		<Grid Grid.Row="0"
+			  Grid.Column="0"
+			  Grid.RowSpan="3"
+			  Background="#c4000000"
+			  Visibility="{Binding IsBusy, Converter={converters:BoolToVisibilityConverter}, Mode=OneWay}">
+			<wpfControls:CircleSpinner HorizontalAlignment="Center"
+									   VerticalAlignment="Center" />
 		</Grid>
 	</Grid>
 </controls:MetroWindow>

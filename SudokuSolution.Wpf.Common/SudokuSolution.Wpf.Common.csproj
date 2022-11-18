@@ -71,6 +71,9 @@
     <Compile Include="Behaviors\DragMoveBehavior.cs" />
     <Compile Include="Commands\AsyncRelayCommandT.cs" />
     <Compile Include="Commands\AsyncRelayCommand.cs" />
+    <Compile Include="Controls\CircleSpinner.xaml.cs">
+      <DependentUpon>CircleSpinner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\Base\MarkupConverterBase.cs" />
     <Compile Include="Converters\Base\MarkupMultiValueConverterBase.cs" />
     <Compile Include="Converters\BoolToBoldFontWeightConverter.cs" />
@@ -95,6 +98,12 @@
       <Project>{3708CCAC-4A43-4B14-98C9-86A4F5CCE3AA}</Project>
       <Name>SudokuSolution.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\CircleSpinner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

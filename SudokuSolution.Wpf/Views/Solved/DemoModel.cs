@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
-using SudokuSolution.Domain.Entities;
+﻿using SudokuSolution.Logic.GameService;
+using SudokuSolution.Wpf.Common.Dispatcher;
 using SudokuSolution.Wpf.Common.MessageBox;
 
 namespace SudokuSolution.Wpf.Views.Solved {
 	public class DemoModel : SolvedViewModel {
 		public DemoModel() : base(
+			DemoLocator.Locate<IGameService>(),
+			DemoLocator.Locate<IDispatcherHelper>(),
 			DemoLocator.Locate<IMessageBoxService>(),
 			new Controls.Field.DemoModel(),
-			new Field(1),
-			new List<Field>(),
+			null,
+			0,
 			false) {
 			CurrentSolved = 5;
 			TotalSolvedCount = 20;

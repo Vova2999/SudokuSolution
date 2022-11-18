@@ -62,6 +62,7 @@
     <Compile Include="FieldActions\SetRandomFinalAndSplitField\SetRandomFinalAndSplitField.cs" />
     <Compile Include="FieldService\FieldService.cs" />
     <Compile Include="FieldService\IFieldService.cs" />
+    <Compile Include="GameService\FieldEnumeratorAsync.cs" />
     <Compile Include="GameService\GameService.cs" />
     <Compile Include="GameService\IGameService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
