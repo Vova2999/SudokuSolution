@@ -13,12 +13,12 @@ namespace SudokuSolution.Wpf.Controls.Field {
 
 		public bool IsBoldFont {
 			get => isBoldFont;
-			set => Set(ref this.isBoldFont, value);
+			set => Set(ref isBoldFont, value);
 		}
 
 		public bool IsMenuOpened {
 			get => isMenuOpened;
-			set => Set(ref this.isMenuOpened, value);
+			set => Set(ref isMenuOpened, value);
 		}
 	}
 }

@@ -20,6 +20,7 @@ namespace SudokuSolution.Wpf.Views.Main {
 		private ICommand calculateAllCommand;
 		private ICommand openSettingsCommand;
 		private ICommand closeSettingsCommand;
+		private ICommand handleMouseMoveCommand;
 
 		private readonly IGameService gameService;
 
@@ -37,6 +38,7 @@ namespace SudokuSolution.Wpf.Views.Main {
 		public ICommand CalculateAllCommand => calculateAllCommand ??= new RelayCommand(OnCalculateAll);
 		public ICommand OpenSettingsCommand => openSettingsCommand ??= new RelayCommand(OnOpenSettings);
 		public ICommand CloseSettingsCommand => closeSettingsCommand ??= new RelayCommand(OnCloseSettings);
+		public ICommand HandleMouseMoveCommand => handleMouseMoveCommand ??= new RelayCommand<MouseEventArgs>(OnHandleMouseMove);
 
 		public MainViewModel(IGameService gameService,
 							 FieldViewModel fieldViewModel,
@@ -76,6 +78,10 @@ namespace SudokuSolution.Wpf.Views.Main {
 
 		private void OnCloseSettings() {
 			IsSettingsOpened = false;
+		}
+
+		private static void OnHandleMouseMove(MouseEventArgs obj) {
+			obj.Handled = true;
 		}
 
 		public override void Cleanup() {

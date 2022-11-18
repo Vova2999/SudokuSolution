@@ -19,6 +19,7 @@ namespace SudokuSolution.Wpf.Views.Solved {
 		private ICommand prevSolvedCommand;
 		private ICommand nextSolvedCommand;
 		private ICommand contentRenderedCommand;
+		private ICommand handleMouseMoveCommand;
 
 		private readonly IMessageBoxService messageBoxService;
 
@@ -44,6 +45,7 @@ namespace SudokuSolution.Wpf.Views.Solved {
 		public ICommand PrevSolvedCommand => prevSolvedCommand ??= new RelayCommand(OnPrevSolved, CanPrevSolved);
 		public ICommand NextSolvedCommand => nextSolvedCommand ??= new RelayCommand(OnNextSolved, CanNextSolved);
 		public ICommand ContentRenderedCommand => contentRenderedCommand ??= new RelayCommand(OnContentRendered);
+		public ICommand HandleMouseMoveCommand => handleMouseMoveCommand ??= new RelayCommand<MouseEventArgs>(OnHandleMouseMove);
 
 		public SolvedViewModel(IMessageBoxService messageBoxService,
 							   FieldViewModel fieldViewModel,
@@ -127,6 +129,10 @@ namespace SudokuSolution.Wpf.Views.Solved {
 
 			messageBoxService.Show("Решений нет!", "", MessageBoxButton.OK, MessageBoxImage.Warning);
 			TypedView.Close();
+		}
+
+		private static void OnHandleMouseMove(MouseEventArgs obj) {
+			obj.Handled = true;
 		}
 
 		public override void Cleanup() {

@@ -4,6 +4,7 @@
 					  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 					  xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 					  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+					  xmlns:command="http://www.galasoft.ch/mvvmlight"
 					  xmlns:local="clr-namespace:SudokuSolution.Wpf.Views.Main"
 					  xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
 					  xmlns:converters="clr-namespace:SudokuSolution.Wpf.Common.Converters;assembly=SudokuSolution.Wpf.Common"
@@ -16,6 +17,8 @@
 					  ShowMaxRestoreButton="False"
 					  WindowStartupLocation="CenterScreen"
 					  SizeToContent="WidthAndHeight"
+					  MaxWidth="700"
+					  MaxHeight="700"
 					  Title="{Binding Header}"
 					  x:Name="ThisWindow"
 					  d:DataContext="{DynamicResource DemoModel}">
@@ -30,12 +33,24 @@
 
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
-		<ContentPresenter Grid.Row="0" Margin="20,32,20,20" Content="{Binding FieldViewModel.TypedView}" HorizontalAlignment="Center" />
+		<ScrollViewer Grid.Row="0"
+					  Margin="20,32,20,20"
+					  HorizontalAlignment="Center"
+					  VerticalScrollBarVisibility="Auto"
+					  HorizontalScrollBarVisibility="Auto">
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="MouseMove">
+					<command:EventToCommand Command="{Binding HandleMouseMoveCommand, Mode=OneWay}" PassEventArgsToCommand="True" />
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+
+			<ContentPresenter Content="{Binding FieldViewModel.TypedView}" />
+		</ScrollViewer>
 
 		<Button Grid.Row="0"
 				Margin="10"
