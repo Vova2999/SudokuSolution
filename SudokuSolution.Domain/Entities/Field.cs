@@ -1,50 +1,57 @@
 ﻿using System;
 
-namespace SudokuSolution.Domain.Entities {
-	public class Field : ICloneable {
-		public int MaxValue { get; }
-		public Cell[,] Cells { get; }
+namespace SudokuSolution.Domain.Entities;
 
-		private Field(int maxValue, Func<int, int, Cell> createCell) {
-			if (maxValue <= 0)
-				throw new InvalidOperationException("Invalid max value");
+public class Field : ICloneable
+{
+	public int MaxValue { get; }
+	public Cell[,] Cells { get; }
 
-			MaxValue = maxValue;
-			Cells = new Cell[maxValue, maxValue];
+	private Field(int maxValue, Func<int, int, Cell> createCell)
+	{
+		if (maxValue <= 0)
+			throw new InvalidOperationException("Invalid max value");
 
-			for (var row = 0; row < maxValue; row++)
-			for (var column = 0; column < maxValue; column++)
-				Cells[row, column] = createCell(row, column);
-		}
+		MaxValue = maxValue;
+		Cells = new Cell[maxValue, maxValue];
 
-		public Field(int maxValue) : this(maxValue, (_, _) => new Cell(maxValue)) { }
+		for (var row = 0; row < maxValue; row++)
+		for (var column = 0; column < maxValue; column++)
+			Cells[row, column] = createCell(row, column);
+	}
 
-		public object Clone() {
-			return new Field(MaxValue, (row, column) => (Cell) Cells[row, column].Clone());
-		}
+	public Field(int maxValue) : this(maxValue, (_, _) => new Cell(maxValue)) { }
 
-		public override bool Equals(object obj) {
-			return obj is Field field && Equals(field);
-		}
+	public object Clone()
+	{
+		return new Field(MaxValue, (row, column) => (Cell) Cells[row, column].Clone());
+	}
 
-		public bool Equals(Field field) {
-			if (ReferenceEquals(this, field))
-				return true;
+	public override bool Equals(object obj)
+	{
+		return obj is Field field && Equals(field);
+	}
 
-			if (MaxValue != field.MaxValue)
-				return false;
-
-			for (var row = 0; row < MaxValue; row++)
-			for (var column = 0; column < MaxValue; column++) {
-				if (!Cells[row, column].Equals(field.Cells[row, column]))
-					return false;
-			}
-
+	public bool Equals(Field field)
+	{
+		if (ReferenceEquals(this, field))
 			return true;
+
+		if (MaxValue != field.MaxValue)
+			return false;
+
+		for (var row = 0; row < MaxValue; row++)
+		for (var column = 0; column < MaxValue; column++)
+		{
+			if (!Cells[row, column].Equals(field.Cells[row, column]))
+				return false;
 		}
 
-		public override int GetHashCode() {
-			return 0;
-		}
+		return true;
+	}
+
+	public override int GetHashCode()
+	{
+		return 0;
 	}
 }

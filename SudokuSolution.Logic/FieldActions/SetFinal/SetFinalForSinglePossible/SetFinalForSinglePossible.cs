@@ -2,41 +2,46 @@
 using SudokuSolution.Domain.Entities;
 using SudokuSolution.Logic.FieldActions.CleanPossible;
 
-namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSinglePossible {
-	public class SetFinalForSinglePossible : ISetFinalForSinglePossible {
-		private readonly ICleanPossibleFacade cleanPossibleFacade;
+namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSinglePossible;
 
-		public SetFinalForSinglePossible(ICleanPossibleFacade cleanPossibleFacade) {
-			this.cleanPossibleFacade = cleanPossibleFacade;
-		}
+public class SetFinalForSinglePossible : ISetFinalForSinglePossible
+{
+	private readonly ICleanPossibleFacade cleanPossibleFacade;
 
-		public FieldActionsResult Execute(Field field) {
-			var result = FieldActionsResult.Nothing;
-			field.Cells.ForEach((row, column, cell) => {
-				if (cell.HasFinal)
+	public SetFinalForSinglePossible(ICleanPossibleFacade cleanPossibleFacade)
+	{
+		this.cleanPossibleFacade = cleanPossibleFacade;
+	}
+
+	public FieldActionsResult Execute(Field field)
+	{
+		var result = FieldActionsResult.Nothing;
+		field.Cells.ForEach((row, column, cell) =>
+		{
+			if (cell.HasFinal)
+				return;
+
+			var lastValue = -1;
+			for (var value = 1; value <= field.MaxValue; value++)
+			{
+				if (!cell[value])
+					continue;
+
+				if (lastValue != -1)
 					return;
 
-				var lastValue = -1;
-				for (var value = 1; value <= field.MaxValue; value++) {
-					if (!cell[value])
-						continue;
+				lastValue = value;
+			}
 
-					if (lastValue != -1)
-						return;
+			if (lastValue == -1)
+				return;
 
-					lastValue = value;
-				}
+			cell.Final = lastValue;
+			cleanPossibleFacade.Execute(field, row, column);
 
-				if (lastValue == -1)
-					return;
+			result = FieldActionsResult.Changed;
+		});
 
-				cell.Final = lastValue;
-				cleanPossibleFacade.Execute(field, row, column);
-
-				result = FieldActionsResult.Changed;
-			});
-
-			return result;
-		}
+		return result;
 	}
 }

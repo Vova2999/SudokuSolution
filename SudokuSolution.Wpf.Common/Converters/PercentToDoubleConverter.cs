@@ -2,14 +2,17 @@
 using System.Globalization;
 using SudokuSolution.Wpf.Common.Converters.Base;
 
-namespace SudokuSolution.Wpf.Common.Converters {
-	public class PercentToDoubleConverter : MarkupConverterBase {
-		protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-			return value is int intValue ? intValue / 100.0 : throw new ArgumentException($"{nameof(PercentToDoubleConverter)} only for int values");
-		}
+namespace SudokuSolution.Wpf.Common.Converters;
 
-		protected override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-			throw new NotImplementedException();
-		}
+public class PercentToDoubleConverter : MarkupConverterBase
+{
+	protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+	{
+		return value is int intValue ? intValue / 100.0 : throw new ArgumentException($"{nameof(PercentToDoubleConverter)} only for int values");
+	}
+
+	protected override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+	{
+		throw new NotImplementedException();
 	}
 }

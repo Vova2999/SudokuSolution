@@ -2,24 +2,29 @@
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Threading;
 
-namespace SudokuSolution.Wpf.Common.Dispatcher {
-	public class DispatcherHelperAdapter : IDispatcherHelper {
-		public System.Windows.Threading.Dispatcher UiDispatcher => DispatcherHelper.UIDispatcher;
+namespace SudokuSolution.Wpf.Common.Dispatcher;
 
-		public DispatcherHelperAdapter() {
-			DispatcherHelper.Initialize();
-		}
+public class DispatcherHelperAdapter : IDispatcherHelper
+{
+	public System.Windows.Threading.Dispatcher UiDispatcher => DispatcherHelper.UIDispatcher;
 
-		public void CheckBeginInvokeOnUI(Action action) {
-			DispatcherHelper.CheckBeginInvokeOnUI(action);
-		}
+	public DispatcherHelperAdapter()
+	{
+		DispatcherHelper.Initialize();
+	}
 
-		public DispatcherOperation RunAsync(Action action) {
-			return DispatcherHelper.RunAsync(action);
-		}
+	public void CheckBeginInvokeOnUI(Action action)
+	{
+		DispatcherHelper.CheckBeginInvokeOnUI(action);
+	}
 
-		public void Reset() {
-			DispatcherHelper.Reset();
-		}
+	public DispatcherOperation RunAsync(Action action)
+	{
+		return DispatcherHelper.RunAsync(action);
+	}
+
+	public void Reset()
+	{
+		DispatcherHelper.Reset();
 	}
 }

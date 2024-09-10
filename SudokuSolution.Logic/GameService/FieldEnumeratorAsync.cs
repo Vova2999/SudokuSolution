@@ -3,39 +3,44 @@ using System.Threading.Tasks;
 using SudokuSolution.Common.Lock;
 using SudokuSolution.Domain.Entities;
 
-namespace SudokuSolution.Logic.GameService {
-	public class FieldEnumeratorAsync {
-		public Field Current { get; private set; }
+namespace SudokuSolution.Logic.GameService;
 
-		private readonly IGameService gameService;
-		private readonly Field field;
+public class FieldEnumeratorAsync
+{
+	public Field Current { get; private set; }
 
-		private readonly AsyncLock asyncLock;
+	private readonly IGameService gameService;
+	private readonly Field field;
 
-		private IEnumerator<Field> fieldEnumerator;
+	private readonly AsyncLock asyncLock;
 
-		public FieldEnumeratorAsync(IGameService gameService, Field field) {
-			this.gameService = gameService;
-			this.field = field;
+	private IEnumerator<Field> fieldEnumerator;
 
-			asyncLock = new AsyncLock();
-		}
+	public FieldEnumeratorAsync(IGameService gameService, Field field)
+	{
+		this.gameService = gameService;
+		this.field = field;
 
-		public Task<bool> MoveNextAsync() {
-			var taskCompletionSource = new TaskCompletionSource<bool>();
+		asyncLock = new AsyncLock();
+	}
 
-			Task.Run(async () => {
-				using (await asyncLock.LockAsync().ConfigureAwait(false)) {
-					fieldEnumerator ??= gameService.Solve(field).GetEnumerator();
+	public Task<bool> MoveNextAsync()
+	{
+		var taskCompletionSource = new TaskCompletionSource<bool>();
 
-					var moveNextResult = fieldEnumerator.MoveNext();
-					Current = moveNextResult ? fieldEnumerator.Current : null;
+		Task.Run(async () =>
+		{
+			using (await asyncLock.LockAsync().ConfigureAwait(false))
+			{
+				fieldEnumerator ??= gameService.Solve(field).GetEnumerator();
 
-					taskCompletionSource.SetResult(moveNextResult);
-				}
-			});
+				var moveNextResult = fieldEnumerator.MoveNext();
+				Current = moveNextResult ? fieldEnumerator.Current : null;
 
-			return taskCompletionSource.Task;
-		}
+				taskCompletionSource.SetResult(moveNextResult);
+			}
+		});
+
+		return taskCompletionSource.Task;
 	}
 }

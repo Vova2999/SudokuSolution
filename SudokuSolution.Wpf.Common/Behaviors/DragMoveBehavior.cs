@@ -2,32 +2,39 @@
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
-namespace SudokuSolution.Wpf.Common.Behaviors {
-	public class DragMoveBehavior : Behavior<Window> {
-		protected override void OnAttached() {
-			AssociatedObject.MouseMove += OnWindowMouseMove;
-		}
+namespace SudokuSolution.Wpf.Common.Behaviors;
 
-		protected override void OnDetaching() {
-			AssociatedObject.MouseMove -= OnWindowMouseMove;
-		}
+public class DragMoveBehavior : Behavior<Window>
+{
+	protected override void OnAttached()
+	{
+		AssociatedObject.MouseMove += OnWindowMouseMove;
+	}
 
-		private static void OnWindowMouseMove(object sender, MouseEventArgs e) {
-			if (e.LeftButton != MouseButtonState.Pressed || sender is not Window window)
-				return;
+	protected override void OnDetaching()
+	{
+		AssociatedObject.MouseMove -= OnWindowMouseMove;
+	}
 
-			try {
-				if (window.WindowState == WindowState.Maximized) {
-					window.WindowState = WindowState.Normal;
-					if (Application.Current.MainWindow != null)
-						Application.Current.MainWindow.Top = 3;
-				}
+	private static void OnWindowMouseMove(object sender, MouseEventArgs e)
+	{
+		if (e.LeftButton != MouseButtonState.Pressed || sender is not Window window)
+			return;
 
-				window.DragMove();
+		try
+		{
+			if (window.WindowState == WindowState.Maximized)
+			{
+				window.WindowState = WindowState.Normal;
+				if (Application.Current.MainWindow != null)
+					Application.Current.MainWindow.Top = 3;
 			}
-			catch {
-				// ignored
-			}
+
+			window.DragMove();
+		}
+		catch
+		{
+			// ignored
 		}
 	}
 }

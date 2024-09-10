@@ -8,107 +8,120 @@ using SudokuSolution.Wpf.Common.Base;
 using SudokuSolution.Wpf.Helpers;
 using SudokuSolution.Wpf.Messages;
 
-namespace SudokuSolution.Wpf.Controls.Field {
-	public class FieldViewModel : ViewModel<FieldControl> {
-		public override object Header => string.Empty;
+namespace SudokuSolution.Wpf.Controls.Field;
 
-		private int size;
-		private bool lockSelectedMenu;
-		private CellModel selectedCell;
-		private IReadOnlyList<IReadOnlyList<int>> values;
-		private IReadOnlyList<IReadOnlyList<CellModel>> cells;
+public class FieldViewModel : ViewModel<FieldControl>
+{
+	public override object Header => string.Empty;
 
-		private ICommand keyDownCommand;
-		private ICommand selectCellCommand;
-		private ICommand setCellValueCommand;
+	private int size;
+	private bool lockSelectedMenu;
+	private CellModel selectedCell;
+	private IReadOnlyList<IReadOnlyList<int>> values;
+	private IReadOnlyList<IReadOnlyList<CellModel>> cells;
 
-		public int Size {
-			get => size;
-			set => Set(ref size, value);
-		}
+	private ICommand keyDownCommand;
+	private ICommand selectCellCommand;
+	private ICommand setCellValueCommand;
 
-		public bool LockSelectedMenu {
-			get => lockSelectedMenu;
-			set => Set(ref lockSelectedMenu, value);
-		}
+	public int Size
+	{
+		get => size;
+		set => Set(ref size, value);
+	}
 
-		public CellModel SelectedCell {
-			get => selectedCell;
-			set => Set(ref selectedCell, value);
-		}
+	public bool LockSelectedMenu
+	{
+		get => lockSelectedMenu;
+		set => Set(ref lockSelectedMenu, value);
+	}
 
-		public IReadOnlyList<IReadOnlyList<int>> Values {
-			get => values;
-			set => Set(ref values, value);
-		}
+	public CellModel SelectedCell
+	{
+		get => selectedCell;
+		set => Set(ref selectedCell, value);
+	}
 
-		public IReadOnlyList<IReadOnlyList<CellModel>> Cells {
-			get => cells;
-			set => Set(ref cells, value);
-		}
+	public IReadOnlyList<IReadOnlyList<int>> Values
+	{
+		get => values;
+		set => Set(ref values, value);
+	}
 
-		public ICommand KeyDownCommand => keyDownCommand ??= new RelayCommand<KeyEventArgs>(OnKeyDown);
-		public ICommand SelectCellCommand => selectCellCommand ??= new RelayCommand<CellModel>(OnSelectCell);
-		public ICommand SetCellValueCommand => setCellValueCommand ??= new RelayCommand<int>(OnSetCellValue);
+	public IReadOnlyList<IReadOnlyList<CellModel>> Cells
+	{
+		get => cells;
+		set => Set(ref cells, value);
+	}
 
-		private readonly IMessenger messenger;
+	public ICommand KeyDownCommand => keyDownCommand ??= new RelayCommand<KeyEventArgs>(OnKeyDown);
+	public ICommand SelectCellCommand => selectCellCommand ??= new RelayCommand<CellModel>(OnSelectCell);
+	public ICommand SetCellValueCommand => setCellValueCommand ??= new RelayCommand<int>(OnSetCellValue);
 
-		public FieldViewModel(IMessenger messenger) {
-			this.messenger = messenger;
+	private readonly IMessenger messenger;
 
-			messenger.Register<SizeChangedMessage>(this, OnSizeChanged);
-		}
+	public FieldViewModel(IMessenger messenger)
+	{
+		this.messenger = messenger;
 
-		private void OnSizeChanged(SizeChangedMessage message) {
-			RefreshField(message.NewSize);
-		}
+		messenger.Register<SizeChangedMessage>(this, OnSizeChanged);
+	}
 
-		public void RefreshField(int newSize) {
-			Size = newSize;
+	private void OnSizeChanged(SizeChangedMessage message)
+	{
+		RefreshField(message.NewSize);
+	}
 
-			var sqrtOfSize = (int) Math.Sqrt(Size);
-			Values = Enumerable.Range(0, sqrtOfSize)
-				.Select(i => Enumerable.Range(0, sqrtOfSize)
-					.Select(j => i * sqrtOfSize + j + 1)
-					.ToArray())
-				.ToArray();
+	public void RefreshField(int newSize)
+	{
+		Size = newSize;
 
-			Cells = Enumerable.Range(1, Size)
-				.Select(_ => Enumerable.Range(1, Size)
-					.Select(_ => new CellModel { Value = null })
-					.ToArray())
-				.ToArray();
-		}
+		var sqrtOfSize = (int) Math.Sqrt(Size);
+		Values = Enumerable.Range(0, sqrtOfSize)
+			.Select(i => Enumerable.Range(0, sqrtOfSize)
+				.Select(j => i * sqrtOfSize + j + 1)
+				.ToArray())
+			.ToArray();
 
-		private void OnKeyDown(KeyEventArgs args) {
-			if (SelectedCell == null || !KeyHelper.DigitKeys.TryGetValue(args.Key, out var value) || value > Size)
-				return;
+		Cells = Enumerable.Range(1, Size)
+			.Select(_ => Enumerable.Range(1, Size)
+				.Select(_ => new CellModel { Value = null })
+				.ToArray())
+			.ToArray();
+	}
 
-			SelectedCell.Value = value == 0 ? null : value;
-			SelectedCell.IsMenuOpened = false;
-			SelectedCell = null;
-		}
+	private void OnKeyDown(KeyEventArgs args)
+	{
+		if (SelectedCell == null || !KeyHelper.DigitKeys.TryGetValue(args.Key, out var value) || value > Size)
+			return;
 
-		private void OnSelectCell(CellModel cell) {
-			if (LockSelectedMenu)
-				return;
+		SelectedCell.Value = value == 0 ? null : value;
+		SelectedCell.IsMenuOpened = false;
+		SelectedCell = null;
+	}
 
-			SelectedCell = cell;
-			cell.IsMenuOpened = true;
-		}
+	private void OnSelectCell(CellModel cell)
+	{
+		if (LockSelectedMenu)
+			return;
 
-		private void OnSetCellValue(int value) {
-			if (SelectedCell == null)
-				return;
+		SelectedCell = cell;
+		cell.IsMenuOpened = true;
+	}
 
-			SelectedCell.Value = value == 0 ? null : value;
-			SelectedCell.IsMenuOpened = false;
-			SelectedCell = null;
-		}
+	private void OnSetCellValue(int value)
+	{
+		if (SelectedCell == null)
+			return;
 
-		public override void Cleanup() {
-			messenger.Unregister(this);
-			base.Cleanup();
-		}
+		SelectedCell.Value = value == 0 ? null : value;
+		SelectedCell.IsMenuOpened = false;
+		SelectedCell = null;
+	}
+
+	public override void Cleanup()
+	{
+		messenger.Unregister(this);
+		base.Cleanup();
 	}
 }
