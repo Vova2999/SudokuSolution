@@ -14,26 +14,26 @@ namespace SudokuSolution.Test.Logic.FieldActions;
 [TestFixture]
 public class SetFinalForSquareTests
 {
-	private ISetFinalForSquare setFinalForSquare;
-	private ISetFinalForSquare setFinalForSquareWithoutCleanPossible;
+	private ISetFinalForSquare _setFinalForSquare;
+	private ISetFinalForSquare _setFinalForSquareWithoutCleanPossible;
 
 	[OneTimeSetUp]
 	public void CreateService()
 	{
-		setFinalForSquare = new SetFinalForSquare(new CleanPossibleFacade(new CleanPossibleByRow(), new CleanPossibleByFinal(), new CleanPossibleByColumn()));
+		_setFinalForSquare = new SetFinalForSquare(new CleanPossibleFacade(new CleanPossibleByRow(), new CleanPossibleByFinal(), new CleanPossibleByColumn()));
 
 		var cleanPossibleFacade = new Mock<ICleanPossibleFacade>();
 		cleanPossibleFacade.Setup(facade => facade.Execute(It.IsAny<Field>(), It.IsAny<int>(), It.IsAny<int>()));
-		setFinalForSquareWithoutCleanPossible = new SetFinalForSquare(cleanPossibleFacade.Object);
+		_setFinalForSquareWithoutCleanPossible = new SetFinalForSquare(cleanPossibleFacade.Object);
 	}
 
 	[Test]
 	public void ExecuteWithSmallFieldTest()
 	{
 		var field = TestFieldHelper.GetSmallTestFieldWithPossible();
-		setFinalForSquare.Execute(field);
-		setFinalForSquare.Execute(field);
-		setFinalForSquare.Execute(field);
+		_setFinalForSquare.Execute(field);
+		_setFinalForSquare.Execute(field);
+		_setFinalForSquare.Execute(field);
 
 		field.Cells[0, 0].ShouldBeFinal(2);
 		field.Cells[0, 1].ShouldBeFinal(3);
@@ -57,9 +57,9 @@ public class SetFinalForSquareTests
 	public void ExecuteWithFieldTest()
 	{
 		var field = TestFieldHelper.GetTestFieldWithPossible();
-		setFinalForSquare.Execute(field);
-		setFinalForSquare.Execute(field);
-		setFinalForSquare.Execute(field);
+		_setFinalForSquare.Execute(field);
+		_setFinalForSquare.Execute(field);
+		_setFinalForSquare.Execute(field);
 
 		field.Cells[0, 0].ShouldBeNotFinal(field.MaxValue, 2, 4, 5, 6);
 		field.Cells[0, 1].ShouldBeFinal(8);
@@ -148,9 +148,9 @@ public class SetFinalForSquareTests
 	public void ExecuteWithSmallFieldWithoutCleanPossibleTest()
 	{
 		var field = TestFieldHelper.GetSmallTestFieldWithPossible();
-		setFinalForSquareWithoutCleanPossible.Execute(field);
-		setFinalForSquareWithoutCleanPossible.Execute(field);
-		setFinalForSquareWithoutCleanPossible.Execute(field);
+		_setFinalForSquareWithoutCleanPossible.Execute(field);
+		_setFinalForSquareWithoutCleanPossible.Execute(field);
+		_setFinalForSquareWithoutCleanPossible.Execute(field);
 
 		field.Cells[0, 0].ShouldBeFinal(2);
 		field.Cells[0, 1].ShouldBeFinal(3);
@@ -174,9 +174,9 @@ public class SetFinalForSquareTests
 	public void ExecuteWithFieldWithoutCleanPossibleTest()
 	{
 		var field = TestFieldHelper.GetTestFieldWithPossible();
-		setFinalForSquareWithoutCleanPossible.Execute(field);
-		setFinalForSquareWithoutCleanPossible.Execute(field);
-		setFinalForSquareWithoutCleanPossible.Execute(field);
+		_setFinalForSquareWithoutCleanPossible.Execute(field);
+		_setFinalForSquareWithoutCleanPossible.Execute(field);
+		_setFinalForSquareWithoutCleanPossible.Execute(field);
 
 		field.Cells[0, 0].ShouldBeNotFinal(field.MaxValue, 2, 4, 5, 6);
 		field.Cells[0, 1].ShouldBeFinal(8);

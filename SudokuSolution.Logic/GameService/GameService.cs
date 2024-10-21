@@ -12,20 +12,21 @@ namespace SudokuSolution.Logic.GameService;
 
 public class GameService : IGameService
 {
-	private readonly IFieldService fieldService;
-	private readonly ISetFinalFacade setFinalFacade;
-	private readonly ICleanPossibleFacade cleanPossibleFacade;
-	private readonly ISetRandomFinalAndSplitField setRandomFinalAndSplitField;
+	private readonly IFieldService _fieldService;
+	private readonly ISetFinalFacade _setFinalFacade;
+	private readonly ICleanPossibleFacade _cleanPossibleFacade;
+	private readonly ISetRandomFinalAndSplitField _setRandomFinalAndSplitField;
 
-	public GameService(IFieldService fieldService,
-					   ISetFinalFacade setFinalFacade,
-					   ICleanPossibleFacade cleanPossibleFacade,
-					   ISetRandomFinalAndSplitField setRandomFinalAndSplitField)
+	public GameService(
+		IFieldService fieldService,
+		ISetFinalFacade setFinalFacade,
+		ICleanPossibleFacade cleanPossibleFacade,
+		ISetRandomFinalAndSplitField setRandomFinalAndSplitField)
 	{
-		this.fieldService = fieldService;
-		this.setFinalFacade = setFinalFacade;
-		this.cleanPossibleFacade = cleanPossibleFacade;
-		this.setRandomFinalAndSplitField = setRandomFinalAndSplitField;
+		_fieldService = fieldService;
+		_setFinalFacade = setFinalFacade;
+		_cleanPossibleFacade = cleanPossibleFacade;
+		_setRandomFinalAndSplitField = setRandomFinalAndSplitField;
 	}
 
 	public IEnumerable<Field> Solve(Field field)
@@ -39,27 +40,27 @@ public class GameService : IGameService
 		if (withoutRandomResult.HasValue)
 			return withoutRandomResult.Value ? field.AsEnumerable() : Enumerable.Empty<Field>();
 
-		return setRandomFinalAndSplitField.Execute(field).SelectMany(SolveWithChangeField);
+		return _setRandomFinalAndSplitField.Execute(field).SelectMany(SolveWithChangeField);
 	}
 
 	private bool? TrySolveWithoutRandom(Field field)
 	{
-		cleanPossibleFacade.Execute(field);
+		_cleanPossibleFacade.Execute(field);
 
 		while (true)
 		{
-			var setFinalResult = setFinalFacade.Execute(field);
+			var setFinalResult = _setFinalFacade.Execute(field);
 
-			if (fieldService.IsFailed(field))
+			if (_fieldService.IsFailed(field))
 				return false;
 
-			if (fieldService.IsSolved(field))
+			if (_fieldService.IsSolved(field))
 				return true;
 
 			if (setFinalResult == FieldActionsResult.Changed)
 				continue;
 
-			var cleanPossibleResult = cleanPossibleFacade.Execute(field);
+			var cleanPossibleResult = _cleanPossibleFacade.Execute(field);
 
 			if (cleanPossibleResult == FieldActionsResult.Nothing)
 				return null;

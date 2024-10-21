@@ -8,11 +8,11 @@ namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForColumn;
 
 public class SetFinalForColumn : ISetFinalForColumn
 {
-	private readonly ICleanPossibleFacade cleanPossibleFacade;
+	private readonly ICleanPossibleFacade _cleanPossibleFacade;
 
 	public SetFinalForColumn(ICleanPossibleFacade cleanPossibleFacade)
 	{
-		this.cleanPossibleFacade = cleanPossibleFacade;
+		_cleanPossibleFacade = cleanPossibleFacade;
 	}
 
 	public FieldActionsResult Execute(Field field)
@@ -64,7 +64,7 @@ public class SetFinalForColumn : ISetFinalForColumn
 			return FieldActionsResult.Nothing;
 
 		field.Cells[lastIndex, column].Final = value;
-		cleanPossibleFacade.Execute(field, lastIndex, column);
+		_cleanPossibleFacade.Execute(field, lastIndex, column);
 		return FieldActionsResult.Changed;
 	}
 }

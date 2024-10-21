@@ -14,73 +14,74 @@ public class SolvedViewModel : ViewModel<SolvedWindow>
 {
 	public override object Header => string.Empty;
 
-	private int currentSolved;
-	private int? totalSolvedCount;
+	private int _currentSolved;
+	private int? _totalSolvedCount;
 
-	private ICommand loadedCommand;
-	private ICommand prevSolvedCommand;
-	private ICommand nextSolvedCommand;
-	private ICommand contentRenderedCommand;
-	private ICommand handleMouseMoveCommand;
+	private ICommand _loadedCommand;
+	private ICommand _prevSolvedCommand;
+	private ICommand _nextSolvedCommand;
+	private ICommand _contentRenderedCommand;
+	private ICommand _handleMouseMoveCommand;
 
-	private readonly IMessageBoxService messageBoxService;
+	private readonly IMessageBoxService _messageBoxService;
 
-	private readonly Field startField;
-	private readonly IEnumerator<Field> solvedFields;
-	private readonly bool solveAllFields;
+	private readonly Field _startField;
+	private readonly IEnumerator<Field> _solvedFields;
+	private readonly bool _solveAllFields;
 
-	private readonly List<Field> fields;
+	private readonly List<Field> _fields;
 
 	public int CurrentSolved
 	{
-		get => currentSolved;
-		set => Set(ref currentSolved, value);
+		get => _currentSolved;
+		set => Set(ref _currentSolved, value);
 	}
 
 	public int? TotalSolvedCount
 	{
-		get => totalSolvedCount;
-		set => Set(ref totalSolvedCount, value);
+		get => _totalSolvedCount;
+		set => Set(ref _totalSolvedCount, value);
 	}
 
 	public FieldViewModel FieldViewModel { get; private set; }
 
-	public ICommand LoadedCommand => loadedCommand ??= new RelayCommand(OnLoaded);
-	public ICommand PrevSolvedCommand => prevSolvedCommand ??= new RelayCommand(OnPrevSolved, CanPrevSolved);
-	public ICommand NextSolvedCommand => nextSolvedCommand ??= new RelayCommand(OnNextSolved, CanNextSolved);
-	public ICommand ContentRenderedCommand => contentRenderedCommand ??= new RelayCommand(OnContentRendered);
-	public ICommand HandleMouseMoveCommand => handleMouseMoveCommand ??= new RelayCommand<MouseEventArgs>(OnHandleMouseMove);
+	public ICommand LoadedCommand => _loadedCommand ??= new RelayCommand(OnLoaded);
+	public ICommand PrevSolvedCommand => _prevSolvedCommand ??= new RelayCommand(OnPrevSolved, CanPrevSolved);
+	public ICommand NextSolvedCommand => _nextSolvedCommand ??= new RelayCommand(OnNextSolved, CanNextSolved);
+	public ICommand ContentRenderedCommand => _contentRenderedCommand ??= new RelayCommand(OnContentRendered);
+	public ICommand HandleMouseMoveCommand => _handleMouseMoveCommand ??= new RelayCommand<MouseEventArgs>(OnHandleMouseMove);
 
-	public SolvedViewModel(IMessageBoxService messageBoxService,
-						   FieldViewModel fieldViewModel,
-						   Field startField,
-						   IEnumerable<Field> solvedFields,
-						   bool solveAllFields)
+	public SolvedViewModel(
+		IMessageBoxService messageBoxService,
+		FieldViewModel fieldViewModel,
+		Field startField,
+		IEnumerable<Field> solvedFields,
+		bool solveAllFields)
 	{
-		this.messageBoxService = messageBoxService;
-		this.startField = startField;
-		this.solvedFields = solvedFields.GetEnumerator();
-		this.solveAllFields = solveAllFields;
+		_messageBoxService = messageBoxService;
+		_startField = startField;
+		_solvedFields = solvedFields.GetEnumerator();
+		_solveAllFields = solveAllFields;
 		FieldViewModel = fieldViewModel;
 
-		fields = new List<Field>();
+		_fields = new List<Field>();
 	}
 
 	private void OnLoaded()
 	{
 		FieldViewModel.LockSelectedMenu = true;
 
-		if (solveAllFields)
+		if (_solveAllFields)
 		{
-			while (solvedFields.MoveNext())
-				fields.Add(solvedFields.Current);
+			while (_solvedFields.MoveNext())
+				_fields.Add(_solvedFields.Current);
 
-			TotalSolvedCount = fields.Count;
+			TotalSolvedCount = _fields.Count;
 		}
 		else
 		{
-			if (solvedFields.MoveNext())
-				fields.Add(solvedFields.Current);
+			if (_solvedFields.MoveNext())
+				_fields.Add(_solvedFields.Current);
 			else
 				TotalSolvedCount = 0;
 		}
@@ -94,7 +95,7 @@ public class SolvedViewModel : ViewModel<SolvedWindow>
 
 	private void LoadCurrentField()
 	{
-		var field = fields[CurrentSolved - 1];
+		var field = _fields[CurrentSolved - 1];
 
 		if (FieldViewModel.Size != field.MaxValue)
 			FieldViewModel.RefreshField(field.MaxValue);
@@ -102,7 +103,7 @@ public class SolvedViewModel : ViewModel<SolvedWindow>
 		FieldViewModel.Cells.ForEach((row, cells) => cells.ForEach((column, cell) =>
 		{
 			cell.Value = field.Cells[row, column].Final;
-			cell.IsBoldFont = startField.Cells[row, column].HasFinal;
+			cell.IsBoldFont = _startField.Cells[row, column].HasFinal;
 		}));
 	}
 
@@ -119,15 +120,15 @@ public class SolvedViewModel : ViewModel<SolvedWindow>
 
 	private void OnNextSolved()
 	{
-		if (CurrentSolved == fields.Count)
+		if (CurrentSolved == _fields.Count)
 		{
-			if (!solvedFields.MoveNext())
+			if (!_solvedFields.MoveNext())
 			{
-				TotalSolvedCount = fields.Count;
+				TotalSolvedCount = _fields.Count;
 				return;
 			}
 
-			fields.Add(solvedFields.Current);
+			_fields.Add(_solvedFields.Current);
 		}
 
 		CurrentSolved++;
@@ -144,7 +145,7 @@ public class SolvedViewModel : ViewModel<SolvedWindow>
 		if (TotalSolvedCount != 0)
 			return;
 
-		messageBoxService.Show("Решений нет!", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+		_messageBoxService.Show("Решений нет!", "", MessageBoxButton.OK, MessageBoxImage.Warning);
 		TypedView.Close();
 	}
 

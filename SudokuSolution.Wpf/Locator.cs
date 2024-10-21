@@ -24,7 +24,7 @@ namespace SudokuSolution.Wpf;
 
 public class Locator : ILocatorService
 {
-	private readonly DependencyInjectionContainer container;
+	private readonly DependencyInjectionContainer _container;
 	private static readonly Lazy<Locator> Lazy = new(() => new Locator());
 
 	public static Locator Current => Lazy.Value;
@@ -32,8 +32,8 @@ public class Locator : ILocatorService
 
 	private Locator()
 	{
-		container = new DependencyInjectionContainer();
-		container.Configure(RegisterDependencies);
+		_container = new DependencyInjectionContainer();
+		_container.Configure(RegisterDependencies);
 	}
 
 	private static void RegisterDependencies(IExportRegistrationBlock registration)
@@ -81,64 +81,64 @@ public class Locator : ILocatorService
 
 	public object GetService(Type serviceType)
 	{
-		return container.Locate(serviceType);
+		return _container.Locate(serviceType);
 	}
 	public bool CanLocate(Type type, ActivationStrategyFilter consider = null, object key = null)
 	{
-		return container.CanLocate(type, consider, key);
+		return _container.CanLocate(type, consider, key);
 	}
 	public object Locate(Type type)
 	{
-		return container.Locate(type);
+		return _container.Locate(type);
 	}
 	public object LocateOrDefault(Type type, object defaultValue)
 	{
-		return container.LocateOrDefault(type, defaultValue);
+		return _container.LocateOrDefault(type, defaultValue);
 	}
 	public T Locate<T>()
 	{
-		return container.Locate<T>();
+		return _container.Locate<T>();
 	}
 	public T LocateOrDefault<T>(T defaultValue = default)
 	{
-		return container.LocateOrDefault(defaultValue);
+		return _container.LocateOrDefault(defaultValue);
 	}
 	public List<object> LocateAll(Type type, object extraData = null, ActivationStrategyFilter consider = null, IComparer<object> comparer = null)
 	{
-		return container.LocateAll(type, extraData, consider, comparer);
+		return _container.LocateAll(type, extraData, consider, comparer);
 	}
 	public List<T> LocateAll<T>(Type type = null, object extraData = null, ActivationStrategyFilter consider = null, IComparer<T> comparer = null)
 	{
-		return container.LocateAll(type, extraData, consider, comparer);
+		return _container.LocateAll(type, extraData, consider, comparer);
 	}
 	public bool TryLocate<T>(out T value, object extraData = null, ActivationStrategyFilter consider = null, object withKey = null, bool isDynamic = false)
 	{
-		return container.TryLocate(out value, extraData, consider, withKey, isDynamic);
+		return _container.TryLocate(out value, extraData, consider, withKey, isDynamic);
 	}
 	public bool TryLocate(Type type, out object value, object extraData = null, ActivationStrategyFilter consider = null, object withKey = null, bool isDynamic = false)
 	{
-		return container.TryLocate(type, out value, extraData, consider, withKey, isDynamic);
+		return _container.TryLocate(type, out value, extraData, consider, withKey, isDynamic);
 	}
 	public object LocateByName(string name, object extraData = null, ActivationStrategyFilter consider = null)
 	{
-		return container.LocateByName(name, extraData, consider);
+		return _container.LocateByName(name, extraData, consider);
 	}
 	public List<object> LocateAllByName(string name, object extraData = null, ActivationStrategyFilter consider = null)
 	{
-		return container.LocateAllByName(name, extraData, consider);
+		return _container.LocateAllByName(name, extraData, consider);
 	}
 	public bool TryLocateByName(string name, out object value, object extraData = null, ActivationStrategyFilter consider = null)
 	{
-		return container.TryLocateByName(name, out value, extraData, consider);
+		return _container.TryLocateByName(name, out value, extraData, consider);
 	}
 	// ReSharper disable MethodOverloadWithOptionalParameter
 	public object Locate(Type type, object extraData = null, ActivationStrategyFilter consider = null, object withKey = null, bool isDynamic = false)
 	{
-		return container.Locate(type, extraData, consider, withKey, isDynamic);
+		return _container.Locate(type, extraData, consider, withKey, isDynamic);
 	}
 	public T Locate<T>(object extraData = null, ActivationStrategyFilter consider = null, object withKey = null, bool isDynamic = false)
 	{
-		return container.Locate<T>(extraData, consider, withKey, isDynamic);
+		return _container.Locate<T>(extraData, consider, withKey, isDynamic);
 	}
 	// ReSharper restore MethodOverloadWithOptionalParameter
 }

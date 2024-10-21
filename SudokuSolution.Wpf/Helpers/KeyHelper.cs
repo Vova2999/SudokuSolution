@@ -5,7 +5,7 @@ namespace SudokuSolution.Wpf.Helpers;
 
 public static class KeyHelper
 {
-	public static Dictionary<Key, int> DigitKeys = new()
+	public static readonly Dictionary<Key, int> DigitKeys = new()
 	{
 		{ Key.D0, 0 },
 		{ Key.D1, 1 },

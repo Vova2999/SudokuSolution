@@ -5,17 +5,17 @@ namespace SudokuSolution.Wpf.Common.Base;
 
 public abstract class ViewModel : ViewModelBase, IViewModel
 {
-	private FrameworkElement view;
+	private FrameworkElement _view;
 
 	public abstract object Header { get; }
 
 	public virtual FrameworkElement View
 	{
-		get => view;
+		get => _view;
 		set
 		{
-			if (Set(ref view, value) && view != null)
-				view.DataContext = this;
+			if (Set(ref _view, value) && _view != null)
+				_view.DataContext = this;
 		}
 	}
 }

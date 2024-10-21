@@ -10,19 +10,19 @@ namespace SudokuSolution.Test.Logic.FieldActions;
 [TestFixture]
 public class SetRandomFinalAndSplitFieldTests
 {
-	private ISetRandomFinalAndSplitField setRandomFinalAndSplitField;
+	private ISetRandomFinalAndSplitField _setRandomFinalAndSplitField;
 
 	[OneTimeSetUp]
 	public void CreateService()
 	{
-		setRandomFinalAndSplitField = new SetRandomFinalAndSplitField();
+		_setRandomFinalAndSplitField = new SetRandomFinalAndSplitField();
 	}
 
 	[Test]
 	public void ExecuteWithSmallFieldTest()
 	{
 		var field = TestFieldHelper.GetSmallTestFieldWithPossible();
-		var newFields = setRandomFinalAndSplitField.Execute(field).ToArray();
+		var newFields = _setRandomFinalAndSplitField.Execute(field).ToArray();
 
 		newFields.Length.Should().Be(2);
 
@@ -53,7 +53,7 @@ public class SetRandomFinalAndSplitFieldTests
 	public void ExecuteWithFieldTest()
 	{
 		var field = TestFieldHelper.GetTestFieldWithPossible();
-		var newFields = setRandomFinalAndSplitField.Execute(field).ToArray();
+		var newFields = _setRandomFinalAndSplitField.Execute(field).ToArray();
 
 		newFields.Length.Should().Be(4);
 

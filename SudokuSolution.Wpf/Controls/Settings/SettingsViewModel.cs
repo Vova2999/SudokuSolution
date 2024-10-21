@@ -11,44 +11,44 @@ public class SettingsViewModel : ViewModel<SettingsControl>
 {
 	public override object Header => string.Empty;
 
-	private int size;
-	private int[] allowedSizes;
-	private int maxSolved;
-	private string maxSolvedString;
+	private int _size;
+	private int[] _allowedSizes;
+	private int _maxSolved;
+	private string _maxSolvedString;
 
-	private ICommand handleMouseMoveCommand;
+	private ICommand _handleMouseMoveCommand;
 
-	private readonly IMessenger messenger;
+	private readonly IMessenger _messenger;
 
 	public int Size
 	{
-		get => size;
+		get => _size;
 		set
 		{
-			if (Set(ref size, value))
+			if (Set(ref _size, value))
 				OnSizeChanged();
 		}
 	}
 
 	public int[] AllowedSizes
 	{
-		get => allowedSizes;
-		set => Set(ref allowedSizes, value);
+		get => _allowedSizes;
+		set => Set(ref _allowedSizes, value);
 	}
 
 	public int MaxSolved
 	{
-		get => maxSolved;
+		get => _maxSolved;
 		set
 		{
-			if (Set(ref maxSolved, value))
+			if (Set(ref _maxSolved, value))
 				MaxSolvedString = value.ToString();
 		}
 	}
 
 	public string MaxSolvedString
 	{
-		get => maxSolvedString;
+		get => _maxSolvedString;
 		set
 		{
 			if (value.IsNullOrEmpty())
@@ -56,17 +56,17 @@ public class SettingsViewModel : ViewModel<SettingsControl>
 
 			if (IsValidMaxSolvedStringValue(value))
 			{
-				Set(ref maxSolvedString, value);
+				Set(ref _maxSolvedString, value);
 				MaxSolved = int.Parse(value);
 			}
 		}
 	}
 
-	public ICommand HandleMouseMoveCommand => handleMouseMoveCommand ??= new RelayCommand<MouseEventArgs>(OnHandleMouseMove);
+	public ICommand HandleMouseMoveCommand => _handleMouseMoveCommand ??= new RelayCommand<MouseEventArgs>(OnHandleMouseMove);
 
 	public SettingsViewModel(IMessenger messenger)
 	{
-		this.messenger = messenger;
+		_messenger = messenger;
 
 		AllowedSizes = Constants.AllowedSizes;
 		Size = Constants.StartedSize;
@@ -76,7 +76,7 @@ public class SettingsViewModel : ViewModel<SettingsControl>
 
 	private void OnSizeChanged()
 	{
-		messenger.Send(new SizeChangedMessage(Size));
+		_messenger.Send(new SizeChangedMessage(Size));
 	}
 
 	private bool IsValidMaxSolvedStringValue(string value)
@@ -91,7 +91,7 @@ public class SettingsViewModel : ViewModel<SettingsControl>
 
 	public override void Cleanup()
 	{
-		messenger.Unregister(this);
+		_messenger.Unregister(this);
 		base.Cleanup();
 	}
 }

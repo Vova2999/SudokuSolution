@@ -16,40 +16,41 @@ public class MainViewModel : ViewModel<MainWindow>
 {
 	public override object Header => string.Empty;
 
-	private bool isSettingsOpened;
+	private bool _isSettingsOpened;
 
-	private ICommand calculateCommand;
-	private ICommand calculateAllCommand;
-	private ICommand openSettingsCommand;
-	private ICommand closeSettingsCommand;
-	private ICommand handleMouseMoveCommand;
+	private ICommand _calculateCommand;
+	private ICommand _calculateAllCommand;
+	private ICommand _openSettingsCommand;
+	private ICommand _closeSettingsCommand;
+	private ICommand _handleMouseMoveCommand;
 
-	private readonly IGameService gameService;
+	private readonly IGameService _gameService;
 
-	private readonly SolvedViewModel.IFactory solvedViewModelFactory;
+	private readonly SolvedViewModel.IFactory _solvedViewModelFactory;
 
 	public bool IsSettingsOpened
 	{
-		get => isSettingsOpened;
-		set => Set(ref isSettingsOpened, value);
+		get => _isSettingsOpened;
+		set => Set(ref _isSettingsOpened, value);
 	}
 
 	public FieldViewModel FieldViewModel { get; private set; }
 	public SettingsViewModel SettingsViewModel { get; private set; }
 
-	public ICommand CalculateCommand => calculateCommand ??= new RelayCommand(OnCalculate);
-	public ICommand CalculateAllCommand => calculateAllCommand ??= new RelayCommand(OnCalculateAll);
-	public ICommand OpenSettingsCommand => openSettingsCommand ??= new RelayCommand(OnOpenSettings);
-	public ICommand CloseSettingsCommand => closeSettingsCommand ??= new RelayCommand(OnCloseSettings);
-	public ICommand HandleMouseMoveCommand => handleMouseMoveCommand ??= new RelayCommand<MouseEventArgs>(OnHandleMouseMove);
+	public ICommand CalculateCommand => _calculateCommand ??= new RelayCommand(OnCalculate);
+	public ICommand CalculateAllCommand => _calculateAllCommand ??= new RelayCommand(OnCalculateAll);
+	public ICommand OpenSettingsCommand => _openSettingsCommand ??= new RelayCommand(OnOpenSettings);
+	public ICommand CloseSettingsCommand => _closeSettingsCommand ??= new RelayCommand(OnCloseSettings);
+	public ICommand HandleMouseMoveCommand => _handleMouseMoveCommand ??= new RelayCommand<MouseEventArgs>(OnHandleMouseMove);
 
-	public MainViewModel(IGameService gameService,
-						 FieldViewModel fieldViewModel,
-						 SettingsViewModel settingsViewModel,
-						 SolvedViewModel.IFactory solvedViewModelFactory)
+	public MainViewModel(
+		IGameService gameService,
+		FieldViewModel fieldViewModel,
+		SettingsViewModel settingsViewModel,
+		SolvedViewModel.IFactory solvedViewModelFactory)
 	{
-		this.gameService = gameService;
-		this.solvedViewModelFactory = solvedViewModelFactory;
+		_gameService = gameService;
+		_solvedViewModelFactory = solvedViewModelFactory;
 		FieldViewModel = fieldViewModel;
 		SettingsViewModel = settingsViewModel;
 	}
@@ -57,15 +58,15 @@ public class MainViewModel : ViewModel<MainWindow>
 	private void OnCalculate()
 	{
 		var startField = CreateField();
-		var solvedFields = gameService.Solve(startField).Take(SettingsViewModel.MaxSolved);
-		solvedViewModelFactory.Create(startField, solvedFields, false).OpenDialogInUi();
+		var solvedFields = _gameService.Solve(startField).Take(SettingsViewModel.MaxSolved);
+		_solvedViewModelFactory.Create(startField, solvedFields, false).OpenDialogInUi();
 	}
 
 	private void OnCalculateAll()
 	{
 		var startField = CreateField();
-		var solvedFields = gameService.Solve(startField).Take(SettingsViewModel.MaxSolved);
-		solvedViewModelFactory.Create(startField, solvedFields, true).OpenDialogInUi();
+		var solvedFields = _gameService.Solve(startField).Take(SettingsViewModel.MaxSolved);
+		_solvedViewModelFactory.Create(startField, solvedFields, true).OpenDialogInUi();
 	}
 
 	private Field CreateField()

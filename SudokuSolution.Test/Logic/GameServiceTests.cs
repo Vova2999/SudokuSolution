@@ -25,14 +25,14 @@ public class GameServiceTests
 	private static readonly Field[] Fields = { TestFieldHelper.GetTestField(), TestFieldHelper.GetTestFieldWithPossible() };
 	private static readonly Field[] SmallFields = { TestFieldHelper.GetSmallTestField(), TestFieldHelper.GetSmallTestFieldWithPossible(), TestFieldHelper.GetSolvedSmallTestField() };
 
-	private IGameService gameService;
+	private IGameService _gameService;
 
 	[OneTimeSetUp]
 	public void CreateService()
 	{
 		var cleanPossibleFacade = new CleanPossibleFacade(new CleanPossibleByRow(), new CleanPossibleByFinal(), new CleanPossibleByColumn());
 
-		gameService = new GameService(
+		_gameService = new GameService(
 			new FieldService(),
 			new SetFinalFacade(
 				new SetFinalForRow(cleanPossibleFacade),
@@ -47,7 +47,7 @@ public class GameServiceTests
 	[TestCaseSource(nameof(SmallFields))]
 	public void SolveSmallFieldTest(Field field)
 	{
-		var solvedFields = gameService.Solve(field).ToArray();
+		var solvedFields = _gameService.Solve(field).ToArray();
 		solvedFields.Length.Should().Be(1);
 
 		var solvedField = solvedFields.Single();
@@ -73,7 +73,7 @@ public class GameServiceTests
 	[TestCaseSource(nameof(Fields))]
 	public void SolveFieldTest(Field field)
 	{
-		var solvedFields = gameService.Solve(field).ToArray();
+		var solvedFields = _gameService.Solve(field).ToArray();
 		solvedFields.Length.Should().Be(1);
 
 		var solvedField = solvedFields.Single();
@@ -164,7 +164,7 @@ public class GameServiceTests
 	public void SolveHardFieldTest()
 	{
 		var field = TestFieldHelper.GetHardTestField();
-		var solvedFields = gameService.Solve(field).ToArray();
+		var solvedFields = _gameService.Solve(field).ToArray();
 		solvedFields.Length.Should().Be(1);
 
 		var solvedField = solvedFields.Single();
@@ -254,7 +254,7 @@ public class GameServiceTests
 	[Test]
 	public void SolveNotCompleteSmallFieldTest()
 	{
-		var solvedFields = gameService.Solve(TestFieldHelper.GetNotCompleteSmallTestField()).ToArray();
+		var solvedFields = _gameService.Solve(TestFieldHelper.GetNotCompleteSmallTestField()).ToArray();
 		solvedFields.Length.Should().Be(3);
 
 		solvedFields[0].Cells[0, 0].ShouldBeFinal(1);
@@ -314,7 +314,7 @@ public class GameServiceTests
 	public void SolveShouldBeNotChangingStartField(Field field)
 	{
 		var startField = (Field) field.Clone();
-		gameService.Solve(field);
+		_gameService.Solve(field);
 
 		field.Equals(startField).Should().BeTrue();
 	}

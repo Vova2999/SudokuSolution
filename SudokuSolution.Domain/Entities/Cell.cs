@@ -5,57 +5,57 @@ namespace SudokuSolution.Domain.Entities;
 
 public class Cell : ICloneable
 {
-	private int? final;
-	private readonly int maxValue;
-	private readonly bool[] possible;
+	private int? _final;
+	private readonly int _maxValue;
+	private readonly bool[] _possible;
 
-	public bool HasFinal => final.HasValue;
+	public bool HasFinal => _final.HasValue;
 
 	public int Final
 	{
 		get
 		{
-			if (!final.HasValue)
+			if (!_final.HasValue)
 				throw new InvalidOperationException("Final value missing");
 
-			return final.Value;
+			return _final.Value;
 		}
 		set
 		{
-			if (value <= 0 || value > maxValue)
+			if (value <= 0 || value > _maxValue)
 				throw new InvalidOperationException("Final value is invalid");
 
-			final = value;
-			for (var index = 0; index < maxValue; index++)
-				possible[index] = false;
+			_final = value;
+			for (var index = 0; index < _maxValue; index++)
+				_possible[index] = false;
 		}
 	}
 
 	public bool this[int number]
 	{
-		get => possible[number - 1];
+		get => _possible[number - 1];
 		set
 		{
-			if (!final.HasValue)
-				possible[number - 1] = value;
+			if (!_final.HasValue)
+				_possible[number - 1] = value;
 		}
 	}
 
 	internal Cell(int maxValue)
 	{
-		this.maxValue = maxValue;
-		possible = Enumerable.Repeat(true, maxValue).ToArray();
+		_maxValue = maxValue;
+		_possible = Enumerable.Repeat(true, maxValue).ToArray();
 	}
 
 	public object Clone()
 	{
-		var cell = new Cell(maxValue);
+		var cell = new Cell(_maxValue);
 
-		if (final.HasValue)
-			cell.Final = final.Value;
+		if (_final.HasValue)
+			cell.Final = _final.Value;
 
-		for (var index = 0; index < maxValue; index++)
-			cell.possible[index] = possible[index];
+		for (var index = 0; index < _maxValue; index++)
+			cell._possible[index] = _possible[index];
 
 		return cell;
 	}
@@ -70,12 +70,12 @@ public class Cell : ICloneable
 		if (ReferenceEquals(this, cell))
 			return true;
 
-		if (final != cell.final || maxValue != cell.maxValue)
+		if (_final != cell._final || _maxValue != cell._maxValue)
 			return false;
 
-		for (var index = 0; index < maxValue; index++)
+		for (var index = 0; index < _maxValue; index++)
 		{
-			if (possible[index] != cell.possible[index])
+			if (_possible[index] != cell._possible[index])
 				return false;
 		}
 

@@ -8,43 +8,43 @@ namespace SudokuSolution.Wpf.Views.Main.Logic;
 
 public class MainWindowProvider : IMainWindowProvider
 {
-	private readonly IViewService viewService;
-	private readonly IDispatcherHelper dispatcherHelper;
+	private readonly IViewService _viewService;
+	private readonly IDispatcherHelper _dispatcherHelper;
 
-	private Window mainWindow;
+	private Window _mainWindow;
 
 	public MainWindowProvider(IViewService viewService, IDispatcherHelper dispatcherHelper)
 	{
-		this.viewService = viewService;
-		this.dispatcherHelper = dispatcherHelper;
+		_viewService = viewService;
+		_dispatcherHelper = dispatcherHelper;
 	}
 
 	public void Show()
 	{
-		dispatcherHelper.CheckBeginInvokeOnUI(() =>
+		_dispatcherHelper.CheckBeginInvokeOnUI(() =>
 		{
-			mainWindow ??= CreateWindow();
-			Application.Current.MainWindow = mainWindow;
-			mainWindow.Show();
+			_mainWindow ??= CreateWindow();
+			Application.Current.MainWindow = _mainWindow;
+			_mainWindow.Show();
 		});
 	}
 
 	public void CloseIfCreated()
 	{
-		dispatcherHelper.CheckBeginInvokeOnUI(() => mainWindow?.Close());
+		_dispatcherHelper.CheckBeginInvokeOnUI(() => _mainWindow?.Close());
 	}
 
 	private Window CreateWindow()
 	{
-		var window = viewService.CreateWindow<MainViewModel>(WindowMode.LastMainOwner);
+		var window = _viewService.CreateWindow<MainViewModel>(WindowMode.LastMainOwner);
 		window.Closing += OnWindowClosing;
 		return window;
 	}
 
 	private void OnWindowClosing(object sender, CancelEventArgs e)
 	{
-		mainWindow.Closing -= OnWindowClosing;
-		(mainWindow.DataContext as ICleanup)?.Cleanup();
-		mainWindow = null;
+		_mainWindow.Closing -= OnWindowClosing;
+		(_mainWindow.DataContext as ICleanup)?.Cleanup();
+		_mainWindow = null;
 	}
 }

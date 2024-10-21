@@ -9,30 +9,31 @@ namespace SudokuSolution.Logic.FieldActions.SetFinal;
 
 public class SetFinalFacade : ISetFinalFacade
 {
-	private readonly ISetFinalForRow setFinalForRow;
-	private readonly ISetFinalForColumn setFinalForColumn;
-	private readonly ISetFinalForSquare setFinalForSquare;
-	private readonly ISetFinalForSinglePossible setFinalForSinglePossible;
+	private readonly ISetFinalForRow _setFinalForRow;
+	private readonly ISetFinalForColumn _setFinalForColumn;
+	private readonly ISetFinalForSquare _setFinalForSquare;
+	private readonly ISetFinalForSinglePossible _setFinalForSinglePossible;
 
-	public SetFinalFacade(ISetFinalForRow setFinalForRow,
-						  ISetFinalForColumn setFinalForColumn,
-						  ISetFinalForSquare setFinalForSquare,
-						  ISetFinalForSinglePossible setFinalForSinglePossible)
+	public SetFinalFacade(
+		ISetFinalForRow setFinalForRow,
+		ISetFinalForColumn setFinalForColumn,
+		ISetFinalForSquare setFinalForSquare,
+		ISetFinalForSinglePossible setFinalForSinglePossible)
 	{
-		this.setFinalForRow = setFinalForRow;
-		this.setFinalForColumn = setFinalForColumn;
-		this.setFinalForSquare = setFinalForSquare;
-		this.setFinalForSinglePossible = setFinalForSinglePossible;
+		_setFinalForRow = setFinalForRow;
+		_setFinalForColumn = setFinalForColumn;
+		_setFinalForSquare = setFinalForSquare;
+		_setFinalForSinglePossible = setFinalForSinglePossible;
 	}
 
 	public FieldActionsResult Execute(Field field)
 	{
 		return new[]
 		{
-			setFinalForSinglePossible.Execute(field),
-			setFinalForSquare.Execute(field),
-			setFinalForRow.Execute(field),
-			setFinalForColumn.Execute(field)
+			_setFinalForSinglePossible.Execute(field),
+			_setFinalForSquare.Execute(field),
+			_setFinalForRow.Execute(field),
+			_setFinalForColumn.Execute(field)
 		}.GetChangedResultIfAnyIsChanged();
 	}
 }
