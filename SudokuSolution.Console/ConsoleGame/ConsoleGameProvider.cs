@@ -13,11 +13,11 @@ public class ConsoleGameProvider : IConsoleGameProvider
 {
 	private const int MaxSolved = 100;
 
-	private readonly IGameService gameService;
+	private readonly IGameService _gameService;
 
 	public ConsoleGameProvider(IGameService gameService)
 	{
-		this.gameService = gameService;
+		_gameService = gameService;
 	}
 
 	public void Start(string pathToFile)
@@ -44,7 +44,7 @@ public class ConsoleGameProvider : IConsoleGameProvider
 				.Where(group => group.Value != 0)
 				.ForEach(group => field.Cells[row, group.Column].Final = group.Value));
 
-		var solvedFields = gameService.Solve(field).Take(MaxSolved).ToArray();
+		var solvedFields = _gameService.Solve(field).Take(MaxSolved).ToArray();
 
 		switch (solvedFields.Length)
 		{
