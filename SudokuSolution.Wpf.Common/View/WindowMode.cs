@@ -2,6 +2,8 @@
 
 public enum WindowMode
 {
-	Dialog,
-	Window
+	Main,
+	Other,
+	LastMainOwner,
+	LastActiveOwner
 }

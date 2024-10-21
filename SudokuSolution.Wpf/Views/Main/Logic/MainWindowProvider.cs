@@ -36,7 +36,7 @@ public class MainWindowProvider : IMainWindowProvider
 
 	private Window CreateWindow()
 	{
-		var window = viewService.CreateWindow<MainViewModel>(WindowMode.Window);
+		var window = viewService.CreateWindow<MainViewModel>(WindowMode.LastMainOwner);
 		window.Closing += OnWindowClosing;
 		return window;
 	}
