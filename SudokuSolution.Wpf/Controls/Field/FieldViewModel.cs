@@ -14,55 +14,55 @@ public class FieldViewModel : ViewModel<FieldControl>
 {
 	public override object Header => string.Empty;
 
-	private int size;
-	private bool lockSelectedMenu;
-	private CellModel selectedCell;
-	private IReadOnlyList<IReadOnlyList<int>> values;
-	private IReadOnlyList<IReadOnlyList<CellModel>> cells;
+	private int _size;
+	private bool _lockSelectedMenu;
+	private CellModel _selectedCell;
+	private IReadOnlyList<IReadOnlyList<int>> _values;
+	private IReadOnlyList<IReadOnlyList<CellModel>> _cells;
 
-	private ICommand keyDownCommand;
-	private ICommand selectCellCommand;
-	private ICommand setCellValueCommand;
+	private ICommand _keyDownCommand;
+	private ICommand _selectCellCommand;
+	private ICommand _setCellValueCommand;
 
 	public int Size
 	{
-		get => size;
-		set => Set(ref size, value);
+		get => _size;
+		set => Set(ref _size, value);
 	}
 
 	public bool LockSelectedMenu
 	{
-		get => lockSelectedMenu;
-		set => Set(ref lockSelectedMenu, value);
+		get => _lockSelectedMenu;
+		set => Set(ref _lockSelectedMenu, value);
 	}
 
 	public CellModel SelectedCell
 	{
-		get => selectedCell;
-		set => Set(ref selectedCell, value);
+		get => _selectedCell;
+		set => Set(ref _selectedCell, value);
 	}
 
 	public IReadOnlyList<IReadOnlyList<int>> Values
 	{
-		get => values;
-		set => Set(ref values, value);
+		get => _values;
+		set => Set(ref _values, value);
 	}
 
 	public IReadOnlyList<IReadOnlyList<CellModel>> Cells
 	{
-		get => cells;
-		set => Set(ref cells, value);
+		get => _cells;
+		set => Set(ref _cells, value);
 	}
 
-	public ICommand KeyDownCommand => keyDownCommand ??= new RelayCommand<KeyEventArgs>(OnKeyDown);
-	public ICommand SelectCellCommand => selectCellCommand ??= new RelayCommand<CellModel>(OnSelectCell);
-	public ICommand SetCellValueCommand => setCellValueCommand ??= new RelayCommand<int>(OnSetCellValue);
+	public ICommand KeyDownCommand => _keyDownCommand ??= new RelayCommand<KeyEventArgs>(OnKeyDown);
+	public ICommand SelectCellCommand => _selectCellCommand ??= new RelayCommand<CellModel>(OnSelectCell);
+	public ICommand SetCellValueCommand => _setCellValueCommand ??= new RelayCommand<int>(OnSetCellValue);
 
-	private readonly IMessenger messenger;
+	private readonly IMessenger _messenger;
 
 	public FieldViewModel(IMessenger messenger)
 	{
-		this.messenger = messenger;
+		_messenger = messenger;
 
 		messenger.Register<SizeChangedMessage>(this, OnSizeChanged);
 	}
@@ -121,7 +121,7 @@ public class FieldViewModel : ViewModel<FieldControl>
 
 	public override void Cleanup()
 	{
-		messenger.Unregister(this);
+		_messenger.Unregister(this);
 		base.Cleanup();
 	}
 }

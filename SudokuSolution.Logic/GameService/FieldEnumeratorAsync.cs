@@ -9,19 +9,19 @@ public class FieldEnumeratorAsync
 {
 	public Field Current { get; private set; }
 
-	private readonly IGameService gameService;
-	private readonly Field field;
+	private readonly IGameService _gameService;
+	private readonly Field _field;
 
-	private readonly AsyncLock asyncLock;
+	private readonly AsyncLock _asyncLock;
 
-	private IEnumerator<Field> fieldEnumerator;
+	private IEnumerator<Field> _fieldEnumerator;
 
 	public FieldEnumeratorAsync(IGameService gameService, Field field)
 	{
-		this.gameService = gameService;
-		this.field = field;
+		_gameService = gameService;
+		_field = field;
 
-		asyncLock = new AsyncLock();
+		_asyncLock = new AsyncLock();
 	}
 
 	public Task<bool> MoveNextAsync()
@@ -30,12 +30,12 @@ public class FieldEnumeratorAsync
 
 		Task.Run(async () =>
 		{
-			using (await asyncLock.LockAsync().ConfigureAwait(false))
+			using (await _asyncLock.LockAsync().ConfigureAwait(false))
 			{
-				fieldEnumerator ??= gameService.Solve(field).GetEnumerator();
+				_fieldEnumerator ??= _gameService.Solve(_field).GetEnumerator();
 
-				var moveNextResult = fieldEnumerator.MoveNext();
-				Current = moveNextResult ? fieldEnumerator.Current : null;
+				var moveNextResult = _fieldEnumerator.MoveNext();
+				Current = moveNextResult ? _fieldEnumerator.Current : null;
 
 				taskCompletionSource.SetResult(moveNextResult);
 			}

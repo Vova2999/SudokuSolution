@@ -12,13 +12,13 @@ namespace SudokuSolution.Wpf.Common.View;
 
 public class ViewService : IViewService
 {
-	private readonly ILocatorService locatorService;
-	private readonly List<Window> openedWindows;
+	private readonly ILocatorService _locatorService;
+	private readonly List<Window> _openedWindows;
 
 	public ViewService(IMessenger messenger, ILocatorService locatorService)
 	{
-		this.locatorService = locatorService;
-		openedWindows = new List<Window>();
+		_locatorService = locatorService;
+		_openedWindows = new List<Window>();
 
 		// Listen for the close event
 		messenger.Register<RequestCloseMessage>(this, OnRequestClose);
@@ -67,7 +67,7 @@ public class ViewService : IViewService
 	[DebuggerStepThrough]
 	public Window CreateWindow<TViewModel>(WindowMode windowMode) where TViewModel : IViewModel
 	{
-		var viewModel = locatorService.Locate<TViewModel>();
+		var viewModel = _locatorService.Locate<TViewModel>();
 
 		return CreateWindow(viewModel, windowMode);
 	}
@@ -79,19 +79,19 @@ public class ViewService : IViewService
 		window.DataContext = viewModel;
 		window.Closed += OnClosed;
 
-		lock (openedWindows)
+		lock (_openedWindows)
 		{
 			// Last window opened is considered the 'owner' of the window.
 			// May not be 100% correct in some situations but it is more
 			// then good enough for handling dialog windows
-			if (windowMode == WindowMode.Dialog && openedWindows.Any())
+			if (windowMode == WindowMode.Dialog && _openedWindows.Any())
 			{
-				var lastOpened = openedWindows.Last();
+				var lastOpened = _openedWindows.Last();
 				if (lastOpened.IsActive && !Equals(window, lastOpened))
 					window.Owner = lastOpened;
 			}
 
-			openedWindows.Add(window);
+			_openedWindows.Add(window);
 		}
 
 		return window;
@@ -99,13 +99,13 @@ public class ViewService : IViewService
 
 	public int GetOpenedWindowsCount()
 	{
-		lock (openedWindows)
-			return openedWindows.Count;
+		lock (_openedWindows)
+			return _openedWindows.Count;
 	}
 
 	private void OnRequestClose(RequestCloseMessage message)
 	{
-		var window = openedWindows.SingleOrDefault(w => w.DataContext == message.ViewModel);
+		var window = _openedWindows.SingleOrDefault(w => w.DataContext == message.ViewModel);
 		if (window == null)
 			return;
 
@@ -120,7 +120,7 @@ public class ViewService : IViewService
 		var window = (Window) sender;
 		window.Closed -= OnClosed;
 
-		lock (openedWindows)
-			openedWindows.Remove(window);
+		lock (_openedWindows)
+			_openedWindows.Remove(window);
 	}
 }

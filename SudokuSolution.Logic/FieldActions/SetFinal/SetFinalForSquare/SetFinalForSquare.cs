@@ -9,11 +9,11 @@ namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSquare;
 
 public class SetFinalForSquare : ISetFinalForSquare
 {
-	private readonly ICleanPossibleFacade cleanPossibleFacade;
+	private readonly ICleanPossibleFacade _cleanPossibleFacade;
 
 	public SetFinalForSquare(ICleanPossibleFacade cleanPossibleFacade)
 	{
-		this.cleanPossibleFacade = cleanPossibleFacade;
+		_cleanPossibleFacade = cleanPossibleFacade;
 	}
 
 	public FieldActionsResult Execute(Field field)
@@ -72,7 +72,7 @@ public class SetFinalForSquare : ISetFinalForSquare
 			return FieldActionsResult.Nothing;
 
 		field.Cells[lastRowIndex, lastColumnIndex].Final = value;
-		cleanPossibleFacade.Execute(field, lastRowIndex, lastColumnIndex);
+		_cleanPossibleFacade.Execute(field, lastRowIndex, lastColumnIndex);
 		return FieldActionsResult.Changed;
 	}
 }

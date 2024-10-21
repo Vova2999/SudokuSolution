@@ -5,11 +5,11 @@ namespace SudokuSolution.Wpf;
 
 public partial class App
 {
-	private readonly IMainWindowProvider mainWindowProvider;
+	private readonly IMainWindowProvider _mainWindowProvider;
 
 	public App(IMainWindowProvider mainWindowProvider)
 	{
-		this.mainWindowProvider = mainWindowProvider;
+		_mainWindowProvider = mainWindowProvider;
 
 		InitializeComponent();
 	}
@@ -18,6 +18,6 @@ public partial class App
 	{
 		base.OnStartup(e);
 
-		mainWindowProvider.Show();
+		_mainWindowProvider.Show();
 	}
 }

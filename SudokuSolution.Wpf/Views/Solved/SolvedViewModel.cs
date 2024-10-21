@@ -20,85 +20,86 @@ public class SolvedViewModel : ViewModel<SolvedWindow>
 {
 	public override object Header => string.Empty;
 
-	private bool isBusy;
-	private int currentSolved;
-	private int? totalSolvedCount;
+	private bool _isBusy;
+	private int _currentSolved;
+	private int? _totalSolvedCount;
 
-	private ICommand loadedCommand;
-	private ICommand prevSolvedCommand;
-	private ICommand nextSolvedCommand;
-	private ICommand contentRenderedCommand;
-	private ICommand handleMouseMoveCommand;
+	private ICommand _loadedCommand;
+	private ICommand _prevSolvedCommand;
+	private ICommand _nextSolvedCommand;
+	private ICommand _contentRenderedCommand;
+	private ICommand _handleMouseMoveCommand;
 
-	private readonly IGameService gameService;
-	private readonly IDispatcherHelper dispatcherHelper;
-	private readonly IMessageBoxService messageBoxService;
+	private readonly IGameService _gameService;
+	private readonly IDispatcherHelper _dispatcherHelper;
+	private readonly IMessageBoxService _messageBoxService;
 
-	private readonly Field startField;
-	private readonly int maxSolvedCount;
-	private readonly bool solveAllFields;
+	private readonly Field _startField;
+	private readonly int _maxSolvedCount;
+	private readonly bool _solveAllFields;
 
-	private List<Field> solvedFields;
-	private FieldEnumeratorAsync fieldEnumeratorAsync;
+	private List<Field> _solvedFields;
+	private FieldEnumeratorAsync _fieldEnumeratorAsync;
 
-	private readonly ExecutionTracker executionTracker;
+	private readonly ExecutionTracker _executionTracker;
 
 	public bool IsBusy
 	{
-		get => isBusy;
-		set => Set(ref isBusy, value);
+		get => _isBusy;
+		set => Set(ref _isBusy, value);
 	}
 
 	public int CurrentSolved
 	{
-		get => currentSolved;
-		set => Set(ref currentSolved, value);
+		get => _currentSolved;
+		set => Set(ref _currentSolved, value);
 	}
 
 	public int? TotalSolvedCount
 	{
-		get => totalSolvedCount;
-		set => Set(ref totalSolvedCount, value);
+		get => _totalSolvedCount;
+		set => Set(ref _totalSolvedCount, value);
 	}
 
 	public FieldViewModel FieldViewModel { get; private set; }
 
-	public ICommand LoadedCommand => loadedCommand ??= new RelayCommand(OnLoaded);
-	public ICommand PrevSolvedCommand => prevSolvedCommand ??= new RelayCommand(OnPrevSolved, CanPrevSolved);
-	public ICommand NextSolvedCommand => nextSolvedCommand ??= new AsyncRelayCommand(OnNextSolvedAsync, CanNextSolved);
-	public ICommand ContentRenderedCommand => contentRenderedCommand ??= new AsyncRelayCommand(OnContentRenderedAsync);
-	public ICommand HandleMouseMoveCommand => handleMouseMoveCommand ??= new RelayCommand<MouseEventArgs>(OnHandleMouseMove);
+	public ICommand LoadedCommand => _loadedCommand ??= new RelayCommand(OnLoaded);
+	public ICommand PrevSolvedCommand => _prevSolvedCommand ??= new RelayCommand(OnPrevSolved, CanPrevSolved);
+	public ICommand NextSolvedCommand => _nextSolvedCommand ??= new AsyncRelayCommand(OnNextSolvedAsync, CanNextSolved);
+	public ICommand ContentRenderedCommand => _contentRenderedCommand ??= new AsyncRelayCommand(OnContentRenderedAsync);
+	public ICommand HandleMouseMoveCommand => _handleMouseMoveCommand ??= new RelayCommand<MouseEventArgs>(OnHandleMouseMove);
 
-	public SolvedViewModel(IGameService gameService,
-						   IDispatcherHelper dispatcherHelper,
-						   IMessageBoxService messageBoxService,
-						   FieldViewModel fieldViewModel,
-						   Field startField,
-						   int maxSolvedCount,
-						   bool solveAllFields)
+	public SolvedViewModel(
+		IGameService gameService,
+		IDispatcherHelper dispatcherHelper,
+		IMessageBoxService messageBoxService,
+		FieldViewModel fieldViewModel,
+		Field startField,
+		int maxSolvedCount,
+		bool solveAllFields)
 	{
-		this.gameService = gameService;
-		this.dispatcherHelper = dispatcherHelper;
-		this.messageBoxService = messageBoxService;
-		this.startField = startField;
-		this.maxSolvedCount = maxSolvedCount;
-		this.solveAllFields = solveAllFields;
+		_gameService = gameService;
+		_dispatcherHelper = dispatcherHelper;
+		_messageBoxService = messageBoxService;
+		_startField = startField;
+		_maxSolvedCount = maxSolvedCount;
+		_solveAllFields = solveAllFields;
 		FieldViewModel = fieldViewModel;
 
-		executionTracker = new ExecutionTracker(
-			() => this.dispatcherHelper.CheckBeginInvokeOnUI(() => IsBusy = true),
-			() => this.dispatcherHelper.CheckBeginInvokeOnUI(() => IsBusy = false));
+		_executionTracker = new ExecutionTracker(
+			() => _dispatcherHelper.CheckBeginInvokeOnUI(() => IsBusy = true),
+			() => _dispatcherHelper.CheckBeginInvokeOnUI(() => IsBusy = false));
 	}
 
 	private void OnLoaded()
 	{
 		FieldViewModel.LockSelectedMenu = true;
-		FieldViewModel.RefreshField(startField.MaxValue);
+		FieldViewModel.RefreshField(_startField.MaxValue);
 	}
 
 	private void OnPrevSolved()
 	{
-		using (executionTracker.TrackExecution())
+		using (_executionTracker.TrackExecution())
 		{
 			CurrentSolved--;
 			LoadCurrentField();
@@ -112,27 +113,27 @@ public class SolvedViewModel : ViewModel<SolvedWindow>
 
 	private async Task OnNextSolvedAsync()
 	{
-		using (executionTracker.TrackExecution())
+		using (_executionTracker.TrackExecution())
 		{
-			if (CurrentSolved == solvedFields.Count)
+			if (CurrentSolved == _solvedFields.Count)
 			{
-				if (CurrentSolved == maxSolvedCount)
+				if (CurrentSolved == _maxSolvedCount)
 				{
-					dispatcherHelper.CheckBeginInvokeOnUI(() => TotalSolvedCount = CurrentSolved);
+					_dispatcherHelper.CheckBeginInvokeOnUI(() => TotalSolvedCount = CurrentSolved);
 					return;
 				}
 
-				var moveNextResult = await fieldEnumeratorAsync.MoveNextAsync().ConfigureAwait(false);
+				var moveNextResult = await _fieldEnumeratorAsync.MoveNextAsync().ConfigureAwait(false);
 				if (!moveNextResult)
 				{
-					dispatcherHelper.CheckBeginInvokeOnUI(() => TotalSolvedCount = CurrentSolved);
+					_dispatcherHelper.CheckBeginInvokeOnUI(() => TotalSolvedCount = CurrentSolved);
 					return;
 				}
 
-				solvedFields.Add(fieldEnumeratorAsync.Current);
+				_solvedFields.Add(_fieldEnumeratorAsync.Current);
 			}
 
-			dispatcherHelper.CheckBeginInvokeOnUI(() =>
+			_dispatcherHelper.CheckBeginInvokeOnUI(() =>
 			{
 				CurrentSolved++;
 				LoadCurrentField();
@@ -147,33 +148,33 @@ public class SolvedViewModel : ViewModel<SolvedWindow>
 
 	private async Task OnContentRenderedAsync()
 	{
-		using (executionTracker.TrackExecution())
+		using (_executionTracker.TrackExecution())
 		{
-			if (solveAllFields)
+			if (_solveAllFields)
 			{
-				solvedFields = await SolveAllFieldsAsync().ConfigureAwait(false);
+				_solvedFields = await SolveAllFieldsAsync().ConfigureAwait(false);
 			}
 			else
 			{
-				solvedFields = new List<Field>();
-				fieldEnumeratorAsync = gameService.StartSolve(startField);
-				var moveNextResult = await fieldEnumeratorAsync.MoveNextAsync().ConfigureAwait(false);
+				_solvedFields = new List<Field>();
+				_fieldEnumeratorAsync = _gameService.StartSolve(_startField);
+				var moveNextResult = await _fieldEnumeratorAsync.MoveNextAsync().ConfigureAwait(false);
 				if (moveNextResult)
-					solvedFields.Add(fieldEnumeratorAsync.Current);
+					_solvedFields.Add(_fieldEnumeratorAsync.Current);
 			}
 
-			dispatcherHelper.CheckBeginInvokeOnUI(() =>
+			_dispatcherHelper.CheckBeginInvokeOnUI(() =>
 			{
-				if (!solvedFields.Any())
+				if (!_solvedFields.Any())
 				{
-					messageBoxService.Show("Решений нет!", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+					_messageBoxService.Show("Решений нет!", "", MessageBoxButton.OK, MessageBoxImage.Warning);
 					TypedView.Close();
 					return;
 				}
 
 				CurrentSolved = 1;
-				if (solveAllFields)
-					TotalSolvedCount = solvedFields.Count;
+				if (_solveAllFields)
+					TotalSolvedCount = _solvedFields.Count;
 
 				LoadCurrentField();
 			});
@@ -183,13 +184,13 @@ public class SolvedViewModel : ViewModel<SolvedWindow>
 	private Task<List<Field>> SolveAllFieldsAsync()
 	{
 		var taskCompletionSource = new TaskCompletionSource<List<Field>>();
-		Task.Run(() => taskCompletionSource.SetResult(gameService.Solve(startField).Take(maxSolvedCount).ToList()));
+		Task.Run(() => taskCompletionSource.SetResult(_gameService.Solve(_startField).Take(_maxSolvedCount).ToList()));
 		return taskCompletionSource.Task;
 	}
 
 	private void LoadCurrentField()
 	{
-		var field = solvedFields[CurrentSolved - 1];
+		var field = _solvedFields[CurrentSolved - 1];
 
 		if (FieldViewModel.Size != field.MaxValue)
 			FieldViewModel.RefreshField(field.MaxValue);
@@ -197,7 +198,7 @@ public class SolvedViewModel : ViewModel<SolvedWindow>
 		FieldViewModel.Cells.ForEach((row, cells) => cells.ForEach((column, cell) =>
 		{
 			cell.Value = field.Cells[row, column].Final;
-			cell.IsBoldFont = startField.Cells[row, column].HasFinal;
+			cell.IsBoldFont = _startField.Cells[row, column].HasFinal;
 		}));
 	}
 

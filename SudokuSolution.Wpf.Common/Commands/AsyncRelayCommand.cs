@@ -14,15 +14,15 @@ public class AsyncRelayCommand : ICommand
 		remove => CommandManager.RequerySuggested -= value;
 	}
 
-	private readonly Func<Task> execute;
-	private readonly Func<bool> canExecute;
+	private readonly Func<Task> _execute;
+	private readonly Func<bool> _canExecute;
 
-	private long isExecuting;
+	private long _isExecuting;
 
 	public AsyncRelayCommand(Func<Task> execute, Func<bool> canExecute = null)
 	{
-		this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
-		this.canExecute = canExecute;
+		_execute = execute ?? throw new ArgumentNullException(nameof(execute));
+		_canExecute = canExecute;
 	}
 
 	public void RaiseCanExecuteChanged()
@@ -32,7 +32,7 @@ public class AsyncRelayCommand : ICommand
 
 	public bool CanExecute(object parameter)
 	{
-		return canExecute == null || (Interlocked.Read(ref isExecuting) == 0 && canExecute());
+		return _canExecute == null || (Interlocked.Read(ref _isExecuting) == 0 && _canExecute());
 	}
 
 	public void Execute(object parameter)
@@ -45,16 +45,16 @@ public class AsyncRelayCommand : ICommand
 		if (!CanExecute(parameter))
 			return;
 
-		Interlocked.Exchange(ref isExecuting, 1);
+		Interlocked.Exchange(ref _isExecuting, 1);
 		RaiseCanExecuteChanged();
 
 		try
 		{
-			await execute().ConfigureAwait(false);
+			await _execute().ConfigureAwait(false);
 		}
 		finally
 		{
-			Interlocked.Exchange(ref isExecuting, 0);
+			Interlocked.Exchange(ref _isExecuting, 0);
 			RaiseCanExecuteChanged();
 		}
 	}

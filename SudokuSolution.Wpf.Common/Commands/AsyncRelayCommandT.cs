@@ -14,15 +14,15 @@ public class AsyncRelayCommand<T> : ICommand
 		remove => CommandManager.RequerySuggested -= value;
 	}
 
-	private readonly Func<T, Task> execute;
-	private readonly Func<T, bool> canExecute;
+	private readonly Func<T, Task> _execute;
+	private readonly Func<T, bool> _canExecute;
 
-	private long isExecuting;
+	private long _isExecuting;
 
 	public AsyncRelayCommand(Func<T, Task> execute, Func<T, bool> canExecute = null)
 	{
-		this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
-		this.canExecute = canExecute;
+		_execute = execute ?? throw new ArgumentNullException(nameof(execute));
+		_canExecute = canExecute;
 	}
 
 	public void RaiseCanExecuteChanged()
@@ -32,20 +32,20 @@ public class AsyncRelayCommand<T> : ICommand
 
 	public bool CanExecute(object parameter)
 	{
-		if (canExecute == null)
+		if (_canExecute == null)
 			return true;
 
-		if (Interlocked.Read(ref isExecuting) != 0)
+		if (Interlocked.Read(ref _isExecuting) != 0)
 			return false;
 
 		if (parameter == null)
-			return canExecute(default);
+			return _canExecute(default);
 
 		if (parameter.GetType() != typeof(T) && parameter is IConvertible)
-			return canExecute((T) Convert.ChangeType(parameter, typeof(T), null));
+			return _canExecute((T) Convert.ChangeType(parameter, typeof(T), null));
 
 		if (parameter is T t)
-			return canExecute(t);
+			return _canExecute(t);
 
 		return false;
 	}
@@ -60,21 +60,21 @@ public class AsyncRelayCommand<T> : ICommand
 		if (!CanExecute(parameter))
 			return;
 
-		Interlocked.Exchange(ref isExecuting, 1);
+		Interlocked.Exchange(ref _isExecuting, 1);
 		RaiseCanExecuteChanged();
 
 		try
 		{
 			if (parameter == null)
-				await execute(default).ConfigureAwait(false);
+				await _execute(default).ConfigureAwait(false);
 			else if (parameter.GetType() != typeof(T) && parameter is IConvertible)
-				await execute((T) Convert.ChangeType(parameter, typeof(T), null)).ConfigureAwait(false);
+				await _execute((T) Convert.ChangeType(parameter, typeof(T), null)).ConfigureAwait(false);
 			else if (parameter is T t)
-				await execute(t).ConfigureAwait(false);
+				await _execute(t).ConfigureAwait(false);
 		}
 		finally
 		{
-			Interlocked.Exchange(ref isExecuting, 0);
+			Interlocked.Exchange(ref _isExecuting, 0);
 			RaiseCanExecuteChanged();
 		}
 	}

@@ -6,11 +6,11 @@ namespace SudokuSolution.Logic.FieldActions.SetFinal.SetFinalForSinglePossible;
 
 public class SetFinalForSinglePossible : ISetFinalForSinglePossible
 {
-	private readonly ICleanPossibleFacade cleanPossibleFacade;
+	private readonly ICleanPossibleFacade _cleanPossibleFacade;
 
 	public SetFinalForSinglePossible(ICleanPossibleFacade cleanPossibleFacade)
 	{
-		this.cleanPossibleFacade = cleanPossibleFacade;
+		_cleanPossibleFacade = cleanPossibleFacade;
 	}
 
 	public FieldActionsResult Execute(Field field)
@@ -37,7 +37,7 @@ public class SetFinalForSinglePossible : ISetFinalForSinglePossible
 				return;
 
 			cell.Final = lastValue;
-			cleanPossibleFacade.Execute(field, row, column);
+			_cleanPossibleFacade.Execute(field, row, column);
 
 			result = FieldActionsResult.Changed;
 		});

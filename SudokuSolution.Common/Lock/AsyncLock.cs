@@ -7,8 +7,8 @@ namespace SudokuSolution.Common.Lock;
 
 public class AsyncLock
 {
-	private readonly SemaphoreSlim semaphoreSlim;
-	private readonly LockReleaser lockReleaser;
+	private readonly SemaphoreSlim _semaphoreSlim;
+	private readonly LockReleaser _lockReleaser;
 
 	public AsyncLock()
 		:
@@ -18,14 +18,14 @@ public class AsyncLock
 
 	public AsyncLock(int concurrencyLevel)
 	{
-		semaphoreSlim = new SemaphoreSlim(concurrencyLevel);
-		lockReleaser = new LockReleaser(semaphoreSlim);
+		_semaphoreSlim = new SemaphoreSlim(concurrencyLevel);
+		_lockReleaser = new LockReleaser(_semaphoreSlim);
 	}
 
 	public async Task<LockReleaser> LockAsync(CancellationToken cancellationToken = default)
 	{
-		await semaphoreSlim.WaitAsync(cancellationToken).ConfigureAwait(false);
-		return lockReleaser;
+		await _semaphoreSlim.WaitAsync(cancellationToken).ConfigureAwait(false);
+		return _lockReleaser;
 	}
 
 	public TaskAwaiter<LockReleaser> GetAwaiter()
@@ -35,16 +35,16 @@ public class AsyncLock
 
 	public sealed class LockReleaser : IDisposable
 	{
-		private readonly SemaphoreSlim semaphoreSlim;
+		private readonly SemaphoreSlim _semaphoreSlim;
 
 		internal LockReleaser(SemaphoreSlim semaphoreSlim)
 		{
-			this.semaphoreSlim = semaphoreSlim;
+			_semaphoreSlim = semaphoreSlim;
 		}
 
 		void IDisposable.Dispose()
 		{
-			semaphoreSlim.Release();
+			_semaphoreSlim.Release();
 		}
 	}
 }

@@ -8,21 +8,21 @@ namespace SudokuSolution.Test.Logic.FieldActions;
 [TestFixture]
 public class CleanPossibleByColumnTests
 {
-	private ICleanPossibleByColumn cleanPossibleByColumn;
+	private ICleanPossibleByColumn _cleanPossibleByColumn;
 
 	[OneTimeSetUp]
 	public void CreateService()
 	{
-		cleanPossibleByColumn = new CleanPossibleByColumn();
+		_cleanPossibleByColumn = new CleanPossibleByColumn();
 	}
 
 	[Test]
 	public void ExecuteWithSmallFieldTest()
 	{
 		var field = TestFieldHelper.GetSmallTestFieldWithPossible();
-		cleanPossibleByColumn.Execute(field);
-		cleanPossibleByColumn.Execute(field);
-		cleanPossibleByColumn.Execute(field);
+		_cleanPossibleByColumn.Execute(field);
+		_cleanPossibleByColumn.Execute(field);
+		_cleanPossibleByColumn.Execute(field);
 
 		field.Cells[0, 0].ShouldBeFinal(2);
 		field.Cells[0, 1].ShouldBeNotFinal(field.MaxValue, 3, 4);
@@ -46,9 +46,9 @@ public class CleanPossibleByColumnTests
 	public void ExecuteWithFieldTest()
 	{
 		var field = TestFieldHelper.GetTestFieldWithPossible();
-		cleanPossibleByColumn.Execute(field);
-		cleanPossibleByColumn.Execute(field);
-		cleanPossibleByColumn.Execute(field);
+		_cleanPossibleByColumn.Execute(field);
+		_cleanPossibleByColumn.Execute(field);
+		_cleanPossibleByColumn.Execute(field);
 
 		field.Cells[0, 0].ShouldBeNotFinal(field.MaxValue, 2, 4, 5, 6);
 		field.Cells[0, 1].ShouldBeFinal(8);

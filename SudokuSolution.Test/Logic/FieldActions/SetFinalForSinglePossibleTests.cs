@@ -14,26 +14,26 @@ namespace SudokuSolution.Test.Logic.FieldActions;
 [TestFixture]
 public class SetFinalForSinglePossibleTests
 {
-	private ISetFinalForSinglePossible setFinalForSinglePossible;
-	private ISetFinalForSinglePossible setFinalForSinglePossibleWithoutCleanPossible;
+	private ISetFinalForSinglePossible _setFinalForSinglePossible;
+	private ISetFinalForSinglePossible _setFinalForSinglePossibleWithoutCleanPossible;
 
 	[OneTimeSetUp]
 	public void CreateService()
 	{
-		setFinalForSinglePossible = new SetFinalForSinglePossible(new CleanPossibleFacade(new CleanPossibleByRow(), new CleanPossibleByFinal(), new CleanPossibleByColumn()));
+		_setFinalForSinglePossible = new SetFinalForSinglePossible(new CleanPossibleFacade(new CleanPossibleByRow(), new CleanPossibleByFinal(), new CleanPossibleByColumn()));
 
 		var cleanPossibleFacade = new Mock<ICleanPossibleFacade>();
 		cleanPossibleFacade.Setup(facade => facade.Execute(It.IsAny<Field>(), It.IsAny<int>(), It.IsAny<int>()));
-		setFinalForSinglePossibleWithoutCleanPossible = new SetFinalForSinglePossible(cleanPossibleFacade.Object);
+		_setFinalForSinglePossibleWithoutCleanPossible = new SetFinalForSinglePossible(cleanPossibleFacade.Object);
 	}
 
 	[Test]
 	public void ExecuteWithSmallFieldTest()
 	{
 		var field = TestFieldHelper.GetSmallTestFieldWithPossible();
-		setFinalForSinglePossible.Execute(field);
-		setFinalForSinglePossible.Execute(field);
-		setFinalForSinglePossible.Execute(field);
+		_setFinalForSinglePossible.Execute(field);
+		_setFinalForSinglePossible.Execute(field);
+		_setFinalForSinglePossible.Execute(field);
 
 		field.Cells[0, 0].ShouldBeFinal(2);
 		field.Cells[0, 1].ShouldBeFinal(3);
@@ -57,9 +57,9 @@ public class SetFinalForSinglePossibleTests
 	public void ExecuteWithFieldTest()
 	{
 		var field = TestFieldHelper.GetTestFieldWithPossible();
-		setFinalForSinglePossible.Execute(field);
-		setFinalForSinglePossible.Execute(field);
-		setFinalForSinglePossible.Execute(field);
+		_setFinalForSinglePossible.Execute(field);
+		_setFinalForSinglePossible.Execute(field);
+		_setFinalForSinglePossible.Execute(field);
 
 		field.Cells[0, 0].ShouldBeNotFinal(field.MaxValue, 2, 4, 5, 6);
 		field.Cells[0, 1].ShouldBeFinal(8);
@@ -148,9 +148,9 @@ public class SetFinalForSinglePossibleTests
 	public void ExecuteWithSmallFieldWithoutCleanPossibleTest()
 	{
 		var field = TestFieldHelper.GetSmallTestFieldWithPossible();
-		setFinalForSinglePossibleWithoutCleanPossible.Execute(field);
-		setFinalForSinglePossibleWithoutCleanPossible.Execute(field);
-		setFinalForSinglePossibleWithoutCleanPossible.Execute(field);
+		_setFinalForSinglePossibleWithoutCleanPossible.Execute(field);
+		_setFinalForSinglePossibleWithoutCleanPossible.Execute(field);
+		_setFinalForSinglePossibleWithoutCleanPossible.Execute(field);
 
 		field.Cells[0, 0].ShouldBeFinal(2);
 		field.Cells[0, 1].ShouldBeNotFinal(field.MaxValue, 3, 4);
@@ -174,9 +174,9 @@ public class SetFinalForSinglePossibleTests
 	public void ExecuteWithFieldWithoutCleanPossibleTest()
 	{
 		var field = TestFieldHelper.GetTestFieldWithPossible();
-		setFinalForSinglePossibleWithoutCleanPossible.Execute(field);
-		setFinalForSinglePossibleWithoutCleanPossible.Execute(field);
-		setFinalForSinglePossibleWithoutCleanPossible.Execute(field);
+		_setFinalForSinglePossibleWithoutCleanPossible.Execute(field);
+		_setFinalForSinglePossibleWithoutCleanPossible.Execute(field);
+		_setFinalForSinglePossibleWithoutCleanPossible.Execute(field);
 
 		field.Cells[0, 0].ShouldBeNotFinal(field.MaxValue, 2, 4, 5, 6);
 		field.Cells[0, 1].ShouldBeFinal(8);

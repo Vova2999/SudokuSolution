@@ -8,26 +8,27 @@ namespace SudokuSolution.Logic.FieldActions.CleanPossible;
 
 public class CleanPossibleFacade : ICleanPossibleFacade
 {
-	private readonly ICleanPossibleByRow cleanPossibleByRow;
-	private readonly ICleanPossibleByFinal cleanPossibleByFinal;
-	private readonly ICleanPossibleByColumn cleanPossibleByColumn;
+	private readonly ICleanPossibleByRow _cleanPossibleByRow;
+	private readonly ICleanPossibleByFinal _cleanPossibleByFinal;
+	private readonly ICleanPossibleByColumn _cleanPossibleByColumn;
 
-	public CleanPossibleFacade(ICleanPossibleByRow cleanPossibleByRow,
-							   ICleanPossibleByFinal cleanPossibleByFinal,
-							   ICleanPossibleByColumn cleanPossibleByColumn)
+	public CleanPossibleFacade(
+		ICleanPossibleByRow cleanPossibleByRow,
+		ICleanPossibleByFinal cleanPossibleByFinal,
+		ICleanPossibleByColumn cleanPossibleByColumn)
 	{
-		this.cleanPossibleByRow = cleanPossibleByRow;
-		this.cleanPossibleByFinal = cleanPossibleByFinal;
-		this.cleanPossibleByColumn = cleanPossibleByColumn;
+		_cleanPossibleByRow = cleanPossibleByRow;
+		_cleanPossibleByFinal = cleanPossibleByFinal;
+		_cleanPossibleByColumn = cleanPossibleByColumn;
 	}
 
 	public FieldActionsResult Execute(Field field)
 	{
 		return new[]
 		{
-			cleanPossibleByFinal.Execute(field),
-			cleanPossibleByRow.Execute(field),
-			cleanPossibleByColumn.Execute(field)
+			_cleanPossibleByFinal.Execute(field),
+			_cleanPossibleByRow.Execute(field),
+			_cleanPossibleByColumn.Execute(field)
 		}.GetChangedResultIfAnyIsChanged();
 	}
 
@@ -35,9 +36,9 @@ public class CleanPossibleFacade : ICleanPossibleFacade
 	{
 		return new[]
 		{
-			cleanPossibleByFinal.Execute(field, row, column),
-			cleanPossibleByRow.Execute(field, row, column),
-			cleanPossibleByColumn.Execute(field, row, column)
+			_cleanPossibleByFinal.Execute(field, row, column),
+			_cleanPossibleByRow.Execute(field, row, column),
+			_cleanPossibleByColumn.Execute(field, row, column)
 		}.GetChangedResultIfAnyIsChanged();
 	}
 }
