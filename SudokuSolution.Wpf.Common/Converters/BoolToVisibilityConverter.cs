@@ -5,44 +5,48 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using SudokuSolution.Wpf.Common.Converters.Base;
 
-namespace SudokuSolution.Wpf.Common.Converters {
-	public class BoolToVisibilityConverter : MarkupConverterBase {
-		[ConstructorArgument("TrueValue")]
-		public Visibility TrueValue { get; set; }
+namespace SudokuSolution.Wpf.Common.Converters;
 
-		[ConstructorArgument("FalseValue")]
-		public Visibility FalseValue { get; set; }
+public class BoolToVisibilityConverter : MarkupConverterBase
+{
+	[ConstructorArgument("TrueValue")]
+	public Visibility TrueValue { get; set; }
 
-		[ConstructorArgument("NullValue")]
-		public Visibility NullValue { get; set; }
+	[ConstructorArgument("FalseValue")]
+	public Visibility FalseValue { get; set; }
 
-		public BoolToVisibilityConverter() {
-			TrueValue = Visibility.Visible;
-			FalseValue = Visibility.Collapsed;
-			NullValue = Visibility.Collapsed;
-		}
+	[ConstructorArgument("NullValue")]
+	public Visibility NullValue { get; set; }
 
-		protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-			if (value == null)
-				return NullValue;
+	public BoolToVisibilityConverter()
+	{
+		TrueValue = Visibility.Visible;
+		FalseValue = Visibility.Collapsed;
+		NullValue = Visibility.Collapsed;
+	}
 
-			if (value is not bool valueBool)
-				return Binding.DoNothing;
+	protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+	{
+		if (value == null)
+			return NullValue;
 
-			return valueBool ? TrueValue : FalseValue;
-		}
-
-		protected override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-			if (Equals(value, null))
-				return null;
-
-			if (Equals(value, TrueValue))
-				return true;
-
-			if (Equals(value, FalseValue))
-				return false;
-
+		if (value is not bool valueBool)
 			return Binding.DoNothing;
-		}
+
+		return valueBool ? TrueValue : FalseValue;
+	}
+
+	protected override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+	{
+		if (Equals(value, null))
+			return null;
+
+		if (Equals(value, TrueValue))
+			return true;
+
+		if (Equals(value, FalseValue))
+			return false;
+
+		return Binding.DoNothing;
 	}
 }

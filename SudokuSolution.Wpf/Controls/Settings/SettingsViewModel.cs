@@ -5,79 +5,93 @@ using SudokuSolution.Common.Extensions;
 using SudokuSolution.Wpf.Common.Base;
 using SudokuSolution.Wpf.Messages;
 
-namespace SudokuSolution.Wpf.Controls.Settings {
-	public class SettingsViewModel : ViewModel<SettingsControl> {
-		public override object Header => string.Empty;
+namespace SudokuSolution.Wpf.Controls.Settings;
 
-		private int size;
-		private int[] allowedSizes;
-		private int maxSolved;
-		private string maxSolvedString;
+public class SettingsViewModel : ViewModel<SettingsControl>
+{
+	public override object Header => string.Empty;
 
-		private ICommand handleMouseMoveCommand;
+	private int size;
+	private int[] allowedSizes;
+	private int maxSolved;
+	private string maxSolvedString;
 
-		private readonly IMessenger messenger;
+	private ICommand handleMouseMoveCommand;
 
-		public int Size {
-			get => size;
-			set {
-				if (Set(ref size, value))
-					OnSizeChanged();
+	private readonly IMessenger messenger;
+
+	public int Size
+	{
+		get => size;
+		set
+		{
+			if (Set(ref size, value))
+				OnSizeChanged();
+		}
+	}
+
+	public int[] AllowedSizes
+	{
+		get => allowedSizes;
+		set => Set(ref allowedSizes, value);
+	}
+
+	public int MaxSolved
+	{
+		get => maxSolved;
+		set
+		{
+			if (Set(ref maxSolved, value))
+				MaxSolvedString = value.ToString();
+		}
+	}
+
+	public string MaxSolvedString
+	{
+		get => maxSolvedString;
+		set
+		{
+			if (value.IsNullOrEmpty())
+				value = "0";
+
+			if (IsValidMaxSolvedStringValue(value))
+			{
+				Set(ref maxSolvedString, value);
+				MaxSolved = int.Parse(value);
 			}
 		}
+	}
 
-		public int[] AllowedSizes {
-			get => allowedSizes;
-			set => Set(ref allowedSizes, value);
-		}
+	public ICommand HandleMouseMoveCommand => handleMouseMoveCommand ??= new RelayCommand<MouseEventArgs>(OnHandleMouseMove);
 
-		public int MaxSolved {
-			get => maxSolved;
-			set {
-				if (Set(ref maxSolved, value))
-					MaxSolvedString = value.ToString();
-			}
-		}
+	public SettingsViewModel(IMessenger messenger)
+	{
+		this.messenger = messenger;
 
-		public string MaxSolvedString {
-			get => maxSolvedString;
-			set {
-				if (value.IsNullOrEmpty())
-					value = "0";
+		AllowedSizes = Constants.AllowedSizes;
+		Size = Constants.StartedSize;
 
-				if (IsValidMaxSolvedStringValue(value)) {
-					Set(ref maxSolvedString, value);
-					MaxSolved = int.Parse(value);
-				}
-			}
-		}
+		MaxSolved = Constants.StartedMaxSolved;
+	}
 
-		public ICommand HandleMouseMoveCommand => handleMouseMoveCommand ??= new RelayCommand<MouseEventArgs>(OnHandleMouseMove);
+	private void OnSizeChanged()
+	{
+		messenger.Send(new SizeChangedMessage(Size));
+	}
 
-		public SettingsViewModel(IMessenger messenger) {
-			this.messenger = messenger;
+	private bool IsValidMaxSolvedStringValue(string value)
+	{
+		return int.TryParse(value, out _);
+	}
 
-			AllowedSizes = Constants.AllowedSizes;
-			Size = Constants.StartedSize;
+	private static void OnHandleMouseMove(MouseEventArgs obj)
+	{
+		obj.Handled = true;
+	}
 
-			MaxSolved = Constants.StartedMaxSolved;
-		}
-
-		private void OnSizeChanged() {
-			messenger.Send(new SizeChangedMessage(Size));
-		}
-
-		private bool IsValidMaxSolvedStringValue(string value) {
-			return int.TryParse(value, out _);
-		}
-
-		private static void OnHandleMouseMove(MouseEventArgs obj) {
-			obj.Handled = true;
-		}
-
-		public override void Cleanup() {
-			messenger.Unregister(this);
-			base.Cleanup();
-		}
+	public override void Cleanup()
+	{
+		messenger.Unregister(this);
+		base.Cleanup();
 	}
 }

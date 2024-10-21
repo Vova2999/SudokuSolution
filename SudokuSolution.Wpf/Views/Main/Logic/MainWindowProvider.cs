@@ -4,40 +4,47 @@ using GalaSoft.MvvmLight;
 using SudokuSolution.Wpf.Common.Dispatcher;
 using SudokuSolution.Wpf.Common.View;
 
-namespace SudokuSolution.Wpf.Views.Main.Logic {
-	public class MainWindowProvider : IMainWindowProvider {
-		private readonly IViewService viewService;
-		private readonly IDispatcherHelper dispatcherHelper;
+namespace SudokuSolution.Wpf.Views.Main.Logic;
 
-		private Window mainWindow;
+public class MainWindowProvider : IMainWindowProvider
+{
+	private readonly IViewService viewService;
+	private readonly IDispatcherHelper dispatcherHelper;
 
-		public MainWindowProvider(IViewService viewService, IDispatcherHelper dispatcherHelper) {
-			this.viewService = viewService;
-			this.dispatcherHelper = dispatcherHelper;
-		}
+	private Window mainWindow;
 
-		public void Show() {
-			dispatcherHelper.CheckBeginInvokeOnUI(() => {
-				mainWindow ??= CreateWindow();
-				Application.Current.MainWindow = mainWindow;
-				mainWindow.Show();
-			});
-		}
+	public MainWindowProvider(IViewService viewService, IDispatcherHelper dispatcherHelper)
+	{
+		this.viewService = viewService;
+		this.dispatcherHelper = dispatcherHelper;
+	}
 
-		public void CloseIfCreated() {
-			dispatcherHelper.CheckBeginInvokeOnUI(() => mainWindow?.Close());
-		}
+	public void Show()
+	{
+		dispatcherHelper.CheckBeginInvokeOnUI(() =>
+		{
+			mainWindow ??= CreateWindow();
+			Application.Current.MainWindow = mainWindow;
+			mainWindow.Show();
+		});
+	}
 
-		private Window CreateWindow() {
-			var window = viewService.CreateWindow<MainViewModel>(WindowMode.Window);
-			window.Closing += OnWindowClosing;
-			return window;
-		}
+	public void CloseIfCreated()
+	{
+		dispatcherHelper.CheckBeginInvokeOnUI(() => mainWindow?.Close());
+	}
 
-		private void OnWindowClosing(object sender, CancelEventArgs e) {
-			mainWindow.Closing -= OnWindowClosing;
-			(mainWindow.DataContext as ICleanup)?.Cleanup();
-			mainWindow = null;
-		}
+	private Window CreateWindow()
+	{
+		var window = viewService.CreateWindow<MainViewModel>(WindowMode.Window);
+		window.Closing += OnWindowClosing;
+		return window;
+	}
+
+	private void OnWindowClosing(object sender, CancelEventArgs e)
+	{
+		mainWindow.Closing -= OnWindowClosing;
+		(mainWindow.DataContext as ICleanup)?.Cleanup();
+		mainWindow = null;
 	}
 }

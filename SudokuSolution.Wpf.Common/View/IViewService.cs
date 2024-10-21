@@ -2,18 +2,19 @@
 using System.Windows;
 using SudokuSolution.Wpf.Common.Base;
 
-namespace SudokuSolution.Wpf.Common.View {
-	public interface IViewService {
-		void OpenWindow<TViewModel>() where TViewModel : IViewModel;
-		void OpenWindow(IViewModel viewModel);
+namespace SudokuSolution.Wpf.Common.View;
 
-		bool? OpenDialog<TViewModel>() where TViewModel : IViewModel;
-		[Obsolete("Use ViewModelExtensions")]
-		bool? OpenDialog(IViewModel viewModel);
+public interface IViewService
+{
+	void OpenWindow<TViewModel>() where TViewModel : IViewModel;
+	void OpenWindow(IViewModel viewModel);
 
-		Window CreateWindow<TViewModel>(WindowMode windowMode) where TViewModel : IViewModel;
-		Window CreateWindow(IViewModel viewModel, WindowMode windowMode);
+	bool? OpenDialog<TViewModel>() where TViewModel : IViewModel;
+	[Obsolete("Use ViewModelExtensions")]
+	bool? OpenDialog(IViewModel viewModel);
 
-		int GetOpenedWindowsCount();
-	}
+	Window CreateWindow<TViewModel>(WindowMode windowMode) where TViewModel : IViewModel;
+	Window CreateWindow(IViewModel viewModel, WindowMode windowMode);
+
+	int GetOpenedWindowsCount();
 }

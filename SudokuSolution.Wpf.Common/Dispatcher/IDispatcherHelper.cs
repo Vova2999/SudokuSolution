@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Windows.Threading;
 
-namespace SudokuSolution.Wpf.Common.Dispatcher {
-	public interface IDispatcherHelper {
-		System.Windows.Threading.Dispatcher UiDispatcher { get; }
+namespace SudokuSolution.Wpf.Common.Dispatcher;
 
-		void CheckBeginInvokeOnUI(Action action);
-		DispatcherOperation RunAsync(Action action);
-		void Reset();
-	}
+public interface IDispatcherHelper
+{
+	System.Windows.Threading.Dispatcher UiDispatcher { get; }
+
+	void CheckBeginInvokeOnUI(Action action);
+	DispatcherOperation RunAsync(Action action);
+	void Reset();
 }

@@ -8,55 +8,61 @@ using SudokuSolution.Logic.FieldActions.SetFinal;
 using SudokuSolution.Logic.FieldActions.SetRandomFinalAndSplitField;
 using SudokuSolution.Logic.FieldService;
 
-namespace SudokuSolution.Logic.GameService {
-	public class GameService : IGameService {
-		private readonly IFieldService fieldService;
-		private readonly ISetFinalFacade setFinalFacade;
-		private readonly ICleanPossibleFacade cleanPossibleFacade;
-		private readonly ISetRandomFinalAndSplitField setRandomFinalAndSplitField;
+namespace SudokuSolution.Logic.GameService;
 
-		public GameService(IFieldService fieldService,
-						   ISetFinalFacade setFinalFacade,
-						   ICleanPossibleFacade cleanPossibleFacade,
-						   ISetRandomFinalAndSplitField setRandomFinalAndSplitField) {
-			this.fieldService = fieldService;
-			this.setFinalFacade = setFinalFacade;
-			this.cleanPossibleFacade = cleanPossibleFacade;
-			this.setRandomFinalAndSplitField = setRandomFinalAndSplitField;
-		}
+public class GameService : IGameService
+{
+	private readonly IFieldService fieldService;
+	private readonly ISetFinalFacade setFinalFacade;
+	private readonly ICleanPossibleFacade cleanPossibleFacade;
+	private readonly ISetRandomFinalAndSplitField setRandomFinalAndSplitField;
 
-		public IEnumerable<Field> Solve(Field field) {
-			return SolveWithChangeField((Field) field.Clone());
-		}
+	public GameService(IFieldService fieldService,
+					   ISetFinalFacade setFinalFacade,
+					   ICleanPossibleFacade cleanPossibleFacade,
+					   ISetRandomFinalAndSplitField setRandomFinalAndSplitField)
+	{
+		this.fieldService = fieldService;
+		this.setFinalFacade = setFinalFacade;
+		this.cleanPossibleFacade = cleanPossibleFacade;
+		this.setRandomFinalAndSplitField = setRandomFinalAndSplitField;
+	}
 
-		private IEnumerable<Field> SolveWithChangeField(Field field) {
-			var withoutRandomResult = TrySolveWithoutRandom(field);
-			if (withoutRandomResult.HasValue)
-				return withoutRandomResult.Value ? field.AsEnumerable() : Enumerable.Empty<Field>();
+	public IEnumerable<Field> Solve(Field field)
+	{
+		return SolveWithChangeField((Field) field.Clone());
+	}
 
-			return setRandomFinalAndSplitField.Execute(field).SelectMany(SolveWithChangeField);
-		}
+	private IEnumerable<Field> SolveWithChangeField(Field field)
+	{
+		var withoutRandomResult = TrySolveWithoutRandom(field);
+		if (withoutRandomResult.HasValue)
+			return withoutRandomResult.Value ? field.AsEnumerable() : Enumerable.Empty<Field>();
 
-		private bool? TrySolveWithoutRandom(Field field) {
-			cleanPossibleFacade.Execute(field);
+		return setRandomFinalAndSplitField.Execute(field).SelectMany(SolveWithChangeField);
+	}
 
-			while (true) {
-				var setFinalResult = setFinalFacade.Execute(field);
+	private bool? TrySolveWithoutRandom(Field field)
+	{
+		cleanPossibleFacade.Execute(field);
 
-				if (fieldService.IsFailed(field))
-					return false;
+		while (true)
+		{
+			var setFinalResult = setFinalFacade.Execute(field);
 
-				if (fieldService.IsSolved(field))
-					return true;
+			if (fieldService.IsFailed(field))
+				return false;
 
-				if (setFinalResult == FieldActionsResult.Changed)
-					continue;
+			if (fieldService.IsSolved(field))
+				return true;
 
-				var cleanPossibleResult = cleanPossibleFacade.Execute(field);
+			if (setFinalResult == FieldActionsResult.Changed)
+				continue;
 
-				if (cleanPossibleResult == FieldActionsResult.Nothing)
-					return null;
-			}
+			var cleanPossibleResult = cleanPossibleFacade.Execute(field);
+
+			if (cleanPossibleResult == FieldActionsResult.Nothing)
+				return null;
 		}
 	}
 }

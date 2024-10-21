@@ -1,20 +1,23 @@
 ﻿using System.Windows;
 using SudokuSolution.Wpf.Views.Main.Logic;
 
-namespace SudokuSolution.Wpf {
-	public partial class App {
-		private readonly IMainWindowProvider mainWindowProvider;
+namespace SudokuSolution.Wpf;
 
-		public App(IMainWindowProvider mainWindowProvider) {
-			this.mainWindowProvider = mainWindowProvider;
+public partial class App
+{
+	private readonly IMainWindowProvider mainWindowProvider;
 
-			InitializeComponent();
-		}
+	public App(IMainWindowProvider mainWindowProvider)
+	{
+		this.mainWindowProvider = mainWindowProvider;
 
-		protected override void OnStartup(StartupEventArgs e) {
-			base.OnStartup(e);
+		InitializeComponent();
+	}
 
-			mainWindowProvider.Show();
-		}
+	protected override void OnStartup(StartupEventArgs e)
+	{
+		base.OnStartup(e);
+
+		mainWindowProvider.Show();
 	}
 }
