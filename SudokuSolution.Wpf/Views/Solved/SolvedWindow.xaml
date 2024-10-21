@@ -81,7 +81,7 @@
 			<Button Grid.Column="0" Width="100" Command="{Binding PrevSolvedCommand, Mode=OneWay}">
 				<StackPanel Orientation="Horizontal">
 					<iconPacks:PackIconFontAwesome
-						Kind="AngleDoubleLeftSolid"
+						Kind="AnglesLeftSolid"
 						Width="12"
 						Height="12"
 						VerticalAlignment="Center" />
@@ -92,7 +92,7 @@
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Margin="0,0,6,0" Text="Следующее" />
 					<iconPacks:PackIconFontAwesome
-						Kind="AngleDoubleRightSolid"
+						Kind="AnglesRightSolid"
 						Width="12"
 						Height="12"
 						VerticalAlignment="Center" />

@@ -58,7 +58,7 @@
 				Command="{Binding OpenSettingsCommand, Mode=OneWay}"
 				Visibility="{Binding IsSettingsOpened, Converter={converters:BoolToVisibilityConverter TrueValue=Collapsed, FalseValue=Visible}, Mode=OneWay}">
 			<iconPacks:PackIconFontAwesome
-				Kind="AngleDoubleRightSolid"
+				Kind="AnglesRightSolid"
 				Width="12"
 				Height="12"
 				VerticalAlignment="Center" />
@@ -78,7 +78,7 @@
 									Style="{StaticResource TopLeftAlignedButton}"
 									Command="{Binding CloseSettingsCommand, Mode=OneWay}">
 								<iconPacks:PackIconFontAwesome
-									Kind="AngleDoubleLeftSolid"
+									Kind="AnglesLeftSolid"
 									Width="12"
 									Height="12"
 									VerticalAlignment="Center" />
